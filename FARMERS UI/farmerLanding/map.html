@@ -50,14 +50,36 @@
     .leaflet-popup-close-button{color:#3b4918!important;font-size:18px!important;top:8px!important;right:10px!important;}
 
     /* Marker dots */
-    .crop-dot{width:14px;height:14px;border-radius:50%;border:3px solid rgba(255,255,255,.88);box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;transition:transform .15s ease;}
+    .crop-dot{width:9px;height:9px;border-radius:50%;border:2px solid rgba(255,255,255,.9);box-shadow:0 1px 5px rgba(0,0,0,.28);cursor:pointer;transition:transform .15s ease;}
     .crop-dot:hover{transform:scale(1.5);}
+    .scaims-crop-marker-icon--compact .scaims-crop-marker{width:28px!important;height:32px!important;}
+    .scaims-crop-marker-icon--compact .scaims-crop-marker:after{bottom:3px!important;width:7px!important;height:7px!important;border-right-width:1.5px!important;border-bottom-width:1.5px!important;}
+    .scaims-crop-marker-icon--compact .scaims-crop-marker__frame{width:28px!important;height:28px!important;border-width:2px!important;box-shadow:0 2px 8px rgba(0,0,0,.22),inset 0 0 0 1px rgba(255,255,255,.88)!important;}
+    .scaims-crop-marker-icon--compact .scaims-crop-marker__frame img{width:19px!important;height:19px!important;}
 
     /* Clusters */
     .marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{color:#fffcef;font-weight:700;font-family:Inter,sans-serif;}
     .marker-cluster-small  div{background-color:rgba(59,73,24,.82);}
     .marker-cluster-medium div{background-color:rgba(87,111,27,.88);}
     .marker-cluster-large  div{background-color:rgba(42,51,17,.94);}
+    .crop-cluster-icon{background:transparent;border:0;}
+    .crop-cluster{
+      min-width:48px;height:36px;padding:0 10px;border-radius:999px;
+      background:rgba(59,73,24,.94);color:#fffcef;
+      border:2px solid rgba(255,252,239,.88);box-shadow:0 5px 16px rgba(42,51,17,.24);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      font-family:Inter,sans-serif;line-height:1;white-space:nowrap;
+    }
+    .crop-cluster strong{font-size:12px;font-weight:800;}
+    .crop-cluster span{font-size:9px;font-weight:700;opacity:.78;margin-top:2px;}
+    .crop-group-marker{background:transparent;border:0;}
+    .crop-group{
+      min-width:42px;height:30px;padding:0 8px;border-radius:999px;
+      background:#fff;border:2px solid #3b4918;color:#3b4918;
+      box-shadow:0 4px 13px rgba(42,51,17,.22);
+      display:flex;align-items:center;gap:5px;font-family:Inter,sans-serif;font-size:10px;font-weight:800;
+    }
+    .crop-group-dot{width:8px;height:8px;border-radius:50%;background:var(--group-color);}
 
     /* Filter controls */
     .f-select,.f-input{
@@ -88,6 +110,8 @@
 
     /* Legend swatch */
     .swatch{width:11px;height:11px;border-radius:50%;border:2px solid rgba(255,255,255,.8);box-shadow:0 1px 4px rgba(0,0,0,.28);flex-shrink:0;}
+    .lipa-outside-mask{fill:#6b7280;fill-opacity:.42;stroke:none;pointer-events:none;}
+    .lipa-boundary-line{filter:drop-shadow(0 1px 2px rgba(42,51,17,.25));}
 
     /* Section accordion */
     .f-section details{border-radius:10px;overflow:hidden;border:1px solid rgba(200,189,68,.18);}
@@ -125,6 +149,63 @@
     /* Result list item */
     .r-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid rgba(200,189,68,.18);cursor:pointer;transition:all .18s;}
     .r-item:hover{border-color:rgba(59,73,24,.30);background:#fffcef;}
+
+    .map-filter-bar{
+      position:absolute;z-index:410;top:14px;left:14px;right:14px;
+      display:flex;gap:7px;overflow-x:auto;padding:7px;
+      background:rgba(255,252,239,.9);border:1px solid rgba(200,189,68,.25);
+      border-radius:12px;box-shadow:0 8px 24px rgba(42,51,17,.12);backdrop-filter:blur(8px);
+      scrollbar-width:none;
+    }
+    .map-filter-bar::-webkit-scrollbar{display:none;}
+    .map-chip{
+      flex:0 0 auto;padding:7px 11px;border-radius:999px;border:1px solid rgba(59,73,24,.16);
+      background:#fff;color:rgba(59,73,24,.72);font-size:12px;font-weight:800;
+      line-height:1;white-space:nowrap;transition:all .16s ease;
+    }
+    .map-chip.active{background:#3b4918;border-color:#3b4918;color:#fffcef;}
+    .zoom-hint{
+      position:absolute;z-index:405;left:16px;bottom:18px;
+      background:rgba(255,252,239,.92);border:1px solid rgba(200,189,68,.25);
+      border-radius:999px;padding:7px 11px;font-size:11px;font-weight:700;color:rgba(59,73,24,.68);
+      box-shadow:0 6px 18px rgba(42,51,17,.12);
+    }
+    #detailsScrim{display:none;position:absolute;inset:0;z-index:515;background:rgba(42,51,17,.18);}
+    #detailsScrim.open{display:block;}
+    #mapDetailsSheet{
+      position:absolute;z-index:520;left:50%;bottom:16px;transform:translate(-50%,calc(100% + 32px));
+      width:min(420px,calc(100% - 28px));max-height:min(74vh,560px);overflow:hidden;
+      background:#fffcef;border:1px solid rgba(200,189,68,.28);border-radius:16px;
+      box-shadow:0 18px 44px rgba(42,51,17,.28);transition:transform .22s ease;
+      display:flex;flex-direction:column;
+    }
+    #mapDetailsSheet.open{transform:translate(-50%,0);}
+    .sheet-handle{width:42px;height:4px;border-radius:999px;background:rgba(59,73,24,.2);margin:10px auto 0;}
+    .sheet-head{padding:10px 16px 12px;border-bottom:1px solid rgba(200,189,68,.22);display:flex;align-items:flex-start;gap:10px;}
+    .sheet-title{font-weight:800;color:#3b4918;font-size:16px;line-height:1.2;}
+    .sheet-subtitle{font-size:12px;color:rgba(59,73,24,.55);margin-top:3px;}
+    .sheet-close{margin-left:auto;border:0;background:#fff;border-radius:999px;width:30px;height:30px;color:#3b4918;font-weight:800;border:1px solid rgba(59,73,24,.12);}
+    .sheet-body{padding:12px 16px 14px;overflow:auto;}
+    .sheet-metrics{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+    .sheet-metric{background:#fff;border:1px solid rgba(200,189,68,.2);border-radius:10px;padding:9px;}
+    .sheet-metric span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:rgba(59,73,24,.45);font-weight:800;}
+    .sheet-metric strong{display:block;margin-top:3px;color:#3b4918;font-size:13px;}
+    .sheet-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+    .sheet-action{display:flex;align-items:center;justify-content:center;gap:6px;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:800;text-decoration:none;}
+    .sheet-action.primary{background:#3b4918;color:#fffcef;}
+    .sheet-action.secondary{background:#fff;color:#3b4918;border:1px solid rgba(59,73,24,.18);}
+    .sheet-action.disabled{opacity:.48;pointer-events:none;}
+    .sheet-list{display:flex;flex-direction:column;gap:8px;}
+    .sheet-list-item{display:flex;gap:9px;align-items:center;background:#fff;border:1px solid rgba(200,189,68,.2);border-radius:10px;padding:9px;cursor:pointer;}
+    .sheet-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;color:rgba(59,73,24,.72);}
+    .sheet-status:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--status-color);}
+    @media(max-width:768px){
+      .map-filter-bar{top:10px;left:10px;right:10px;border-radius:11px;}
+      .zoom-hint{left:12px;bottom:12px;max-width:calc(100% - 24px);}
+      #mapDetailsSheet{left:0;right:0;bottom:0;width:100%;max-height:78vh;transform:translateY(100%);border-radius:18px 18px 0 0;}
+      #mapDetailsSheet.open{transform:translateY(0);}
+      .sheet-metrics{grid-template-columns:1fr;}
+    }
   </style>
   <link rel="stylesheet" href="../../shared/public-nav.css">
 </head>
@@ -313,6 +394,27 @@
         <div class="spinner"></div>
         <p class="text-sm font-semibold text-olive">Loading crop data…</p>
       </div>
+      <div class="map-filter-bar" id="mapFilterBar" aria-label="Crop category filters">
+        <button class="map-chip active" data-category="all" onclick="setMapCategory('all')">All</button>
+        <button class="map-chip" data-category="fruits" onclick="setMapCategory('fruits')">Fruits</button>
+        <button class="map-chip" data-category="vegetables" onclick="setMapCategory('vegetables')">Vegetables</button>
+        <button class="map-chip" data-category="grains" onclick="setMapCategory('grains')">Grains</button>
+        <button class="map-chip" data-category="root" onclick="setMapCategory('root')">Root Crops</button>
+        <button class="map-chip" data-category="other" onclick="setMapCategory('other')">Other</button>
+      </div>
+      <div class="zoom-hint" id="zoomHint">Area clusters · zoom in for crop listings</div>
+      <div id="detailsScrim" onclick="closeDetailsSheet()"></div>
+      <div id="mapDetailsSheet" aria-live="polite">
+        <div class="sheet-handle"></div>
+        <div class="sheet-head">
+          <div style="min-width:0;flex:1;">
+            <div class="sheet-title" id="sheetTitle">Crop details</div>
+            <div class="sheet-subtitle" id="sheetSubtitle">Select a marker on the map</div>
+          </div>
+          <button class="sheet-close" onclick="closeDetailsSheet()" aria-label="Close crop details">×</button>
+        </div>
+        <div class="sheet-body" id="sheetBody"></div>
+      </div>
       <div id="map"></div>
     </div>
 
@@ -360,27 +462,68 @@
     return STATUS_COLORS[status.toLowerCase().trim()] || STATUS_COLORS.default;
   }
 
-  /* Active color mode: 'type' | 'status' | 'value' | 'damage' */
-  let colorMode = 'type';
+  const AVAILABILITY_COLORS = {
+    available: '#16a34a',
+    low: '#f59e0b',
+    unavailable: '#6b7280',
+    recent: '#2563eb'
+  };
+  const CROP_CATEGORIES = {
+    fruits: ['banana','mango','coconut','avocado','jackfruit','lanzones','rambutan','pomelo','papaya','pineapple','calamansi','citrus','guyabano','mangosteen','durian','dragon fruit','santol'],
+    vegetables: ['tomato','eggplant','ampalaya','sitao','pole sitao','pechay','squash','lettuce','radish','mustard','okra','lady finger'],
+    grains: ['rice','corn','wheat','mung bean','cowpea','soybeans','snap beans'],
+    root: ['cassava','sweet potato','kamote','ube','yam','ube-yam','gabi','arrowroot','ginger'],
+  };
+  let activeMapCategory = 'all';
 
-  function markerColor(p) {
-    if (colorMode === 'status') return getStatusColor(p.crop_status);
-    if (colorMode === 'value') {
-      return p.value_category === 'high' ? '#16a34a' : p.value_category === 'medium' ? '#d97706' : '#6b7280';
-    }
-    if (colorMode === 'damage') {
-      return p.max_damage >= 75 ? '#dc2626' : p.max_damage >= 40 ? '#f59e0b' : '#16a34a';
-    }
-    return getCropColor(p.crop_type);
+  function daysSince(dateValue) {
+    if (!dateValue) return Infinity;
+    const d = new Date(dateValue);
+    if (Number.isNaN(d.getTime())) return Infinity;
+    return (Date.now() - d.getTime()) / 86400000;
   }
 
-  function createIcon(p) {
+  function listingStatus(p) {
+    const status = String(p.crop_status || '').toLowerCase();
+    if (p.max_damage >= 75 || status.includes('damaged') || status.includes('unavailable')) {
+      return { key: 'unavailable', label: 'Unavailable', color: AVAILABILITY_COLORS.unavailable };
+    }
+    if (daysSince(p.report_date) <= 14) {
+      return { key: 'recent', label: 'Recently updated', color: AVAILABILITY_COLORS.recent };
+    }
+    if (p.max_damage >= 40 || Number(p.estimate_harvest || 0) > 0 && Number(p.estimate_harvest || 0) <= 100) {
+      return { key: 'low', label: 'Low stock', color: AVAILABILITY_COLORS.low };
+    }
+    return { key: 'available', label: 'Available', color: AVAILABILITY_COLORS.available };
+  }
+
+  function markerColor(p) {
+    return listingStatus(p).color;
+  }
+
+  function cropSearchText(p) {
+    return `${p.crop_type || ''} ${p.crop_commodity || ''}`.toLowerCase();
+  }
+
+  function cropCategory(p) {
+    const text = cropSearchText(p);
+    for (const [category, labels] of Object.entries(CROP_CATEGORIES)) {
+      if (labels.some(label => text.includes(label))) return category;
+    }
+    return 'other';
+  }
+
+  function createIcon(p, size = 'compact') {
     const c = markerColor(p);
     const cropLabel = p.crop_type || p.crop_commodity || 'Crop';
     if (window.SCAIMSCropIcons && typeof window.SCAIMSCropIcons.createLeafletIcon === 'function') {
       const cropIcon = window.SCAIMSCropIcons.createLeafletIcon(cropLabel, {
         color: c,
-        label: cap(cropLabel)
+        label: cap(cropLabel),
+        className: size === 'compact' ? 'scaims-crop-marker-icon scaims-crop-marker-icon--compact' : 'scaims-crop-marker-icon',
+        iconSize: size === 'compact' ? [28, 32] : [40, 46],
+        iconAnchor: size === 'compact' ? [14, 30] : [20, 43],
+        popupAnchor: size === 'compact' ? [0, -28] : [0, -38]
       });
       if (cropIcon) return cropIcon;
     }
@@ -388,20 +531,158 @@
     return L.divIcon({
       className:'',
       html:`<div class="crop-dot" style="background:${c};"></div>`,
-      iconSize:[14,14],iconAnchor:[7,7],popupAnchor:[0,-10],
+      iconSize:[9,9],iconAnchor:[4,4],popupAnchor:[0,-9],
+    });
+  }
+
+  function createClusterIcon(cluster) {
+    const count = cluster.getChildCount();
+    const label = count === 1 ? 'listing' : 'listings';
+    const width = count >= 100 ? 70 : count >= 10 ? 62 : 54;
+    return L.divIcon({
+      className: 'crop-cluster-icon',
+      html: `<div class="crop-cluster"><strong>${count}</strong><span>${label}</span></div>`,
+      iconSize: [width, 36],
+      iconAnchor: [width / 2, 18]
+    });
+  }
+
+  function createGroupIcon(count, color) {
+    const width = count >= 100 ? 64 : count >= 10 ? 54 : 46;
+    return L.divIcon({
+      className: 'crop-group-marker',
+      html: `<div class="crop-group" style="--group-color:${color};"><span class="crop-group-dot"></span>${count}</div>`,
+      iconSize: [width, 30],
+      iconAnchor: [width / 2, 15]
     });
   }
 
   /* ════ MAP SETUP ════ */
-  const map = L.map('map',{center:[13.9411,121.1631],zoom:13,zoomControl:false});
+  const LIPA_CENTER = [13.9411, 121.1622];
+  const LIPA_FALLBACK_BOUNDS = L.latLngBounds([13.86, 121.04], [14.04, 121.31]);
+  const LIPA_FALLBACK_POLYGON = [
+    [14.020, 121.090],
+    [14.035, 121.175],
+    [14.005, 121.265],
+    [13.955, 121.305],
+    [13.885, 121.265],
+    [13.865, 121.175],
+    [13.895, 121.075],
+    [13.960, 121.050],
+  ];
+  const LIPA_BOUNDARY_URL = 'https://nominatim.openstreetmap.org/search?' + new URLSearchParams({
+    format: 'geojson',
+    polygon_geojson: '1',
+    limit: '1',
+    countrycodes: 'ph',
+    q: 'Lipa City, Batangas, Philippines'
+  }).toString();
+
+  const map = L.map('map',{
+    center: LIPA_CENTER,
+    zoom: 13,
+    zoomControl: false,
+    minZoom: 11,
+    maxBounds: LIPA_FALLBACK_BOUNDS,
+    maxBoundsViscosity: 1.0,
+    worldCopyJump: false
+  });
   L.control.zoom({position:'bottomright'}).addTo(map);
+  map.createPane('lipaMaskPane');
+  map.getPane('lipaMaskPane').style.zIndex = 360;
+  map.getPane('lipaMaskPane').style.pointerEvents = 'none';
+  map.createPane('lipaBoundaryPane');
+  map.getPane('lipaBoundaryPane').style.zIndex = 370;
+  map.getPane('lipaBoundaryPane').style.pointerEvents = 'none';
 
   const tileLayers = {
-    street: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}),
+    street: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',maxZoom:19}),
     satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19}),
   };
   tileLayers.street.addTo(map);
   let activeLayer = 'street';
+
+  const worldMaskRing = [
+    [-90, -180], [-90, 180], [90, 180], [90, -180]
+  ];
+  let lipaBoundaryLayer = null;
+  let lipaMaskLayer = null;
+
+  function geometryToLatLngRings(geometry) {
+    if (!geometry) return [];
+    if (geometry.type === 'Polygon') {
+      return geometry.coordinates
+        .map(ring => ring.map(([lng, lat]) => [lat, lng]))
+        .filter(ring => ring.length);
+    }
+    if (geometry.type === 'MultiPolygon') {
+      return geometry.coordinates
+        .map(poly => poly[0])
+        .filter(Boolean)
+        .map(ring => ring.map(([lng, lat]) => [lat, lng]))
+        .filter(ring => ring.length);
+    }
+    return [];
+  }
+
+  function applyLipaBoundaryMask(geometry, fitToBoundary = true) {
+    const rings = geometryToLatLngRings(geometry);
+    const cityRings = rings.length ? rings : [LIPA_FALLBACK_POLYGON];
+    const boundaryGeoJson = rings.length ? {
+      type: 'Feature',
+      properties: {},
+      geometry
+    } : {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Polygon',
+        coordinates: [LIPA_FALLBACK_POLYGON.map(([lat, lng]) => [lng, lat])]
+      }
+    };
+
+    if (lipaMaskLayer) map.removeLayer(lipaMaskLayer);
+    if (lipaBoundaryLayer) map.removeLayer(lipaBoundaryLayer);
+
+    lipaMaskLayer = L.polygon([worldMaskRing, ...cityRings], {
+      pane: 'lipaMaskPane',
+      className: 'lipa-outside-mask',
+      interactive: false,
+      fillRule: 'evenodd'
+    }).addTo(map);
+
+    lipaBoundaryLayer = L.geoJSON(boundaryGeoJson, {
+      pane: 'lipaBoundaryPane',
+      interactive: false,
+      style: {
+        color: '#3b4918',
+        weight: 2.5,
+        opacity: 0.9,
+        fillOpacity: 0,
+        className: 'lipa-boundary-line'
+      }
+    }).addTo(map);
+
+    const boundaryBounds = lipaBoundaryLayer.getBounds();
+    if (boundaryBounds.isValid()) {
+      map.setMaxBounds(boundaryBounds.pad(0.18));
+      if (fitToBoundary) map.fitBounds(boundaryBounds, { padding: [28, 28], maxZoom: 13 });
+    }
+  }
+
+  async function loadLipaBoundary() {
+    try {
+      const res = await fetch(LIPA_BOUNDARY_URL, { headers: { 'Accept': 'application/geo+json, application/json' } });
+      if (!res.ok) throw new Error(`Boundary request failed (${res.status})`);
+      const data = await res.json();
+      const feature = (data.features || []).find(item => item.geometry && (item.geometry.type === 'Polygon' || item.geometry.type === 'MultiPolygon'));
+      if (!feature) throw new Error('No Lipa boundary polygon returned');
+      applyLipaBoundaryMask(feature.geometry, !focusParams);
+    } catch (err) {
+      console.warn('Using fallback Lipa boundary mask:', err);
+      applyLipaBoundaryMask(null, !focusParams);
+    }
+  }
 
   function setLayer(name) {
     map.removeLayer(tileLayers[activeLayer]);
@@ -416,8 +697,29 @@
     btn.classList.remove('border-olive/20','text-olive');
   }
 
-  let clusterGroup = L.markerClusterGroup({maxClusterRadius:40,spiderfyOnMaxZoom:true,showCoverageOnHover:false});
+  let clusterGroup = L.markerClusterGroup({
+    maxClusterRadius: function (zoom) { return zoom < 13 ? 72 : 46; },
+    disableClusteringAtZoom: 16,
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    iconCreateFunction: createClusterIcon
+  });
   map.addLayer(clusterGroup);
+  clusterGroup.on('clusterclick', event => {
+    const childFeatures = event.layer.getAllChildMarkers()
+      .flatMap(marker => marker._features || [])
+      .filter(Boolean);
+    if (childFeatures.length) {
+      openGroupSheet({
+        type: 'cluster',
+        title: `${childFeatures.length} crop listings`,
+        subtitle: 'Grouped map cluster',
+        features: childFeatures,
+        center: [event.latlng.lat, event.latlng.lng]
+      });
+    }
+  });
   let externalFocusMarker = null;
 
   const focusParams = (() => {
@@ -439,6 +741,10 @@
   /* ════ DATA STATE ════ */
   let allFeatures = [], meta = {};
   const API_URL = 'get_crop_reports.php';
+
+  map.on('zoomend', () => {
+    renderMarkers(currentFeatures());
+  });
 
   async function loadData() {
     try {
@@ -497,57 +803,26 @@
     const list = document.getElementById('resultList');
     list.innerHTML = '';
     document.getElementById('resultCount').textContent = `(${features.length})`;
+    updateZoomHint(features.length);
 
     if (!features.length) {
       list.innerHTML = '<p class="text-xs text-olive/40 italic">No results.</p>';
+      closeDetailsSheet();
       return;
     }
 
-    features.forEach(f => {
+    const displayItems = featuresForZoom(features);
+    displayItems.forEach(item => {
+      const marker = markerForDisplayItem(item);
+      clusterGroup.addLayer(marker);
+    });
+
+    features.slice(0, 80).forEach(f => {
       const p   = f.properties;
       const lat = f.geometry.coordinates[1];
       const lng = f.geometry.coordinates[0];
       const c   = markerColor(p);
-
-      const marker = L.marker([lat,lng],{icon:createIcon(p)});
-
-      /* ── Popup ── */
-      const dmgBadge = p.max_damage >= 75 ? `<span class="dmg-badge dmg-high">${p.max_damage}%</span>`
-                     : p.max_damage >= 40 ? `<span class="dmg-badge dmg-med">${p.max_damage}%</span>`
-                     : p.max_damage >  0  ? `<span class="dmg-badge dmg-low">${p.max_damage}%</span>`
-                     : '<span style="color:rgba(59,73,24,.4);font-size:11px;">—</span>';
-
-      const valLabel = p.value_category === 'high' ? '<span class="val-high">High</span>'
-                     : p.value_category === 'medium' ? '<span class="val-med">Medium</span>'
-                     : '<span class="val-low">Low</span>';
-
-      marker.bindPopup(`
-        <div style="min-width:250px;font-family:Inter,sans-serif;">
-          <div style="background:${c};padding:12px 16px 10px;">
-            <div style="font-weight:700;font-size:15px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);">
-              ${cap(p.crop_commodity || p.crop_type || 'Unknown')}
-            </div>
-            <div style="font-size:11px;color:rgba(255,255,255,.78);margin-top:2px;">
-              ${p.crop_variety ? cap(p.crop_variety)+' · ' : ''}${p.location || 'Lipa City'}
-            </div>
-          </div>
-          <div style="padding:12px 16px;background:#fff;font-size:12px;">
-            ${pr('👤 Farmer',     p.farmer_name)}
-            ${pr('🌿 Crop Type',  cap(p.crop_type))}
-            ${pr('🌱 Planted',    fd(p.date_planted))}
-            ${pr('🌾 Harvest',    fd(p.harvest_date))}
-            ${pr('📊 Status',     cap(p.crop_status))}
-            ${pr('📦 Est. Yield', p.estimate_harvest ? p.estimate_harvest+' kg' : null)}
-            ${pr('🌳 Trees',      p.number_of_trees)}
-            ${pr('💰 Farm Gate',  p.farm_gate_price ? '₱'+parseFloat(p.farm_gate_price).toFixed(2)+'/kg' : null)}
-            ${pr('📈 Value',      valLabel,true)}
-            ${pr('⚠️ Damage',     dmgBadge,true)}
-            ${pr('📅 Reported',   fd(p.report_date))}
-          </div>
-        </div>
-      `,{maxWidth:310,className:''});
-
-      clusterGroup.addLayer(marker);
+      const status = listingStatus(p);
 
       /* Result list row */
       const item = document.createElement('div');
@@ -556,13 +831,99 @@
         <div class="swatch" style="background:${c};"></div>
         <div style="flex:1;min-width:0;">
           <div style="font-size:11px;font-weight:700;color:#3b4918;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cap(p.crop_commodity||p.crop_type||'Unknown')}</div>
-          <div style="font-size:10px;color:rgba(59,73,24,.50);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.location||'—'} · ${cap(p.crop_status)||'—'}</div>
+          <div style="font-size:10px;color:rgba(59,73,24,.50);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.location||'—'} · ${status.label}</div>
         </div>
         ${p.max_damage>0?`<span class="dmg-badge ${p.max_damage>=75?'dmg-high':p.max_damage>=40?'dmg-med':'dmg-low'}">${p.max_damage}%</span>`:''}
       `;
-      item.addEventListener('click',()=>{map.setView([lat,lng],17);marker.openPopup();});
+      item.addEventListener('click',()=>{map.setView([lat,lng],17);openListingSheet(f);});
       list.appendChild(item);
     });
+    if (features.length > 80) {
+      const more = document.createElement('p');
+      more.className = 'text-xs text-olive/40 italic px-1';
+      more.textContent = `Showing first 80 of ${features.length} results. Use filters or zoom in.`;
+      list.appendChild(more);
+    }
+  }
+
+  function currentZoomMode() {
+    const z = map.getZoom();
+    if (z < 13) return 'area';
+    if (z < 16) return 'farm';
+    return 'listing';
+  }
+
+  function updateZoomHint(count) {
+    const hint = document.getElementById('zoomHint');
+    const mode = currentZoomMode();
+    const label = mode === 'area'
+      ? 'Area clusters · zoom in for farms'
+      : mode === 'farm'
+        ? 'Farm groups · zoom in for crop listings'
+        : 'Crop listings · tap for details';
+    hint.textContent = `${label} · ${count} result${count === 1 ? '' : 's'}`;
+  }
+
+  function featuresForZoom(features) {
+    const mode = currentZoomMode();
+    if (mode === 'listing') return features.map(feature => ({ type: 'listing', feature, features: [feature] }));
+
+    const groups = new Map();
+    features.forEach(feature => {
+      const p = feature.properties;
+      const key = mode === 'area'
+        ? (p.location || p.farmer_barangay || 'Lipa City')
+        : `${p.farmer_id || p.farmer_name || 'farm'}|${p.location || p.farmer_barangay || 'Lipa City'}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(feature);
+    });
+
+    return [...groups.entries()].map(([key, groupFeatures]) => {
+      const lat = avg(groupFeatures.map(f => f.geometry.coordinates[1]), LIPA_CENTER[0]);
+      const lng = avg(groupFeatures.map(f => f.geometry.coordinates[0]), LIPA_CENTER[1]);
+      const first = groupFeatures[0].properties;
+      return {
+        type: mode,
+        key,
+        features: groupFeatures,
+        center: [lat, lng],
+        title: mode === 'area' ? (first.location || first.farmer_barangay || 'Lipa City') : (first.farmer_name || 'Farm'),
+        subtitle: mode === 'area' ? 'Area crop listings' : (first.location || first.farmer_barangay || 'Lipa City')
+      };
+    });
+  }
+
+  function markerForDisplayItem(item) {
+    if (item.type === 'listing') {
+      const f = item.feature;
+      const p = f.properties;
+      const lat = f.geometry.coordinates[1];
+      const lng = f.geometry.coordinates[0];
+      const marker = L.marker([lat,lng],{icon:createIcon(p, 'compact')});
+      marker._features = [f];
+      marker.on('click', () => openListingSheet(f));
+      return marker;
+    }
+
+    const dominant = dominantStatus(item.features);
+    const marker = L.marker(item.center, { icon: createGroupIcon(item.features.length, dominant.color) });
+    marker._features = item.features;
+    marker.on('click', () => {
+      if (map.getZoom() < 16) map.setView(item.center, Math.min(map.getZoom() + 2, 16));
+      openGroupSheet(item);
+    });
+    return marker;
+  }
+
+  function dominantStatus(features) {
+    const priority = ['unavailable','low','recent','available'];
+    const statuses = features.map(f => listingStatus(f.properties));
+    return priority.map(key => statuses.find(s => s.key === key)).find(Boolean) || statuses[0] || { color: AVAILABILITY_COLORS.available, label: 'Available' };
+  }
+
+  function avg(values, fallback) {
+    const nums = values.filter(Number.isFinite);
+    return nums.length ? nums.reduce((sum, n) => sum + n, 0) / nums.length : fallback;
   }
 
   function showFocusedReport() {
@@ -574,70 +935,41 @@
       crop_type: focusParams.crop || focusParams.commodity || 'Selected Crop',
       crop_status: 'Focused Report',
       value_category: 'medium',
-      max_damage: 0
+      max_damage: 0,
+      estimate_harvest: null,
+      farm_gate_price: null,
+      report_date: null,
+      farmer_name: 'Selected Report',
+      location: focusParams.location
     };
 
-    externalFocusMarker = L.marker([focusParams.lat, focusParams.lng], { icon: createIcon(markerData) }).addTo(map);
-    externalFocusMarker.bindPopup(`
-      <div style="min-width:250px;font-family:Inter,sans-serif;">
-        <div style="background:${markerColor(markerData)};padding:12px 16px 10px;">
-          <div style="font-weight:700;font-size:15px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);">
-            ${cap(focusParams.commodity || focusParams.crop || 'Selected Crop')}
-          </div>
-          <div style="font-size:11px;color:rgba(255,255,255,.78);margin-top:2px;">
-            ${focusParams.location || 'Selected Report'}
-          </div>
-        </div>
-        <div style="padding:12px 16px;background:#fff;font-size:12px;">
-          ${pr('📍 Location', focusParams.location)}
-          ${pr('🌿 Crop Type', cap(focusParams.crop))}
-          ${pr('🧭 Coordinates', `${focusParams.lat.toFixed(7)}, ${focusParams.lng.toFixed(7)}`)}
-        </div>
-      </div>
-    `).openPopup();
+    const feature = {
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [focusParams.lng, focusParams.lat] },
+      properties: markerData
+    };
 
+    externalFocusMarker = L.marker([focusParams.lat, focusParams.lng], { icon: createIcon(markerData, 'compact') }).addTo(map);
+    externalFocusMarker.on('click', () => openListingSheet(feature));
     map.setView([focusParams.lat, focusParams.lng], 17);
+    openListingSheet(feature);
   }
 
   function buildLegend() {
     const leg = document.getElementById('legend');
     leg.innerHTML = '';
 
-    /* Color mode switcher */
-    const modes = [['type','By Crop'],['status','By Stage'],['value','By Value'],['damage','By Damage']];
-    const modeRow = document.createElement('div');
-    modeRow.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;';
-    modes.forEach(([m,label])=>{
-      const b = document.createElement('button');
-      b.className = 'chip' + (m===colorMode?' active':'');
-      b.textContent = label; b.dataset.mode = m;
-      b.onclick = () => {
-        colorMode = m;
-        document.querySelectorAll('[data-mode]').forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        renderMarkers(currentFeatures());
-        buildLegend();
-      };
-      modeRow.appendChild(b);
-    });
-    leg.appendChild(modeRow);
+    const note = document.createElement('p');
+    note.className = 'text-xs text-olive/45 mb-2';
+    note.textContent = 'Icons show crop type. Color shows listing status.';
+    leg.appendChild(note);
 
-    /* Legend swatches */
-    const items = [];
-    if (colorMode === 'type') {
-      [...new Set(allFeatures.map(f=>f.properties.crop_type).filter(Boolean))].sort().forEach(ct=>{
-        items.push([getCropColor(ct), cap(ct)]);
-      });
-    } else if (colorMode === 'status') {
-      [...new Set(allFeatures.map(f=>f.properties.crop_status).filter(Boolean))].sort().forEach(s=>{
-        items.push([getStatusColor(s), cap(s)]);
-      });
-    } else if (colorMode === 'value') {
-      items.push(['#16a34a','High value (>₱80/kg)'],['#d97706','Medium (₱30–80/kg)'],['#6b7280','Low (<₱30/kg)']);
-    } else {
-      items.push(['#dc2626','Severe (≥75%)'],['#f59e0b','Moderate (40–75%)'],['#16a34a','Low / None (<40%)']);
-    }
-
+    const items = [
+      [AVAILABILITY_COLORS.available, 'Available'],
+      [AVAILABILITY_COLORS.low, 'Low stock'],
+      [AVAILABILITY_COLORS.unavailable, 'Unavailable / damaged'],
+      [AVAILABILITY_COLORS.recent, 'Recently updated']
+    ];
     items.forEach(([color,label])=>{
       const row = document.createElement('div');
       row.style.cssText = 'display:flex;align-items:center;gap:8px;';
@@ -651,9 +983,108 @@
     document.getElementById('statCrops').textContent = new Set(features.map(f=>f.properties.crop_type).filter(Boolean)).size;
   }
 
+  function openListingSheet(feature) {
+    const p = feature.properties;
+    const lat = feature.geometry.coordinates[1];
+    const lng = feature.geometry.coordinates[0];
+    if (!userLatLng) requestUserLocation();
+    const status = listingStatus(p);
+    const cropName = cap(p.crop_commodity || p.crop_type || 'Crop listing');
+    const price = p.farm_gate_price ? `₱${parseFloat(p.farm_gate_price).toFixed(2)}/kg` : 'Not listed';
+    const quantity = p.estimate_harvest ? `${Number(p.estimate_harvest).toLocaleString()} kg` : 'Not listed';
+    const distance = userLatLng ? `${distanceKm(userLatLng[0], userLatLng[1], lat, lng).toFixed(1)} km away` : 'Enable location';
+    const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${lat},${lng}`)}`;
+    const contactValue = p.contact || p.phone || p.mobile || p.email || '';
+    const contactUrl = contactValue
+      ? (String(contactValue).includes('@') ? `mailto:${contactValue}` : `tel:${contactValue}`)
+      : '';
+
+    document.getElementById('sheetTitle').textContent = cropName;
+    document.getElementById('sheetSubtitle').textContent = `${p.farmer_name || 'Farm'} · ${p.location || 'Lipa City'}`;
+    document.getElementById('sheetBody').innerHTML = `
+      <div class="sheet-status" style="--status-color:${status.color};">${status.label}</div>
+      <div class="sheet-metrics" style="margin-top:10px;">
+        ${sheetMetric('Quantity', quantity)}
+        ${sheetMetric('Price', price)}
+        ${sheetMetric('Distance', distance)}
+        ${sheetMetric('Updated', fd(p.report_date))}
+      </div>
+      <div class="sheet-metrics">
+        ${sheetMetric('Crop Type', cap(p.crop_type) || 'Not listed')}
+        ${sheetMetric('Harvest', fd(p.harvest_date))}
+      </div>
+      <div class="sheet-actions">
+        <a class="sheet-action primary ${contactUrl ? '' : 'disabled'}" ${contactUrl ? `href="${esc(contactUrl)}"` : ''}>Contact</a>
+        <a class="sheet-action secondary" href="${esc(navUrl)}" target="_blank" rel="noopener">Navigate</a>
+      </div>
+    `;
+    openDetailsSheet();
+  }
+
+  function openGroupSheet(item) {
+    document.getElementById('sheetTitle').textContent = item.title;
+    document.getElementById('sheetSubtitle').textContent = `${item.features.length} crop listing${item.features.length === 1 ? '' : 's'} · ${item.subtitle}`;
+    document.getElementById('sheetBody').innerHTML = `
+      <div class="sheet-list">
+        ${item.features.slice(0, 30).map(feature => {
+          const p = feature.properties;
+          const status = listingStatus(p);
+          const crop = cap(p.crop_commodity || p.crop_type || 'Crop');
+          const quantity = p.estimate_harvest ? `${Number(p.estimate_harvest).toLocaleString()} kg` : 'Qty not listed';
+          return `
+            <div class="sheet-list-item" data-feature-id="${esc(p.id)}">
+              <div class="swatch" style="background:${status.color};"></div>
+              <div style="min-width:0;flex:1;">
+                <div style="font-size:12px;font-weight:800;color:#3b4918;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(crop)}</div>
+                <div style="font-size:11px;color:rgba(59,73,24,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(p.farmer_name || 'Farm')} · ${esc(quantity)}</div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      ${item.features.length > 30 ? `<p class="text-xs text-olive/40 italic mt-2">Showing first 30 listings. Zoom in or filter to narrow results.</p>` : ''}
+    `;
+
+    document.querySelectorAll('#sheetBody [data-feature-id]').forEach(row => {
+      row.addEventListener('click', () => {
+        const feature = item.features.find(f => String(f.properties.id) === row.dataset.featureId);
+        if (!feature) return;
+        const lat = feature.geometry.coordinates[1];
+        const lng = feature.geometry.coordinates[0];
+        map.setView([lat, lng], 17);
+        openListingSheet(feature);
+      });
+    });
+    openDetailsSheet();
+  }
+
+  function sheetMetric(label, value) {
+    return `<div class="sheet-metric"><span>${esc(label)}</span><strong>${esc(value || '—')}</strong></div>`;
+  }
+
+  function openDetailsSheet() {
+    document.getElementById('detailsScrim').classList.add('open');
+    document.getElementById('mapDetailsSheet').classList.add('open');
+  }
+
+  function closeDetailsSheet() {
+    document.getElementById('detailsScrim').classList.remove('open');
+    document.getElementById('mapDetailsSheet').classList.remove('open');
+  }
+
   /* ════ ACTIVE FILTER STATE ════ */
   let activeValueCat = '';
   let activeDamageHas = '';
+  let userLatLng = null;
+
+  function requestUserLocation() {
+    if (!navigator.geolocation || userLatLng) return;
+    navigator.geolocation.getCurrentPosition(
+      pos => { userLatLng = [pos.coords.latitude, pos.coords.longitude]; },
+      () => {},
+      { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }
+    );
+  }
 
   /* Generic chip group — only one active at a time */
   function setChip(groupId, el, cls) {
@@ -678,6 +1109,7 @@
 
     return allFeatures.filter(f => {
       const p = f.properties;
+      if (activeMapCategory !== 'all' && cropCategory(p) !== activeMapCategory) return false;
       if (ct  && p.crop_type      !== ct)  return false;
       if (com && p.crop_commodity !== com) return false;
       if (loc && p.location       !== loc) return false;
@@ -703,16 +1135,35 @@
   function clearAllFilters() {
     ['fCropType','fCommodity','fLocation','fCropStatus'].forEach(id=>document.getElementById(id).value='');
     ['fYieldMin','fYieldMax','fPriceMin','fPriceMax','fDamageMin'].forEach(id=>document.getElementById(id).value='');
-    activeValueCat = ''; activeDamageHas = '';
+    activeValueCat = ''; activeDamageHas = ''; activeMapCategory = 'all';
     document.querySelectorAll('.f-section .chip').forEach(c=>c.classList.remove('active','yes-active','no-active','damage-active'));
     document.querySelectorAll('.chip-group .chip:first-child').forEach(c=>c.classList.add('active'));
+    document.querySelectorAll('#mapFilterBar .map-chip').forEach(c=>c.classList.toggle('active', c.dataset.category === 'all'));
     renderMarkers(allFeatures);
     updateStats(allFeatures);
+  }
+
+  function setMapCategory(category) {
+    activeMapCategory = category;
+    document.querySelectorAll('#mapFilterBar .map-chip').forEach(c=>c.classList.toggle('active', c.dataset.category === category));
+    applyFilters();
   }
 
   /* ════ HELPERS ════ */
   function cap(str) { if(!str)return''; return str.charAt(0).toUpperCase()+str.slice(1); }
   function fd(d)    { if(!d)return'—'; return new Date(d).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'}); }
+  function esc(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, char => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[char]);
+  }
+  function distanceKm(lat1, lng1, lat2, lng2) {
+    const r = 6371;
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLng = (lng2 - lng1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+    return r * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
   function pr(label,value,raw=false) {
     const v = raw ? (value||'—') : (value||'—');
     return `<div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px;">
@@ -725,6 +1176,7 @@
   function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
 
   loadData();
+  loadLipaBoundary();
   </script>
 </body>
 </html>

@@ -25,7 +25,7 @@ try {
         FROM 
             INFORMATION_SCHEMA.COLUMNS
         WHERE 
-            TABLE_SCHEMA = 'apgorrs_db' AND 
+            TABLE_SCHEMA = '" . $conn->real_escape_string(SCAIMS_DB_NAME) . "' AND 
             TABLE_NAME IN ('farmer', 'user', 'farm_parcels', 'parcel_details')
     ";
     $collationResult = $conn->query($collationQuery);
