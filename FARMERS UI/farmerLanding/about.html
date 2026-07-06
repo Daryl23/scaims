@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APGORRS - About Us</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../../shared/app-path.js"></script>
+  <script src="../../shared/public-nav-config.js"></script>
+  <script src="../../shared/public-nav.js" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            olive: '#3b4918', 'olive-light': '#576f1b', 'olive-dark': '#2a3311',
+            harvest: '#f7931e', 'harvest-dark': '#d97b0d',
+            cream: '#fffcef', 'cream-dark': '#f5f5f0',
+            gold: '#c8bd44', 'gold-light': '#ccc14f',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #fffcef; }
+    ::-webkit-scrollbar-thumb { background: #3b4918; border-radius: 4px; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s cubic-bezier(0.25,0.46,0.45,0.94),
+                  transform 0.75s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* team card hover lift */
+    .team-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .team-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(59,73,24,0.12); }
+
+    /* section divider wave */
+    .wave-divider svg { display: block; }
+  </style>
+  <link rel="stylesheet" href="../../shared/public-nav.css">
+</head>
+<body class="font-sans bg-cream text-olive antialiased">
+
+  
+  <div data-public-navbar data-active-page="about"></div>
+
+  <!-- ══ HERO / SECTION 1 — Information Management ══ -->
+  <section class="relative min-h-[80vh] flex items-center pt-20 overflow-hidden bg-cream">
+    <!-- grid bg -->
+    <div class="absolute inset-0 opacity-20 pointer-events-none">
+      <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#c8bd44" stroke-width="0.5"/>
+        </pattern>
+        <rect width="100" height="100" fill="url(#grid)"/>
+      </svg>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 grid lg:grid-cols-2 gap-14 items-center">
+      <div class="reveal space-y-6">
+        <span class="inline-flex items-center gap-2 text-harvest font-bold tracking-wider uppercase text-sm">
+          <span class="w-8 h-0.5 bg-harvest"></span>
+          About APGORRS
+        </span>
+        <h1 class="text-4xl lg:text-5xl font-serif font-bold text-olive leading-tight">
+          Information Management<br>
+          <span class="text-gold-light italic">& Reporting System</span>
+        </h1>
+        <p class="text-lg text-olive/75 leading-relaxed max-w-lg">
+          APGORRS is a powerful system designed to help manage and report agricultural productivity data efficiently and effectively. Our goal is to support data-driven decision making in the agricultural sector.
+        </p>
+        <a href="../registration/rsbsa_check.html"
+          class="inline-flex items-center gap-2 bg-olive text-white px-8 py-4 rounded-lg font-semibold hover:bg-olive-light transition-all hover:shadow-xl hover:shadow-olive/20 hover:-translate-y-1 group">
+          Get Started
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="reveal flex items-center justify-center" style="transition-delay:0.15s">
+        <div class="relative w-full max-w-md">
+          <!-- decorative plate -->
+          <div class="absolute inset-0 bg-gradient-to-br from-gold/20 to-harvest/15 rounded-3xl rotate-3"></div>
+          <img src="assets/about us/section1.png" alt="Information Management"
+            class="relative rounded-2xl shadow-2xl w-full object-cover border border-gold/20">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 2 — About APGORRS ══ -->
+  <section class="py-24 bg-olive-dark text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.04]"
+      style="background-image:url('data:image/svg+xml,%3Csvg width=60 height=60 viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23fff\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/svg%3E')">
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+        <div class="reveal order-2 lg:order-1 flex items-center justify-center" style="transition-delay:0.1s">
+          <div class="relative w-full max-w-md">
+            <div class="absolute inset-0 bg-gradient-to-br from-harvest/20 to-gold/15 rounded-3xl -rotate-2"></div>
+            <img src="assets/about us/section2.png" alt="About APGORRS"
+              class="relative rounded-2xl shadow-2xl w-full object-cover border border-white/10">
+          </div>
+        </div>
+
+        <div class="reveal order-1 lg:order-2 space-y-6">
+          <span class="inline-flex items-center gap-2 text-gold-light font-bold tracking-wider uppercase text-sm">
+            <span class="w-8 h-0.5 bg-gold-light"></span>
+            Our Platform
+          </span>
+          <h2 class="text-4xl lg:text-5xl font-serif font-bold leading-tight">
+            About <span class="text-gold-light italic">APGORRS</span>
+          </h2>
+          <p class="text-white/80 text-lg leading-relaxed">
+            Agricultural Profile Gateway Online Registration and Reporting System (APGORRS) is a specialized platform developed for the monitoring and evaluation of agricultural productivity and output.
+          </p>
+          <p class="text-white/70 leading-relaxed">
+            It allows for seamless reporting, data collection, and insightful analytics to enhance agricultural performance across Lipa City, Batangas.
+          </p>
+
+          <!-- Feature bullets -->
+          <ul class="space-y-3 pt-2">
+            <li class="flex items-center gap-3 group">
+              <div class="w-9 h-9 bg-harvest/20 rounded-full flex items-center justify-center text-harvest group-hover:bg-harvest group-hover:text-white transition-colors shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <span>Seamless farm registration &amp; profile management</span>
+            </li>
+            <li class="flex items-center gap-3 group">
+              <div class="w-9 h-9 bg-harvest/20 rounded-full flex items-center justify-center text-harvest group-hover:bg-harvest group-hover:text-white transition-colors shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <span>Real-time agricultural data reporting</span>
+            </li>
+            <li class="flex items-center gap-3 group">
+              <div class="w-9 h-9 bg-harvest/20 rounded-full flex items-center justify-center text-harvest group-hover:bg-harvest group-hover:text-white transition-colors shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <span>Insightful analytics for better decision-making</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 3 — Meet the Team ══ -->
+  <section class="py-24 bg-white relative overflow-hidden">
+    <!-- subtle bg accent -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-harvest/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="text-center mb-16 reveal">
+        <span class="text-harvest font-bold tracking-wider uppercase text-sm">The People Behind It</span>
+        <h2 class="text-4xl lg:text-5xl font-serif font-bold text-olive mt-3 mb-4">Meet the Team</h2>
+        <p class="text-lg text-olive/60 max-w-xl mx-auto">Dedicated professionals building smart agricultural tools for Filipino farmers.</p>
+      </div>
+
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+
+        <!-- Team Member 1 -->
+        <div class="team-card reveal bg-cream rounded-2xl p-6 text-center border border-gold/20 shadow-sm" style="transition-delay:0.05s">
+          <div class="relative mx-auto w-24 h-24 mb-5">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-olive to-olive-light opacity-20"></div>
+            <img src="assets/about us/coronel.jpeg" alt="Marielle Coronel"
+              class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md relative z-10">
+          </div>
+          <h3 class="font-bold text-olive text-lg leading-tight">Marielle Coronel</h3>
+          <span class="inline-block mt-2 px-3 py-1 bg-olive/10 text-olive text-xs font-semibold rounded-full">Project Leader</span>
+        </div>
+
+        <!-- Team Member 2 -->
+        <div class="team-card reveal bg-cream rounded-2xl p-6 text-center border border-gold/20 shadow-sm" style="transition-delay:0.12s">
+          <div class="relative mx-auto w-24 h-24 mb-5">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-harvest to-harvest-dark opacity-20"></div>
+            <img src="assets/about us/custodio.png" alt="Juliana Beatriz Custodio"
+              class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md relative z-10">
+          </div>
+          <h3 class="font-bold text-olive text-lg leading-tight">Juliana Beatriz Custodio</h3>
+          <span class="inline-block mt-2 px-3 py-1 bg-harvest/10 text-harvest text-xs font-semibold rounded-full">UI Designer</span>
+        </div>
+
+        <!-- Team Member 3 -->
+        <div class="team-card reveal bg-cream rounded-2xl p-6 text-center border border-gold/20 shadow-sm" style="transition-delay:0.19s">
+          <div class="relative mx-auto w-24 h-24 mb-5">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gold to-gold-light opacity-20"></div>
+            <img src="assets/about us/lansangan.png" alt="Janine Lansangan"
+              class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md relative z-10">
+          </div>
+          <h3 class="font-bold text-olive text-lg leading-tight">Janine Lansangan</h3>
+          <span class="inline-block mt-2 px-3 py-1 bg-gold/20 text-olive text-xs font-semibold rounded-full">Lead Developer</span>
+        </div>
+
+        <!-- Team Member 4 -->
+        <div class="team-card reveal bg-cream rounded-2xl p-6 text-center border border-gold/20 shadow-sm" style="transition-delay:0.26s">
+          <div class="relative mx-auto w-24 h-24 mb-5">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-olive-light to-olive opacity-20"></div>
+            <img src="assets/about us/sanpablo.jpg" alt="Yukari San Pablo"
+              class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md relative z-10">
+          </div>
+          <h3 class="font-bold text-olive text-lg leading-tight">Yukari San Pablo</h3>
+          <span class="inline-block mt-2 px-3 py-1 bg-olive/10 text-olive text-xs font-semibold rounded-full">SysAdmin</span>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="bg-olive-dark text-white py-16 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-12 mb-12">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+            </div>
+            <div>
+              <span class="text-2xl font-bold block">APGORRS</span>
+              <span class="text-xs text-white/60">Agricultural Profile Gateway</span>
+            </div>
+          </div>
+          <p class="text-white/60 max-w-sm mb-6 leading-relaxed">Agricultural Profile Gateway Online Registration and Reporting System for Lipa City farmers.</p>
+          <div class="flex gap-3">
+            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1">FB</a>
+            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1">IG</a>
+            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1">TW</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4 text-gold-light">Quick Links</h4>
+          <ul class="space-y-3 text-white/60">
+            <li><a href="about.html" class="hover:text-white hover:pl-2 transition-all">About Us</a></li>
+            <li><a href="faq.html" class="hover:text-white hover:pl-2 transition-all">FAQ</a></li>
+            <li><a href="contact.html" class="hover:text-white hover:pl-2 transition-all">Contact</a></li>
+            <li><a href="../registration/rsbsa_check.html" class="hover:text-white hover:pl-2 transition-all">Register</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4 text-gold-light">Contact</h4>
+          <ul class="space-y-3 text-white/60">
+            <li class="flex items-start gap-2"><span>📍</span><span>Lipa City, Batangas</span></li>
+            <li class="flex items-center gap-2"><span>✉️</span><span>agriculture@lipa.gov.ph</span></li>
+            <li class="flex items-center gap-2"><span>📞</span><span>+63 (043) 123-4567</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-white/40 text-sm">© 2024 APGORRS. All rights reserved.</p>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-white/40 hover:text-white text-sm flex items-center gap-2 transition-colors group">
+          Back to Top <span class="group-hover:-translate-y-1 transition-transform">↑</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Navbar scroll shadow ── */
+    /* ── Scroll reveal ── */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

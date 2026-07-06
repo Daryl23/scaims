@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APGORRS - Crop Map</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../../shared/app-path.js"></script>
+  <script src="../../shared/public-nav-config.js"></script>
+  <script src="../../shared/public-nav.js" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            olive:'#3b4918','olive-light':'#576f1b','olive-dark':'#2a3311',
+            harvest:'#f7931e','harvest-dark':'#d97b0d',
+            cream:'#fffcef',gold:'#c8bd44','gold-light':'#ccc14f',
+          },
+          fontFamily: { sans:['Inter','system-ui','sans-serif'], serif:['Playfair Display','Georgia','serif'] }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html,body{height:100%;margin:0;}
+    ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:#fffcef;}::-webkit-scrollbar-thumb{background:#3b4918;border-radius:4px;}
+
+    #map{width:100%;height:100%;z-index:1;}
+
+    /* Sidebar */
+    #sidebar{width:300px;min-width:300px;overflow-y:auto;background:#fffcef;border-right:1px solid rgba(200,189,68,.28);z-index:2;display:flex;flex-direction:column;}
+    @media(max-width:768px){
+      #sidebar{position:absolute;left:0;top:80px;bottom:0;transform:translateX(-100%);width:290px;border-right:none;box-shadow:4px 0 20px rgba(59,73,24,.15);z-index:300;}
+      #sidebar.open{transform:translateX(0);}
+    }
+
+    /* Leaflet popup */
+    .leaflet-popup-content-wrapper{border-radius:14px!important;box-shadow:0 8px 30px rgba(59,73,24,.18)!important;border:1px solid rgba(200,189,68,.22)!important;padding:0!important;overflow:hidden;}
+    .leaflet-popup-content{margin:0!important;width:auto!important;}
+    .leaflet-popup-tip-container{display:none;}
+    .leaflet-popup-close-button{color:#3b4918!important;font-size:18px!important;top:8px!important;right:10px!important;}
+
+    /* Marker dots */
+    .crop-dot{width:14px;height:14px;border-radius:50%;border:3px solid rgba(255,255,255,.88);box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;transition:transform .15s ease;}
+    .crop-dot:hover{transform:scale(1.5);}
+
+    /* Clusters */
+    .marker-cluster-small div,.marker-cluster-medium div,.marker-cluster-large div{color:#fffcef;font-weight:700;font-family:Inter,sans-serif;}
+    .marker-cluster-small  div{background-color:rgba(59,73,24,.82);}
+    .marker-cluster-medium div{background-color:rgba(87,111,27,.88);}
+    .marker-cluster-large  div{background-color:rgba(42,51,17,.94);}
+
+    /* Filter controls */
+    .f-select,.f-input{
+      width:100%;padding:9px 13px;border-radius:9px;
+      border:1.5px solid rgba(59,73,24,.15);
+      background:#fff;color:#3b4918;font-family:inherit;font-size:.82rem;
+      outline:none;transition:border-color .2s,box-shadow .2s;
+    }
+    .f-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%233b4918' stroke-width='2.5'%3E%3Cpath d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:30px;}
+    .f-select:focus,.f-input:focus{border-color:#f7931e;box-shadow:0 0 0 3px rgba(247,147,30,.10);}
+
+    /* Range slider */
+    .range-row{display:flex;align-items:center;gap:6px;}
+    .range-row input[type=number]{width:72px;padding:6px 8px;border-radius:7px;border:1.5px solid rgba(59,73,24,.15);font-size:.78rem;color:#3b4918;outline:none;background:#fff;}
+    .range-row input[type=number]:focus{border-color:#f7931e;}
+    .range-sep{color:rgba(59,73,24,.35);font-size:.75rem;flex-shrink:0;}
+
+    /* Toggle chips */
+    .chip-group{display:flex;gap:5px;flex-wrap:wrap;}
+    .chip{padding:5px 11px;border-radius:999px;font-size:.75rem;font-weight:600;border:1.5px solid rgba(59,73,24,.18);color:rgba(59,73,24,.65);cursor:pointer;transition:all .18s;background:#fff;}
+    .chip.active{background:#3b4918;color:#fffcef;border-color:#3b4918;}
+    .chip.damage-active{background:#dc2626;color:#fff;border-color:#dc2626;}
+    .chip.yes-active{background:#16a34a;color:#fff;border-color:#16a34a;}
+    .chip.no-active{background:#6b7280;color:#fff;border-color:#6b7280;}
+
+    /* Stat cards */
+    .s-card{background:#fff;border:1px solid rgba(200,189,68,.22);border-radius:11px;padding:10px 13px;display:flex;align-items:center;gap:9px;}
+
+    /* Legend swatch */
+    .swatch{width:11px;height:11px;border-radius:50%;border:2px solid rgba(255,255,255,.8);box-shadow:0 1px 4px rgba(0,0,0,.28);flex-shrink:0;}
+
+    /* Section accordion */
+    .f-section details{border-radius:10px;overflow:hidden;border:1px solid rgba(200,189,68,.18);}
+    .f-section details summary{
+      padding:9px 12px;font-size:.75rem;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;
+      color:rgba(59,73,24,.55);background:#fff;
+      cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;
+      user-select:none;
+    }
+    .f-section details summary::-webkit-details-marker{display:none;}
+    .f-section details summary::after{content:'▾';font-size:.7rem;transition:transform .2s;}
+    .f-section details[open] summary::after{transform:rotate(180deg);}
+    .f-section details .f-body{padding:10px 12px 12px;background:#fff;display:flex;flex-direction:column;gap:8px;}
+    .f-label{font-size:.72rem;font-weight:600;color:rgba(59,73,24,.55);margin-bottom:2px;}
+
+    /* Value badge colors */
+    .val-high{color:#16a34a;font-weight:700;}
+    .val-med {color:#d97706;font-weight:700;}
+    .val-low {color:#6b7280;font-weight:700;}
+
+    /* Damage badge */
+    .dmg-badge{
+      display:inline-block;padding:1px 7px;border-radius:999px;font-size:10px;font-weight:700;
+    }
+    .dmg-high{background:rgba(220,38,38,.12);color:#dc2626;}
+    .dmg-med {background:rgba(234,179, 8,.12);color:#b45309;}
+    .dmg-low {background:rgba(22,163,74,.12);color:#15803d;}
+
+    /* Loading */
+    #loadingOverlay{position:absolute;inset:0;z-index:999;background:rgba(255,252,239,.88);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+    .spinner{width:38px;height:38px;border:3px solid rgba(59,73,24,.15);border-top-color:#3b4918;border-radius:50%;animation:spin .8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg);}}
+
+    /* Result list item */
+    .r-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:9px;background:#fff;border:1px solid rgba(200,189,68,.18);cursor:pointer;transition:all .18s;}
+    .r-item:hover{border-color:rgba(59,73,24,.30);background:#fffcef;}
+  </style>
+  <link rel="stylesheet" href="../../shared/public-nav.css">
+</head>
+
+<body class="font-sans bg-cream text-olive antialiased" style="display:flex;flex-direction:column;height:100vh;overflow:hidden;">
+
+    <div data-public-navbar data-active-page="map" data-nav-variant="static" data-mobile-extra-label="Filters" data-mobile-extra-action="toggleSidebar"></div>
+
+
+  <!-- ══ BODY: sidebar + map ══ -->
+  <div class="flex flex-1 overflow-hidden relative">
+
+    <!-- ── SIDEBAR ── -->
+    <div id="sidebar">
+
+      <!-- Header -->
+      <div class="p-5 border-b border-gold/25 bg-olive text-white shrink-0">
+        <div class="flex items-center gap-2 mb-1">
+          <svg class="w-5 h-5 text-gold-light" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+          <h2 class="font-serif font-bold text-lg">Crop Map</h2>
+        </div>
+        <p class="text-white/55 text-xs">Lipa City, Batangas · Live data</p>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-3 space-y-3">
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <div class="s-card">
+            <div class="w-8 h-8 bg-olive/10 rounded-lg flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-olive" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div><div class="text-xl font-bold text-olive" id="statTotal">—</div><div class="text-xs text-olive/50">Plots</div></div>
+          </div>
+          <div class="s-card">
+            <div class="w-8 h-8 bg-harvest/10 rounded-lg flex items-center justify-center shrink-0">
+              <svg class="w-4 h-4 text-harvest" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+            </div>
+            <div><div class="text-xl font-bold text-olive" id="statCrops">—</div><div class="text-xs text-olive/50">Crop types</div></div>
+          </div>
+        </div>
+
+        <!-- ════ FILTERS ════ -->
+        <div class="f-section space-y-2">
+
+          <!-- 1. Category / Crop Type -->
+          <details open>
+            <summary>🌿 Crop Type</summary>
+            <div class="f-body">
+              <select id="fCropType" class="f-select" onchange="applyFilters()">
+                <option value="">All Types</option>
+              </select>
+            </div>
+          </details>
+
+          <!-- 2. Commodity -->
+          <details>
+            <summary>🌾 Commodity</summary>
+            <div class="f-body">
+              <select id="fCommodity" class="f-select" onchange="applyFilters()">
+                <option value="">All Commodities</option>
+              </select>
+            </div>
+          </details>
+
+          <!-- 3. Location -->
+          <details>
+            <summary>📍 Location</summary>
+            <div class="f-body">
+              <select id="fLocation" class="f-select" onchange="applyFilters()">
+                <option value="">All Locations</option>
+              </select>
+            </div>
+          </details>
+
+          <!-- 4. Growth Stage -->
+          <details>
+            <summary>🌱 Growth Stage</summary>
+            <div class="f-body">
+              <div class="f-label">Crop Status</div>
+              <select id="fCropStatus" class="f-select" onchange="applyFilters()">
+                <option value="">All Stages</option>
+              </select>
+              <div class="chip-group" id="stageChips" style="margin-top:4px;"></div>
+            </div>
+          </details>
+
+          <!-- 5. Value Category -->
+          <details>
+            <summary>💰 Value Category</summary>
+            <div class="f-body">
+              <div class="chip-group">
+                <div class="chip" data-val="" onclick="setChip('valueChips',this,'active');applyFilters()">All</div>
+                <div class="chip" data-val="high" onclick="setChip('valueChips',this,'active');applyFilters()">🟢 High (&gt;₱80)</div>
+                <div class="chip" data-val="medium" onclick="setChip('valueChips',this,'active');applyFilters()">🟡 Medium</div>
+                <div class="chip" data-val="low" onclick="setChip('valueChips',this,'active');applyFilters()">🔴 Low (&lt;₱30)</div>
+              </div>
+              <div id="valueChips" style="display:none;"></div><!-- hidden state tracker -->
+            </div>
+          </details>
+
+          <!-- 6. Yield Range -->
+          <details>
+            <summary>📦 Yield (Est. Harvest)</summary>
+            <div class="f-body">
+              <div class="f-label">Range (kg)</div>
+              <div class="range-row">
+                <input type="number" id="fYieldMin" placeholder="Min" class="" oninput="applyFilters()">
+                <span class="range-sep">–</span>
+                <input type="number" id="fYieldMax" placeholder="Max" class="" oninput="applyFilters()">
+              </div>
+            </div>
+          </details>
+
+          <!-- 7. Market Price Range -->
+          <details>
+            <summary>🏷 Market Price</summary>
+            <div class="f-body">
+              <div class="f-label">Farm Gate Price (₱/kg)</div>
+              <div class="range-row">
+                <input type="number" id="fPriceMin" placeholder="Min" oninput="applyFilters()">
+                <span class="range-sep">–</span>
+                <input type="number" id="fPriceMax" placeholder="Max" oninput="applyFilters()">
+              </div>
+            </div>
+          </details>
+
+          <!-- 8. Damage -->
+          <details>
+            <summary>⚠️ Damage</summary>
+            <div class="f-body">
+              <div class="f-label">Min. Damage %</div>
+              <div class="range-row">
+                <input type="number" id="fDamageMin" placeholder="e.g. 50" min="0" max="100" oninput="applyFilters()">
+                <span class="range-sep">%</span>
+              </div>
+              <div class="f-label" style="margin-top:6px;">Has Damage Report</div>
+              <div class="chip-group">
+                <div class="chip active" data-val="" onclick="setChip('damageHasGroup',this,'yes-active');applyFilters()">All</div>
+                <div class="chip" data-val="yes" onclick="setChip('damageHasGroup',this,'yes-active');applyFilters()">✅ Yes</div>
+                <div class="chip" data-val="no"  onclick="setChip('damageHasGroup',this,'no-active');applyFilters()">❌ No</div>
+              </div>
+              <div id="damageHasGroup" style="display:none;"></div>
+            </div>
+          </details>
+
+        </div><!-- /.f-section -->
+
+        <!-- Clear all -->
+        <button onclick="clearAllFilters()" class="w-full flex items-center justify-center gap-2 border border-olive/20 text-olive/60 py-2.5 rounded-lg text-xs font-semibold hover:bg-olive hover:text-white hover:border-olive transition-all">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4l16 16M4 20L20 4"/></svg>
+          Clear All Filters
+        </button>
+
+        <!-- Map layers -->
+        <div>
+          <div class="text-xs font-bold text-olive/40 uppercase tracking-widest mb-2">Base Map</div>
+          <div class="grid grid-cols-2 gap-2">
+            <button onclick="setLayer('street')" id="btnStreet" class="layer-btn px-3 py-2 rounded-lg border text-xs font-semibold transition-all border-olive bg-olive text-white">🗺 Street</button>
+            <button onclick="setLayer('satellite')" id="btnSat" class="layer-btn px-3 py-2 rounded-lg border text-xs font-semibold transition-all border-olive/20 text-olive hover:border-olive hover:bg-olive hover:text-white">🛰 Satellite</button>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div>
+          <div class="text-xs font-bold text-olive/40 uppercase tracking-widest mb-2">Crop Legend</div>
+          <div id="legend" class="space-y-1.5">
+            <p class="text-xs text-olive/40 italic">Loading…</p>
+          </div>
+        </div>
+
+        <!-- Results -->
+        <div>
+          <div class="text-xs font-bold text-olive/40 uppercase tracking-widest mb-2">Results <span id="resultCount" class="text-harvest font-bold normal-case"></span></div>
+          <div id="resultList" class="space-y-1.5 max-h-60 overflow-y-auto pr-1">
+            <p class="text-xs text-olive/40 italic">Loading…</p>
+          </div>
+        </div>
+
+      </div><!-- scroll area -->
+    </div><!-- /#sidebar -->
+
+    <!-- ── MAP ── -->
+    <div class="flex-1 relative">
+      <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <p class="text-sm font-semibold text-olive">Loading crop data…</p>
+      </div>
+      <div id="map"></div>
+    </div>
+
+  </div><!-- flex -->
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="../../shared/leaflet-crop-icons.js"></script>
+
+  <script>
+  /* ════════════════════════════════════════════════
+     CROP COLOR MAP  — add any crop type here
+  ════════════════════════════════════════════════ */
+  const CROP_COLORS = {
+    'rice':'#4ade80','corn':'#facc15','sugarcane':'#fb923c',
+    'banana':'#fde047','coffee':'#92400e','coconut':'#16a34a',
+    'calamansi':'#86efac','cassava':'#c084fc','pineapple':'#f9a8d4',
+    'papaya':'#fdba74','mango':'#fbbf24','sweet potato':'#d97706',
+    'tomato':'#f87171','eggplant':'#7c3aed','ampalaya':'#a3e635',
+    'sitao':'#34d399','pechay':'#67e8f9','squash':'#fb923c',
+    'ginger':'#d97706','kamote':'#c2410c','ube':'#a855f7',
+    'cacao':'#78350f','black pepper':'#1c1917','gabi':'#84cc16',
+    'jackfruit':'#ca8a04','avocado':'#166534','rambutan':'#be185d',
+    'lanzones':'#ca8a04','mangosteen':'#7e22ce','durian':'#854d0e',
+    'dragon fruit':'#ec4899','santol':'#f59e0b','pomelo':'#fde68a',
+    'citrus':'#fde047','lettuce':'#bbf7d0','radish':'#fda4af',
+    'mustard':'#fef08a','mung bean':'#86efac','cowpea':'#6ee7b7',
+    'soybeans':'#fef3c7','snap beans':'#a7f3d0',
+    'default':'#94a3b8',
+  };
+
+  /* Growth stage → color */
+  const STATUS_COLORS = {
+    'germination':'#86efac','vegetative':'#4ade80','flowering':'#f9a8d4',
+    'fruiting':'#fb923c','maturing':'#facc15','harvested':'#16a34a',
+    'damaged':'#f87171','default':'#94a3b8',
+  };
+
+  function getCropColor(type) {
+    if (!type) return CROP_COLORS.default;
+    return CROP_COLORS[type.toLowerCase().trim()] || CROP_COLORS.default;
+  }
+  function getStatusColor(status) {
+    if (!status) return STATUS_COLORS.default;
+    return STATUS_COLORS[status.toLowerCase().trim()] || STATUS_COLORS.default;
+  }
+
+  /* Active color mode: 'type' | 'status' | 'value' | 'damage' */
+  let colorMode = 'type';
+
+  function markerColor(p) {
+    if (colorMode === 'status') return getStatusColor(p.crop_status);
+    if (colorMode === 'value') {
+      return p.value_category === 'high' ? '#16a34a' : p.value_category === 'medium' ? '#d97706' : '#6b7280';
+    }
+    if (colorMode === 'damage') {
+      return p.max_damage >= 75 ? '#dc2626' : p.max_damage >= 40 ? '#f59e0b' : '#16a34a';
+    }
+    return getCropColor(p.crop_type);
+  }
+
+  function createIcon(p) {
+    const c = markerColor(p);
+    const cropLabel = p.crop_type || p.crop_commodity || 'Crop';
+    if (window.SCAIMSCropIcons && typeof window.SCAIMSCropIcons.createLeafletIcon === 'function') {
+      const cropIcon = window.SCAIMSCropIcons.createLeafletIcon(cropLabel, {
+        color: c,
+        label: cap(cropLabel)
+      });
+      if (cropIcon) return cropIcon;
+    }
+
+    return L.divIcon({
+      className:'',
+      html:`<div class="crop-dot" style="background:${c};"></div>`,
+      iconSize:[14,14],iconAnchor:[7,7],popupAnchor:[0,-10],
+    });
+  }
+
+  /* ════ MAP SETUP ════ */
+  const map = L.map('map',{center:[13.9411,121.1631],zoom:13,zoomControl:false});
+  L.control.zoom({position:'bottomright'}).addTo(map);
+
+  const tileLayers = {
+    street: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}),
+    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19}),
+  };
+  tileLayers.street.addTo(map);
+  let activeLayer = 'street';
+
+  function setLayer(name) {
+    map.removeLayer(tileLayers[activeLayer]);
+    tileLayers[name].addTo(map);
+    activeLayer = name;
+    document.querySelectorAll('.layer-btn').forEach(b => {
+      b.classList.remove('bg-olive','text-white','border-olive');
+      b.classList.add('border-olive/20','text-olive');
+    });
+    const btn = document.getElementById(name === 'street' ? 'btnStreet' : 'btnSat');
+    btn.classList.add('bg-olive','text-white','border-olive');
+    btn.classList.remove('border-olive/20','text-olive');
+  }
+
+  let clusterGroup = L.markerClusterGroup({maxClusterRadius:40,spiderfyOnMaxZoom:true,showCoverageOnHover:false});
+  map.addLayer(clusterGroup);
+  let externalFocusMarker = null;
+
+  const focusParams = (() => {
+    const params = new URLSearchParams(window.location.search);
+    const lat = parseFloat(params.get('lat'));
+    const lng = parseFloat(params.get('lng'));
+
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+
+    return {
+      lat,
+      lng,
+      crop: params.get('crop') || 'Selected Crop',
+      commodity: params.get('commodity') || '',
+      location: params.get('location') || 'Selected Report'
+    };
+  })();
+
+  /* ════ DATA STATE ════ */
+  let allFeatures = [], meta = {};
+  const API_URL = 'get_crop_reports.php';
+
+  async function loadData() {
+    try {
+      const res  = await fetch(API_URL);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      allFeatures = data.features || [];
+      meta        = data.meta    || {};
+      populateFilters();
+      renderMarkers(allFeatures);
+      buildLegend();
+      updateStats(allFeatures);
+      showFocusedReport();
+    } catch (err) {
+      console.error(err);
+      document.getElementById('resultList').innerHTML =
+        `<p class="text-xs text-red-500">⚠ Could not load data: ${err.message}</p>`;
+    } finally {
+      document.getElementById('loadingOverlay').style.display = 'none';
+    }
+  }
+
+  function populateFilters() {
+    fill('fCropType',  meta.cropTypes   || []);
+    fill('fCommodity', meta.commodities || []);
+    fill('fLocation',  meta.locations   || []);
+    fill('fCropStatus',meta.cropStatuses|| []);
+
+    /* Dynamic status chips */
+    const sc = document.getElementById('stageChips');
+    sc.innerHTML = '';
+    (meta.cropStatuses || []).forEach(s => {
+      const c = document.createElement('div');
+      c.className = 'chip'; c.textContent = cap(s); c.dataset.val = s;
+      c.style.borderColor = getStatusColor(s);
+      c.onclick = () => {
+        document.getElementById('fCropStatus').value = c.dataset.val;
+        applyFilters();
+      };
+      sc.appendChild(c);
+    });
+  }
+
+  function fill(id, arr) {
+    const sel = document.getElementById(id);
+    arr.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v; o.textContent = cap(v);
+      sel.appendChild(o);
+    });
+  }
+
+  /* ════ RENDER MARKERS ════ */
+  function renderMarkers(features) {
+    clusterGroup.clearLayers();
+    const list = document.getElementById('resultList');
+    list.innerHTML = '';
+    document.getElementById('resultCount').textContent = `(${features.length})`;
+
+    if (!features.length) {
+      list.innerHTML = '<p class="text-xs text-olive/40 italic">No results.</p>';
+      return;
+    }
+
+    features.forEach(f => {
+      const p   = f.properties;
+      const lat = f.geometry.coordinates[1];
+      const lng = f.geometry.coordinates[0];
+      const c   = markerColor(p);
+
+      const marker = L.marker([lat,lng],{icon:createIcon(p)});
+
+      /* ── Popup ── */
+      const dmgBadge = p.max_damage >= 75 ? `<span class="dmg-badge dmg-high">${p.max_damage}%</span>`
+                     : p.max_damage >= 40 ? `<span class="dmg-badge dmg-med">${p.max_damage}%</span>`
+                     : p.max_damage >  0  ? `<span class="dmg-badge dmg-low">${p.max_damage}%</span>`
+                     : '<span style="color:rgba(59,73,24,.4);font-size:11px;">—</span>';
+
+      const valLabel = p.value_category === 'high' ? '<span class="val-high">High</span>'
+                     : p.value_category === 'medium' ? '<span class="val-med">Medium</span>'
+                     : '<span class="val-low">Low</span>';
+
+      marker.bindPopup(`
+        <div style="min-width:250px;font-family:Inter,sans-serif;">
+          <div style="background:${c};padding:12px 16px 10px;">
+            <div style="font-weight:700;font-size:15px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);">
+              ${cap(p.crop_commodity || p.crop_type || 'Unknown')}
+            </div>
+            <div style="font-size:11px;color:rgba(255,255,255,.78);margin-top:2px;">
+              ${p.crop_variety ? cap(p.crop_variety)+' · ' : ''}${p.location || 'Lipa City'}
+            </div>
+          </div>
+          <div style="padding:12px 16px;background:#fff;font-size:12px;">
+            ${pr('👤 Farmer',     p.farmer_name)}
+            ${pr('🌿 Crop Type',  cap(p.crop_type))}
+            ${pr('🌱 Planted',    fd(p.date_planted))}
+            ${pr('🌾 Harvest',    fd(p.harvest_date))}
+            ${pr('📊 Status',     cap(p.crop_status))}
+            ${pr('📦 Est. Yield', p.estimate_harvest ? p.estimate_harvest+' kg' : null)}
+            ${pr('🌳 Trees',      p.number_of_trees)}
+            ${pr('💰 Farm Gate',  p.farm_gate_price ? '₱'+parseFloat(p.farm_gate_price).toFixed(2)+'/kg' : null)}
+            ${pr('📈 Value',      valLabel,true)}
+            ${pr('⚠️ Damage',     dmgBadge,true)}
+            ${pr('📅 Reported',   fd(p.report_date))}
+          </div>
+        </div>
+      `,{maxWidth:310,className:''});
+
+      clusterGroup.addLayer(marker);
+
+      /* Result list row */
+      const item = document.createElement('div');
+      item.className = 'r-item';
+      item.innerHTML = `
+        <div class="swatch" style="background:${c};"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:11px;font-weight:700;color:#3b4918;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cap(p.crop_commodity||p.crop_type||'Unknown')}</div>
+          <div style="font-size:10px;color:rgba(59,73,24,.50);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.location||'—'} · ${cap(p.crop_status)||'—'}</div>
+        </div>
+        ${p.max_damage>0?`<span class="dmg-badge ${p.max_damage>=75?'dmg-high':p.max_damage>=40?'dmg-med':'dmg-low'}">${p.max_damage}%</span>`:''}
+      `;
+      item.addEventListener('click',()=>{map.setView([lat,lng],17);marker.openPopup();});
+      list.appendChild(item);
+    });
+  }
+
+  function showFocusedReport() {
+    if (!focusParams) return;
+
+    if (externalFocusMarker) map.removeLayer(externalFocusMarker);
+
+    const markerData = {
+      crop_type: focusParams.crop || focusParams.commodity || 'Selected Crop',
+      crop_status: 'Focused Report',
+      value_category: 'medium',
+      max_damage: 0
+    };
+
+    externalFocusMarker = L.marker([focusParams.lat, focusParams.lng], { icon: createIcon(markerData) }).addTo(map);
+    externalFocusMarker.bindPopup(`
+      <div style="min-width:250px;font-family:Inter,sans-serif;">
+        <div style="background:${markerColor(markerData)};padding:12px 16px 10px;">
+          <div style="font-weight:700;font-size:15px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);">
+            ${cap(focusParams.commodity || focusParams.crop || 'Selected Crop')}
+          </div>
+          <div style="font-size:11px;color:rgba(255,255,255,.78);margin-top:2px;">
+            ${focusParams.location || 'Selected Report'}
+          </div>
+        </div>
+        <div style="padding:12px 16px;background:#fff;font-size:12px;">
+          ${pr('📍 Location', focusParams.location)}
+          ${pr('🌿 Crop Type', cap(focusParams.crop))}
+          ${pr('🧭 Coordinates', `${focusParams.lat.toFixed(7)}, ${focusParams.lng.toFixed(7)}`)}
+        </div>
+      </div>
+    `).openPopup();
+
+    map.setView([focusParams.lat, focusParams.lng], 17);
+  }
+
+  function buildLegend() {
+    const leg = document.getElementById('legend');
+    leg.innerHTML = '';
+
+    /* Color mode switcher */
+    const modes = [['type','By Crop'],['status','By Stage'],['value','By Value'],['damage','By Damage']];
+    const modeRow = document.createElement('div');
+    modeRow.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;';
+    modes.forEach(([m,label])=>{
+      const b = document.createElement('button');
+      b.className = 'chip' + (m===colorMode?' active':'');
+      b.textContent = label; b.dataset.mode = m;
+      b.onclick = () => {
+        colorMode = m;
+        document.querySelectorAll('[data-mode]').forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        renderMarkers(currentFeatures());
+        buildLegend();
+      };
+      modeRow.appendChild(b);
+    });
+    leg.appendChild(modeRow);
+
+    /* Legend swatches */
+    const items = [];
+    if (colorMode === 'type') {
+      [...new Set(allFeatures.map(f=>f.properties.crop_type).filter(Boolean))].sort().forEach(ct=>{
+        items.push([getCropColor(ct), cap(ct)]);
+      });
+    } else if (colorMode === 'status') {
+      [...new Set(allFeatures.map(f=>f.properties.crop_status).filter(Boolean))].sort().forEach(s=>{
+        items.push([getStatusColor(s), cap(s)]);
+      });
+    } else if (colorMode === 'value') {
+      items.push(['#16a34a','High value (>₱80/kg)'],['#d97706','Medium (₱30–80/kg)'],['#6b7280','Low (<₱30/kg)']);
+    } else {
+      items.push(['#dc2626','Severe (≥75%)'],['#f59e0b','Moderate (40–75%)'],['#16a34a','Low / None (<40%)']);
+    }
+
+    items.forEach(([color,label])=>{
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:8px;';
+      row.innerHTML = `<div class="swatch" style="background:${color};"></div><span style="font-size:11px;color:rgba(59,73,24,.75);">${label}</span>`;
+      leg.appendChild(row);
+    });
+  }
+
+  function updateStats(features) {
+    document.getElementById('statTotal').textContent = features.length;
+    document.getElementById('statCrops').textContent = new Set(features.map(f=>f.properties.crop_type).filter(Boolean)).size;
+  }
+
+  /* ════ ACTIVE FILTER STATE ════ */
+  let activeValueCat = '';
+  let activeDamageHas = '';
+
+  /* Generic chip group — only one active at a time */
+  function setChip(groupId, el, cls) {
+    const parent = el.closest('.chip-group, .f-body');
+    parent.querySelectorAll('.chip').forEach(c=>c.classList.remove('active','yes-active','no-active','damage-active'));
+    el.classList.add(cls);
+    /* store value */
+    if (groupId === 'damageHasGroup') activeDamageHas = el.dataset.val;
+    if (groupId === 'valueChips') activeValueCat = el.dataset.val;
+  }
+
+  function currentFeatures() {
+    const ct  = document.getElementById('fCropType').value;
+    const com = document.getElementById('fCommodity').value;
+    const loc = document.getElementById('fLocation').value;
+    const cs  = document.getElementById('fCropStatus').value;
+    const yMin = parseFloat(document.getElementById('fYieldMin').value);
+    const yMax = parseFloat(document.getElementById('fYieldMax').value);
+    const pMin = parseFloat(document.getElementById('fPriceMin').value);
+    const pMax = parseFloat(document.getElementById('fPriceMax').value);
+    const dMin = parseFloat(document.getElementById('fDamageMin').value);
+
+    return allFeatures.filter(f => {
+      const p = f.properties;
+      if (ct  && p.crop_type      !== ct)  return false;
+      if (com && p.crop_commodity !== com) return false;
+      if (loc && p.location       !== loc) return false;
+      if (cs  && p.crop_status    !== cs)  return false;
+      if (!isNaN(yMin) && p.estimate_harvest < yMin) return false;
+      if (!isNaN(yMax) && p.estimate_harvest > yMax) return false;
+      if (!isNaN(pMin) && p.farm_gate_price  < pMin) return false;
+      if (!isNaN(pMax) && p.farm_gate_price  > pMax) return false;
+      if (!isNaN(dMin) && p.max_damage       < dMin) return false;
+      if (activeValueCat && p.value_category !== activeValueCat) return false;
+      if (activeDamageHas === 'yes' && !p.has_damage)  return false;
+      if (activeDamageHas === 'no'  &&  p.has_damage)  return false;
+      return true;
+    });
+  }
+
+  function applyFilters() {
+    const filtered = currentFeatures();
+    renderMarkers(filtered);
+    updateStats(filtered);
+  }
+
+  function clearAllFilters() {
+    ['fCropType','fCommodity','fLocation','fCropStatus'].forEach(id=>document.getElementById(id).value='');
+    ['fYieldMin','fYieldMax','fPriceMin','fPriceMax','fDamageMin'].forEach(id=>document.getElementById(id).value='');
+    activeValueCat = ''; activeDamageHas = '';
+    document.querySelectorAll('.f-section .chip').forEach(c=>c.classList.remove('active','yes-active','no-active','damage-active'));
+    document.querySelectorAll('.chip-group .chip:first-child').forEach(c=>c.classList.add('active'));
+    renderMarkers(allFeatures);
+    updateStats(allFeatures);
+  }
+
+  /* ════ HELPERS ════ */
+  function cap(str) { if(!str)return''; return str.charAt(0).toUpperCase()+str.slice(1); }
+  function fd(d)    { if(!d)return'—'; return new Date(d).toLocaleDateString('en-PH',{year:'numeric',month:'short',day:'numeric'}); }
+  function pr(label,value,raw=false) {
+    const v = raw ? (value||'—') : (value||'—');
+    return `<div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:5px;">
+      <span style="color:#8a9a6a;white-space:nowrap;">${label}</span>
+      <span style="color:#3b4918;font-weight:600;text-align:right;">${v}</span>
+    </div>`;
+  }
+
+  /* ════ NAV HELPERS ════ */
+  function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}
+
+  loadData();
+  </script>
+</body>
+</html>

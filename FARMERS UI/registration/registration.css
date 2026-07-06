@@ -1,0 +1,753 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif; 
+    background-color: #ffffff;
+    color: #3b4918;
+}   
+
+/**************************ICON*******************************/
+.navbar-toggler-icon {
+    position: absolute; 
+    top: 5vw;          
+    left: 2vw;       
+    background-color: #fff; 
+    width: 30px;   
+    height: 30px;     
+    display: none;    
+}
+
+@media (max-width: 768px) { 
+    .navbar-toggler-icon {
+        display: block; 
+    }
+}
+
+/**************************Nav Bar****************************/
+
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    width: 60px;
+    margin-right: 10px;
+}
+
+
+
+.brand-subtext {
+    font-size: 2vw;  
+    font-weight: 300;
+    color: #000000; 
+    margin-top: -1px; 
+    line-height: 1.1; 
+}
+
+@media (min-width: 768px) {
+    .brand-text {
+        font-size: 30px;  
+        
+    }
+
+    .brand-subtext {
+        font-size: 12px;  
+        align-items: center; 
+    }
+}
+
+@media (max-width: 768px) {
+
+    .navbar-brand img {
+        margin: 0 auto; 
+        margin-left: -60px;
+    }
+}
+
+.navbar-nav {
+    display: flex;
+    justify-content: right; 
+    width: 100%; 
+}
+
+.navbar-nav .nav-link {
+    color: #3b4918;
+    font-size: 1.2em;
+    font-weight: 400;
+    margin-right: 40px; 
+}
+
+.nav-item .btn-warning {
+    background-color: #f7931e;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.navbar-nav .nav-link.active {
+    background-color: #007bff; 
+    color: white; 
+    border-radius: 5px; 
+    padding: 10px 20px; 
+}
+
+@media (max-width: 768px) {
+    .navbar-toggler {
+        margin-left: 10px;
+    }
+
+    .navbar-nav {
+        flex-direction: column; 
+        align-items: center; 
+        width: 100%; 
+    }
+
+    .navbar-nav .nav-link {
+        margin-right: 0; 
+        margin-bottom: 10px;
+        font-size: 1em; 
+    }
+
+    .nav-item .btn-warning {
+        font-size: 1em; 
+    }
+}
+
+/**************************Hero Section****************************/
+.hero {
+    height: 100vh;
+    background-image: url('./assets/background.png');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 30px;
+    position: relative;
+    z-index: 1;
+    margin-top: 20px;
+}
+
+.hero .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(35, 28, 28, 0.5);
+    z-index: 2;
+}
+
+.hero-left {
+    z-index: 3;
+    width: 50%;
+    text-align: left; /* Default alignment */
+}
+
+.hero-title {
+    font-size: 2.8em;
+    font-weight: 600;
+    color: #ccc14f;
+}
+
+.hero-subtitle {
+    font-size: 1em;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.hero-description {
+    font-size: 0.9em;
+    color: #eae6e6;
+    margin-bottom: 20px;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
+.hero-btn {
+    background-color: #f7931e;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    color: white;
+}
+
+.hero-carousel {
+    z-index: 3;
+    width: 40%; 
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-carousel img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #000;
+    padding: 10px;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fffcef;
+    color: #674636;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-left, .footer-right {
+    font-size: 0.9rem;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.fp-watermark {
+    display: none !important; 
+}
+
+
+@media (max-width: 768px) {
+    .footer-left, .footer-right {
+        font-size: 0.8rem;
+    }
+    .footer {
+        padding: 8px 10px;
+    }
+}   
+/* Mobile L - 425px */
+@media (max-width: 425px) {
+    .footer-left, .footer-right {
+        font-size: 0.6rem;
+    }
+    .footer {
+        padding: 8px 10px;
+    }
+}
+
+/* Mobile M - 375px */
+@media (max-width: 375px) {
+    .footer-left, .footer-right {
+        font-size: 0.6rem;
+    }
+    .footer {
+        padding: 8px 10px;
+    }
+}
+
+/* Mobile S - 320px */
+@media (max-width: 320px) {
+    .footer-left, .footer-right {
+        font-size: 0.6rem;
+    }
+    .footer {
+        padding: 8px 8px;
+    }
+}
+
+/**************************Services Section****************************/
+.apgorrs-services {
+    padding: 50px 0;
+    background-color: #fff;
+}
+
+.service-box {
+    background-color: #f5f5f3;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.service-box img {
+    width: 90px;
+    margin-bottom: 15px;
+}
+
+.apgorrs-services h2 {
+    font-weight: bold;
+    color: #f7931e;
+    font-size: 2.5em;
+}
+
+.service-box h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.service-box p {
+    font-size: 1em;
+    margin-bottom: 15px;
+}
+
+.service-box .btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/**************************Responsive Styles****************************/
+@media (max-width: 768px) {
+
+    .hero {
+        margin-top: 380px;
+        flex-direction: column;
+        justify-content: center;
+        text-align: justify;
+        padding: 20px;
+    }
+    
+    .hero-left {
+        width: 100%;
+        text-align: center; /* Center text for smaller screens */
+    }
+
+    .hero-title {
+        font-size: 2em;
+    }
+
+    .hero-subtitle {
+        font-size: 1em;
+    }
+
+    .hero-description {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    .service-box {
+        margin-bottom: 20px;
+        padding: 15px;
+        text-align: center; /* Center service box content */
+    }
+
+    #heroCarousel {
+        position: fixed; /* Fix the position */
+        bottom: 120vw;       /* Align it to the bottom */
+        left: 0;         /* Align it to the left */
+        width: 100%;     /* Full width */
+        z-index: 1050;   /* Make sure it is on top of other elements */
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-description {
+        font-size: 0.75em;
+    }
+
+    .hero-btn {
+        font-size: 0.85em;
+        padding: 8px 16px;
+    }
+
+    .navbar-nav .nav-link {
+        margin-right: 10px; 
+    }
+
+    .hero-title {
+        font-size: 1.8em; /* Further reduce font size for small screens */
+    }
+
+    .hero-subtitle {
+        font-size: 0.9em; /* Further reduce font size for small screens */
+    }
+
+    .hero-carousel {
+        height: 150px; /* Further reduce height for small screens */
+    }
+
+    .service-box {
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    .service-box h3 {
+        font-size: 1.2em; /* Reduce heading size for smaller screens */
+    }
+
+    .service-box p {
+        font-size: 0.9em; /* Reduce paragraph size for smaller screens */
+    }
+}
+
+.modal-content {
+    max-width: 800px;
+    margin: 5% auto;
+}
+
+.modal-content form {
+    background-color: #f5f5f3;
+    padding: 20px;
+    border-radius: 10px;
+    color: #674636;
+}
+
+.suggestion-intro {
+    text-align: justify;
+    margin-bottom: 20px;
+    color: #674636;
+}
+
+#suggestionForm textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid #674636;
+    border-radius: 8px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+#suggestionForm .button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#suggestionForm .submit-button {
+    background-color: #f7931e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#suggestionForm .close-modal {
+    background-color: #859e44;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-content {
+    background-color: #f5f5f3;
+    margin: 8% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+}
+
+/* Modal Base Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #f5f5f3;
+    margin: 5% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+/* Form Title */
+#suggestionForm h2 {
+    color: #576f1b;
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+/* Introduction Text */
+.suggestion-intro {
+    text-align: justify;
+    margin-bottom: 25px;
+    color: #674636;
+    line-height: 1.6;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    border-left: 4px solid #f7931e;
+}
+
+.suggestion-intro em {
+    display: block;
+    margin-top: 15px;
+    color: #859e44;
+    font-style: italic;
+}
+
+/* Form Fields */
+#suggestionForm label {
+    display: block;
+    margin: 15px 0 8px;
+    color: #576f1b;
+    font-weight: 500;
+}
+
+#suggestionForm input[type="text"],
+#suggestionForm textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+#suggestionForm input[type="text"]:focus,
+#suggestionForm textarea:focus {
+    outline: none;
+    border-color: #f7931e;
+    box-shadow: 0 0 5px rgba(247, 147, 30, 0.2);
+}
+
+#suggestionForm textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* Button Container */
+#suggestionForm .button-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Submit Button */
+#suggestionForm .submit-button {
+    background-color: #f7931e;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#suggestionForm .submit-button:hover {
+    background-color: #e88418;
+}
+
+/* Cancel Button */
+#suggestionForm .close-modal {
+    background-color: #859e44;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#suggestionForm .close-modal:hover {
+    background-color: #728636;
+}
+
+/* Close Button (X) */
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #674636;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #f7931e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 10% auto;
+        padding: 20px;
+        width: 100%;
+    }
+
+    #suggestionForm h2 {
+        font-size: 22px;
+    }
+
+    .suggestion-intro {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    #suggestionForm .button-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #suggestionForm .submit-button,
+    #suggestionForm .close-modal {
+        width: 100%;
+        padding: 10px;
+    }
+}
+
+/* Mobile L (425px) */
+@media (max-width: 425px) {
+    .navbar-brand img {
+        display: none;
+    }
+    
+    #heroCarousel {
+        display: none;
+    }
+    
+
+
+    .navbar-brand {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Mobile M (375px) */
+@media (max-width: 375px) {
+    .brand-text {
+        font-size: 22px;
+    }
+
+    .brand-subtext {
+        font-size: 11px;
+    }
+}
+
+/* Mobile S (320px) */
+@media (max-width: 320px) {
+    .brand-text {
+        font-size: 20px;
+    }
+
+    .brand-subtext {
+        font-size: 10px;
+    }
+}
+
+/* Remove any existing margins that might interfere */
+@media (max-width: 425px) {
+    
+
+    
+    
+    /* Ensure the brand wrapper takes full width */
+    .brand-text-wrapper {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+}
+
+/* Ensure proper display on larger screens */
+@media (min-width: 426px) {
+    .navbar-brand img {
+        display: block;
+    }
+    
+    #heroCarousel {
+        display: block;
+    }
+    
+    .brand-text-wrapper {
+        align-items: flex-start;
+    }
+}
+
+/* Add these mobile styles to match index.html */
+@media (max-width: 768px) {
+    .navbar-brand img {
+        display: none;
+    }
+
+    .brand-text-wrapper {
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .navbar-brand {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .navbar-nav {
+        padding: 15px 0;
+        background-color: #fffcef;
+        border-top: 1px solid #c8bd44;
+    }
+
+    .nav-item {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-item .btn-warning {
+        width: 80%;
+        margin: 10px auto;
+    }
+
+    .navbar-toggler {
+        border-color: #3b4918;
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(59, 73, 24, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+}
+
+/* Mobile S (320px) */
+@media (max-width: 320px) {
+    .brand-text {
+        font-size: 20px;
+    }
+
+    .brand-subtext {
+        font-size: 10px;
+    }
+}

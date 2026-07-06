@@ -1,0 +1,89 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Creation Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="ac.css">
+</head>
+<body>
+  <header id="header">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top custom-navbar" >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../../index.html">
+          <img src="assets/logo.png" alt="APGORRS Logo" width="50">
+          <div class="brand-text-wrapper">
+            <span class="brand-text">APGORRS</span>
+            <span class="brand-subtext">Agricultural Profile Gateway Online Registration and Reporting System</span>
+          </div>
+        </a>
+        <span class="navbar-toggler-icon" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"></span>
+    </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="../farmerLanding/about.html">About Us</a></li>
+            <li class="nav-item"><a class="nav-link" href="../farmerLanding/faq.html">FAQ</a></li>
+            <li class="nav-item"><a class="nav-link" href="../farmerLanding/contact.html">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="../farmerLogin/farmerlogin.html">Login</a></li>
+            <li class="nav-item"><a class="btn btn-warning" href="../registration/registration_form.html">REGISTER</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+</header>
+
+  <div class="container">
+    <form id="accountCreationForm" class="responsive-form" action="submitAccount.php" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+      <h2>CREATE ACCOUNT</h2>
+      <hr>
+      <h3>PART 2: Account Creation</h3>
+    
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        
+      <label for="password">Password:</label>
+      <div class="password-field">
+        <input type="password" id="password" name="password" placeholder="Enter a strong password" required>
+        <span onclick="togglePasswordVisibility('password', 'passwordIcon')" class="show-password-icon">
+          <i id="passwordIcon" class="fas fa-eye"></i>
+        </span>
+      </div>
+        
+      <label for="confirmPassword">Confirm Password:</label>
+      <div class="password-field">
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required>
+        <span onclick="togglePasswordVisibility('confirmPassword', 'confirmPasswordIcon')" class="show-password-icon">
+          <i id="confirmPasswordIcon" class="fas fa-eye"></i>
+        </span>
+      </div>        
+
+      <label for="profileImage">Profile Image:</label>
+      <input type="file" id="profileImage" name="profileImage" accept="image/*" required>
+        
+      <hr>
+
+      <div class="button-container">
+        <button type="submit" class="btn btn-primary">Create Account</button>
+        <button type="button" class="btn btn-secondary" onclick="confirmCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="accountCreation.js"></script>
+
+  <footer class="footer">
+    <div class="footer-left">
+      <p>© 2024 All Rights Reserved</p>
+    </div>
+    <div class="footer-right">
+      <p>Lipa City Agricultural Office</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,666 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    height: 100vh; 
+    width: 100%;
+}
+
+.sidebar {
+    background-color: #198754;
+    color: white;
+    width: 20%;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile-section {
+    margin-top: 10px; 
+    text-align: center;
+    padding: 20px;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    display: block;
+}
+
+.profile-section h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin-top: 2%;
+}
+
+nav ul :hover{
+    background-color:#64c8837e;
+}
+
+nav ul li {
+    margin: 10px 0;
+    margin-left: 10px;
+    text-align: center;
+}
+
+nav ul li a {
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav ul li a .icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+nav ul li a .active {
+    background-color: #64c8837e;
+}
+
+footer {
+    font-size: 0.8em;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    margin-top: auto;
+}
+
+/* Content Section */
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.parcel-count {
+    text-align: right; /* Aligns the text to the right */
+    font-weight: bold; /* Makes the text bold */
+    font-style: italic; /* Makes the text italic */
+    margin-top: 10px; /* Optional: adds some space above the parcel count */
+    margin-bottom: 15px;
+}
+
+/* Enhanced Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.195);
+    position: relative; /* Changed from fixed to relative */
+    table-layout: fixed;
+}
+
+/* Table Header Styling */
+thead {
+    background-color: #2aaa532d;
+    color: #198754;
+}
+
+thead th {
+    font-size: 16px; /* Font size for header cells */
+    padding: 12px 15px; /* Adjust padding as needed */
+}
+
+/* Table Body Rows */
+tbody tr {
+    transition: background-color 0.3s ease;
+    border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* Light background for alternate rows */
+}
+
+tbody tr:hover {
+    background-color: #e9ecef; /* Subtle hover effect */
+    transition: background-color 0.3s ease;
+}
+
+/* Table Cell Styling */
+tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+}
+
+/* Buttons in table */
+#farmersTable button {
+    background-color: #198754;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#farmersTable button:hover {
+    background-color: #066338;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Alternating Row Colors */
+tbody tr:nth-child(odd) {
+    background-color: white;
+}
+
+/* Subtle Separation */
+tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.9em;
+    }
+    
+    tbody td {
+        padding: 10px 5px;
+    }
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    justify-content: flex-start; /* Changed from flex-end to flex-start */
+    margin-bottom: 5px;
+    gap: 10px; /* Maintains the spacing between filter elements */
+    align-items: center; /* Vertically centers the filter elements */
+    margin-top: 0px;
+}
+
+#searchBox {
+    padding: 12px 15px; /* Increased padding */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 350px; /* Added width to make them wider */
+    height: 45px; /* Added height to make them taller */
+    font-family: 'Poppins';
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#locationFilter {
+    min-width: 180px;
+    max-width: 200px;
+    height: 45px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: 'Poppins', sans-serif;
+    appearance: auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#exportButton {
+    font-family: 'Poppins', sans-serif;
+    padding: 8px 12px;
+    background-color: #198754;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.29);
+}
+
+#exportButton:hover {
+    background-color: #066338;
+}
+
+#farmersTable button {
+    background-color: #198754; /* Green color matching your theme */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#farmersTable button:hover {
+    background-color: #066338; /* Lighter green on hover */
+}
+
+#farmersTable button:active {
+    transform: scale(0.95); /* Slight press effect */
+}
+
+/* Pagination */
+.pagination-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    background-color: #198754;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+}
+
+.pagination button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.pagination button:hover {
+    background-color: #066338;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f5f5f3;
+    padding: 25px;
+    width: 90%;
+    max-width: 900px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal .close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal .close:hover {
+    color: #333;
+}
+
+#parcelDetails {
+    display: flex;
+    flex-direction: column;
+}
+
+.farm-info-section {
+    margin-bottom: 20px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 columns for farm info */
+    gap: 10px;
+}
+
+.detail-grid-1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 columns for farm info */
+    gap: 10px;
+}
+
+.parcel-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.parcel-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
+.crops-list {
+    max-height: none; /* Remove the max-height to avoid scrollbar */
+}
+
+/* Crop Pagination Buttons */
+.crop-pagination {
+    display: flex;
+    justify-content: left; /* Center the pagination */
+    align-items: center; /* Center vertically */
+    margin-top: 15px; /* Space above pagination */
+}
+
+.crop-pagination button {
+    background-color: #198754; /* Green color for buttons */
+    color: white;
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    padding: 8px 15px; /* Increased padding for better size */
+    margin: 0 5px; /* Space between buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px; /* Font size for buttons */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+}
+
+.crop-pagination button:hover {
+    background-color: #157347; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+.crop-pagination button:disabled {
+    background-color: #cccccc; /* Gray color for disabled state */
+    cursor: not-allowed; /* Change cursor to indicate disabled state */
+}
+
+.crop-pagination span {
+    margin: 0 10px; /* Space around the current crop indicator */
+    font-weight: bold; /* Make the current crop indicator bold */
+    font-size: 16px; /* Slightly larger font size for emphasis */
+    color: #333; /* Darker color for better readability */
+}
+
+/* Navigation Buttons Styling */
+#navigationButtons {
+    display: flex;
+    justify-content: right; /* Center the buttons */
+    margin-top: 10px; /* Add some space above the buttons */
+    gap: 8px;
+}
+
+#navigationButtons button {
+    background-color: #198754; /* Green color matching your theme */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px; /* Add padding for better size */
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    margin: 0 2px; /* Reduce space between buttons */
+}
+
+#navigationButtons button:hover {
+    background-color: #066338; /* Lighter green on hover */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#navigationButtons button:disabled {
+    background-color: #cccccc; /* Gray color for disabled state */
+    cursor: not-allowed; /* Change cursor to indicate disabled state */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #parcelDetails {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* New Styles for Detailed Parcel and Crop Information */
+.detail-section {
+    background-color: #2aaa532d; /* Light background for better contrast */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 20px; /* Increased padding for better spacing */
+    margin-bottom: 20px; /* Space between sections */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.detail-section h3 {
+    color: #198754; /* Green color for section headers */
+    border-bottom: 2px solid #4CAF50; /* Underline for emphasis */
+    padding-bottom: 10px; /* Space below the header */
+    margin-bottom: 15px; /* Space below the header */
+    font-size: 1.5em; /* Larger font size for headers */
+}
+
+.parcel-details h3 {
+    color: #198754;
+    border-bottom: 1.5px solid #4CAF50;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.crops-section h3 {
+    color: #198754;
+    border-bottom: 1.5px solid #4CAF50;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    font-size: 1.2em;
+}
+
+.crop-detail {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.189);
+}
+
+.crop-detail h4 {
+    color: #333333;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.detail-item {
+    display: flex;
+    padding: 10px;
+    background-color: #f3f3f3; /* Light gray background for detail items */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #d1d1d1;
+}
+
+.detail-item .label {
+    flex: 0 0 40%; /* Fixed width for labels */
+    font-weight: bold;
+    color: #198754; /* Green color for the label */
+}
+
+.detail-item .value {
+    flex: 1; /* Take remaining space */
+    color: #333; /* Darker color for the value */
+    font-weight: bold; /* Make the value text bold */
+}
+
+.detail-section:nth-of-type(3) {
+    grid-column: 1 / -1; /* Span all columns in the grid */
+    width: 100%; /* Ensure it uses the full width */
+    background-color: #ffffff; /* Keep consistent background */
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.detail-section:nth-of-type(3) h3 {
+    text-align: center; /* Center-align the header for emphasis */
+    font-size: 1.5em; /* Increase the header size */
+    margin-bottom: 15px;
+}
+
+.filters select {
+    min-width: 200px;
+    max-width: 200px;
+    height: 45px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-family: 'Poppins', sans-serif;
+    appearance: auto; /* This ensures the dropdown arrow is visible */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.filters select:focus {
+    outline: none;
+    border-color: #198754;
+}
+
+.parcel-label {
+    position: absolute; /* Use absolute positioning */
+    top: -30px; /* Adjust the top position */
+    left: 0; /* Adjust the left position */
+    font-weight: bold;
+    font-size: 14px;
+    color: #198754;
+}
+
+/* Parcel Details Section */
+.parcel-details {
+    background-color: #2aaa532d; /* Light background for better contrast */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 20px; /* Increased padding for better spacing */
+    margin-bottom: 20px; /* Space between sections */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Crop Details Section */
+.crops-section {
+    background-color: #2aaa532d; /* Light background for better contrast */
+    border: 1px solid #e0e0e0; /* Subtle border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 20px; /* Increased padding for better spacing */
+    margin-bottom: 20px; /* Space between sections */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+
+
+/* Crop Pagination Styles */
+.crop-pagination {
+    display: flex;
+    justify-content: left; /* Center the pagination */
+    align-items: center; /* Center vertically */
+    margin-top: 15px; /* Space above pagination */
+}
+
+.crop-pagination button {
+    background-color: #198754; /* Green color for buttons */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 10px; /* Increased padding for better size */
+    margin: 0 5px; /* Space between buttons */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px; /* Font size for buttons */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+}
+
+.crop-pagination button:hover {
+    background-color: #157347; /* Darker green on hover */
+    transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+.crop-pagination button:disabled {
+    background-color: #cccccc; /* Gray color for disabled state */
+    cursor: not-allowed; /* Change cursor to indicate disabled state */
+}
+
+.crop-pagination span {
+    margin: 0 10px; /* Space around the current crop indicator */
+    font-weight: bold; /* Make the current crop indicator bold */
+    font-size: 14px; /* Slightly larger font size for emphasis */
+    color: #333; /* Darker color for better readability */
+}
+
+/* General Styles for Detail Items */
+.detail-item {
+    display: flex;
+    padding: 15px;
+    background-color: #f8f8f8; /* Light gray background for detail items */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 9.5px;
+}
+
+.detail-item .label {
+    flex: 0 0 53%; /* Fixed width for labels */
+    font-weight: bold;
+    color: #198754; /* Green color for the label */
+}
+
+.detail-item .value {
+    flex: 1; /* Take remaining space */
+    color: #333; /* Darker color for the value */
+    font-weight: bold; /* Make the value text bold */
+}

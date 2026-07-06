@@ -1,0 +1,274 @@
+/* Import existing styles from home.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* Sidebar Styles - Copied exactly from home.css */
+.sidebar {
+    background-color: #198754;
+    color: white;
+    width: 20%;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile-section {
+    margin-top: 10px;
+    text-align: center;
+    padding: 20px;
+}
+
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    display: block;
+}
+
+.profile-section h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin-top: 2%;
+}
+
+nav ul :hover {
+    background-color: #64c8837e;
+}
+
+nav ul li {
+    margin: 10px 0;
+    margin-left: 10px;
+    text-align: center;
+}
+
+nav ul li a {
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav ul li a .icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+nav ul li a .active {
+    background-color: #64c8837e;
+}   
+
+footer {
+    font-size: 0.8em;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    margin-top: auto;
+}
+
+/* Content Styles */
+.content {
+    width: 80%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Suggestions Section Styles */
+.suggestions-section {
+    background: #2aaa532d;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 36%);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.section-header {
+    color: #198754;
+    font-size: 1.1em;
+    font-weight: 600;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #198754;
+    margin-bottom: 15px;
+}
+
+.suggestions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Suggestion Card Styles */
+.suggestion-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 36%);
+}
+
+.suggestion-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.suggestion-date {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.suggestion-content {
+    margin-bottom: 15px;
+}
+
+.suggestion-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.action-button {
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.mark-read {
+    background-color: #198754;
+    color: white;
+}
+
+.mark-read:hover {
+    background-color: #066338;
+}
+
+.delete {
+    background-color: #ff0000;
+    color: white;
+}
+
+.delete:hover {
+    background-color: rgb(189, 23, 23);
+}
+
+.no-suggestions {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Export Button Styles */
+.header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#export-button {
+    padding: 10px 12px;
+    background-color: #198754;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-family: 'Poppins', sans-serif;
+}
+
+#export-button:hover {
+    background-color: #066338;
+}
+
+/* Month Filter Styles - Separate from export button */
+.header-with-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#month-filter {
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    transition: border-color 0.3s;
+    height: 40px;
+    margin-left: auto; /* Pushes the filter to the right */
+}
+
+#month-filter::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    padding: 5px;
+}
+
+#month-filter:focus {
+    border-color: #198754;
+    outline: none;
+}
+
+/* Section Header Styles */
+.section-header {
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    display: inline-block;
+    margin-right: 15px;
+}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSBSA Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="registration.css">
+    <link rel="stylesheet" href="regs.css">
+    <script src="../../shared/app-path.js"></script>
+    <script src="../../shared/public-nav-config.js"></script>
+    <script src="../../shared/public-nav.js" defer></script>
+    <link rel="stylesheet" href="../../shared/public-nav.css">
+    <style>
+        .rsbsa-container {
+            max-width: 600px;
+            margin: 150px auto;
+            padding: 30px;
+            background-color: #f5f5f3;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .rsbsa-title {
+            color: #576f1b;
+            margin-bottom: 30px;
+        }
+        
+        .rsbsa-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .rsbsa-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-yes {
+            background-color: #f7931e;
+            color: white;
+        }
+        
+        .btn-no {
+            background-color: #859e44;
+            color: white;
+        }
+        
+        .btn-yes:hover {
+            background-color: #ff6a00;
+        }
+        
+        .btn-no:hover {
+            background-color: #6b7e37;
+        }
+    </style>
+</head>
+<body>
+    <div
+        data-public-navbar
+        data-brand-title="APGORRS"
+        data-brand-subtitle="Lipa City Agriculture"
+    ></div>
+
+    <div class="rsbsa-container">
+        <h2 class="rsbsa-title">RSBSA Verification</h2>
+        <p>Ikaw ba ay nakarehistro na sa Registry System for Basic Sectors in Agriculture (RSBSA)?</p>
+        <div class="rsbsa-buttons">
+            <button class="rsbsa-btn btn-yes" onclick="window.location.href='registration_form.html'">Oo, ako ay nakarehistro</button>
+            <button class="rsbsa-btn btn-no" onclick="showRSBSAInstructions()">Hindi, kailangan ko pang magparehistro</button>
+        </div>
+    </div>
+
+    <!-- RSBSA Instructions Modal -->
+    <div id="rsbsaModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Mga Tagubilin sa Pagpaparehistro sa RSBSA</h2>
+            <hr>
+            <div class="instructions">
+                <p>Upang magparehistro sa <strong>RSBSA</strong>, mangyaring sundin ang mga hakbang na ito:</p>
+                <ol>
+                    <li>I-download ang <strong>RSBSA Form</strong> sa pamamagitan ng pag-click sa button sa ibaba.</li>
+                    <li>I-print ang form (<strong>TALIKURAN</strong>).</li>
+                    <li>Kompletuhin ang RSBSA Form.</li>
+                    <li>Kumuha ng <strong>Barangay Certification</strong> sa inyong barangay.</li>
+                    <li><strong>I-submit</strong> ang natapos na form at barangay certification sa Lipa City Office of the Agriculturist.</li>
+                    <li>Kapag ang iyong pagpaparehistro sa <strong>RSBSA</strong> ay <strong>naaprubahan</strong>, maaari kang bumalik dito upang <strong>kumpletuhin</strong> ang iyong pagpaparehistro sa <strong>APGORRS</strong>.</li>
+                </ol>
+                <button class="rsbsa-btn btn-yes" onclick="downloadRSBSAForm()"><strong>I-download</strong> ang Form ng <strong>RSBSA</strong></button>
+            </div>            
+        </div>
+    </div>
+
+    <script>
+        function showRSBSAInstructions() {
+            document.getElementById('rsbsaModal').style.display = 'block';
+        }
+
+        function downloadRSBSAForm() {
+            // Replace 'path_to_your_pdf' with the actual path to your RSBSA PDF form
+            window.location.href = 'assets/rsbsa_form.pdf';
+        }
+
+        // Close modal when clicking the X
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('rsbsaModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('rsbsaModal')) {
+                document.getElementById('rsbsaModal').style.display = 'none';
+            }
+        }
+    </script>
+
+    <!-- Copy the footer from registration_form.html -->
+    <footer class="footer">
+        <div class="footer-left">
+            <p>© 2024 All Rights Reserved</p>
+        </div>
+        <div class="footer-right">
+            <p>Lipa City Agricultural Office</p>
+        </div>
+    </footer>
+</body>
+</html>

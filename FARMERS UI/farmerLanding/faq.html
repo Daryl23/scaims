@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APGORRS - FAQ</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../../shared/app-path.js"></script>
+  <script src="../../shared/public-nav-config.js"></script>
+  <script src="../../shared/public-nav.js" defer></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            olive: '#3b4918', 'olive-light': '#576f1b', 'olive-dark': '#2a3311',
+            harvest: '#f7931e', 'harvest-dark': '#d97b0d',
+            cream: '#fffcef', 'cream-dark': '#f5f5f0',
+            gold: '#c8bd44', 'gold-light': '#ccc14f',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #fffcef; }
+    ::-webkit-scrollbar-thumb { background: #3b4918; border-radius: 4px; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s cubic-bezier(0.25,0.46,0.45,0.94),
+                  transform 0.75s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+
+    /* ── FAQ accordion ── */
+    .faq-item { border-bottom: 1px solid rgba(200,189,68,0.25); }
+    .faq-item:last-child { border-bottom: none; }
+
+    .faq-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .faq-btn:hover { background: rgba(247,147,30,0.04); }
+
+    .faq-icon {
+      flex-shrink: 0;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(247,147,30,0.12);
+      display: flex; align-items: center; justify-content: center;
+      color: #f7931e;
+      transition: background 0.25s, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .faq-btn[aria-expanded="true"] .faq-icon {
+      background: #f7931e;
+      color: #fff;
+      transform: rotate(45deg);
+    }
+
+    .faq-body {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .faq-body.open { grid-template-rows: 1fr; }
+    .faq-body-inner { overflow: hidden; }
+    .faq-body-content {
+      padding: 0 24px 20px 24px;
+      color: #3b4918cc;
+      line-height: 1.75;
+    }
+
+    /* category pill active */
+    .cat-pill.active {
+      background: #3b4918;
+      color: #fffcef;
+    }
+  </style>
+  <link rel="stylesheet" href="../../shared/public-nav.css">
+</head>
+<body class="font-sans bg-cream text-olive antialiased">
+
+    <div data-public-navbar data-active-page="faq"></div>
+
+
+  <!-- ══ HERO ══ -->
+  <section class="relative pt-20 overflow-hidden bg-cream">
+    <div class="absolute inset-0 opacity-20 pointer-events-none">
+      <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#c8bd44" stroke-width="0.5"/>
+        </pattern>
+        <rect width="100" height="100" fill="url(#grid)"/>
+      </svg>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid lg:grid-cols-2 gap-12 items-center">
+      <div class="reveal space-y-6">
+        <span class="inline-flex items-center gap-2 text-harvest font-bold tracking-wider uppercase text-sm">
+          <span class="w-8 h-0.5 bg-harvest"></span>
+          Help Center
+        </span>
+        <h1 class="text-4xl lg:text-5xl font-serif font-bold text-olive leading-tight">
+          Frequently Asked<br>
+          <span class="text-gold-light italic">Questions</span>
+        </h1>
+        <p class="text-lg text-olive/75 leading-relaxed max-w-lg">
+          Have questions about APGORRS? Browse our FAQ to find quick answers about registration, account management, and using the system.
+        </p>
+
+        <!-- Search bar -->
+        <div class="relative max-w-md">
+          <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-olive/40 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/>
+          </svg>
+          <input id="faqSearch" type="text" placeholder="Search questions…"
+            class="w-full pl-12 pr-4 py-3.5 rounded-xl border-2 border-olive/20 focus:border-harvest focus:ring-4 focus:ring-harvest/10 outline-none transition-all bg-white text-olive placeholder-olive/40 font-medium"
+            oninput="filterFAQ(this.value)">
+        </div>
+      </div>
+
+      <div class="reveal hidden lg:flex items-center justify-center" style="transition-delay:0.15s">
+        <div class="relative w-72 h-72">
+          <div class="absolute inset-0 bg-gradient-to-br from-gold/20 to-harvest/15 rounded-full"></div>
+          <img src="assets/faq.png" alt="FAQ illustration" class="relative w-full h-full object-contain drop-shadow-xl">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FAQ ACCORDION ══ -->
+  <section class="py-16 bg-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+
+      <!-- Category filter pills -->
+      <div class="flex flex-wrap gap-2 mb-10 reveal" id="catPills">
+        <button class="cat-pill active px-4 py-2 rounded-full border border-olive/20 text-sm font-semibold text-olive transition-all hover:bg-olive hover:text-cream" onclick="filterCategory('all', this)">All</button>
+        <button class="cat-pill px-4 py-2 rounded-full border border-olive/20 text-sm font-semibold text-olive transition-all hover:bg-olive hover:text-cream" onclick="filterCategory('general', this)">General</button>
+        <button class="cat-pill px-4 py-2 rounded-full border border-olive/20 text-sm font-semibold text-olive transition-all hover:bg-olive hover:text-cream" onclick="filterCategory('registration', this)">Registration</button>
+        <button class="cat-pill px-4 py-2 rounded-full border border-olive/20 text-sm font-semibold text-olive transition-all hover:bg-olive hover:text-cream" onclick="filterCategory('account', this)">Account</button>
+        <button class="cat-pill px-4 py-2 rounded-full border border-olive/20 text-sm font-semibold text-olive transition-all hover:bg-olive hover:text-cream" onclick="filterCategory('reports', this)">Reports</button>
+      </div>
+
+      <!-- No results -->
+      <div id="noResults" class="hidden text-center py-16 text-olive/50">
+        <svg class="w-12 h-12 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/>
+        </svg>
+        <p class="font-medium text-lg">No results found</p>
+        <p class="text-sm mt-1">Try a different keyword or browse by category</p>
+      </div>
+
+      <!-- FAQ list -->
+      <div id="faqList" class="bg-cream rounded-2xl border border-gold/25 shadow-sm overflow-hidden reveal">
+
+        <!-- General -->
+        <div class="faq-item" data-category="general">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">What is APGORRS?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                APGORRS stands for <strong>Agricultural Profile Gateway Online Registration and Reporting System</strong>. It is an online platform developed for the Lipa City Agricultural Office to manage farmers' profiles and agricultural data efficiently.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-category="general">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">Who can use APGORRS?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                APGORRS is designed for <strong>registered farmers in Lipa City</strong>, agricultural office administrators, and staff responsible for monitoring agricultural data.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-category="general">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">Is APGORRS accessible on mobile devices?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                Yes, APGORRS is fully optimized for both desktop and mobile platforms so you can access it from any device.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Registration -->
+        <div class="faq-item" data-category="registration">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">How do I register as a farmer on APGORRS?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                To register, click the <strong>"Register"</strong> button on the homepage and fill out the required details including your personal information and farm details.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-category="registration">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">What documents or information do I need during registration?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                You will need your <strong>basic personal details</strong> and specific information about your farm such as location, size, and crop types.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-category="registration">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">Can I register multiple farms under one account?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                Yes, you can add <strong>multiple farm parcels</strong> under your profile after completing your initial registration.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account -->
+        <div class="faq-item" data-category="account">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">Can I update my farm details after registration?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                Yes. Once you have created an account, you can log in anytime to <strong>update your farm information</strong> through your dashboard.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-category="account">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">What can I do on my farmer dashboard?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                On your dashboard you can: <strong>view office updates and announcements</strong>, add or update farm parcel information, submit reports to the agriculture office, and track your submission history.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-category="account">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">Will APGORRS send me notifications or updates?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                Yes. Farmers will receive <strong>important updates and notifications</strong> from the Lipa City Agricultural Office directly on their dashboard.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reports -->
+        <div class="faq-item" data-category="reports">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">What kind of reports can I submit through the system?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                You can submit <strong>crop reports, crop damage reports</strong>, and other farm-related data required by the Lipa City Agricultural Office.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-category="reports">
+          <button class="faq-btn" onclick="toggleFAQ(this)" aria-expanded="false">
+            <span class="font-semibold text-olive text-base">How can I provide suggestions or feedback?</span>
+            <span class="faq-icon">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </span>
+          </button>
+          <div class="faq-body">
+            <div class="faq-body-inner">
+              <div class="faq-body-content">
+                You can submit feedback through the <strong>Suggestions form</strong> available in the APGORRS Services section on the homepage.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /#faqList -->
+
+      <!-- Still need help CTA -->
+      <div class="mt-12 reveal" style="transition-delay:0.1s">
+        <div class="bg-gradient-to-br from-olive to-olive-light rounded-2xl p-8 text-white flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <h3 class="text-xl font-bold font-serif mb-2">Still have questions?</h3>
+            <p class="text-white/75 text-sm">Our team at the Lipa City Agricultural Office is here to help.</p>
+          </div>
+          <a href="contact.html"
+            class="shrink-0 bg-harvest text-white px-7 py-3 rounded-xl font-semibold hover:bg-harvest-dark transition-all hover:shadow-lg hover:shadow-harvest/30 hover:-translate-y-0.5 whitespace-nowrap">
+            Contact Us
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="bg-olive-dark text-white py-16 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-12 mb-12">
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            </div>
+            <div><span class="text-2xl font-bold block">APGORRS</span><span class="text-xs text-white/60">Agricultural Profile Gateway</span></div>
+          </div>
+          <p class="text-white/60 max-w-sm mb-6 leading-relaxed">Agricultural Profile Gateway Online Registration and Reporting System for Lipa City farmers.</p>
+          <div class="flex gap-3">
+            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1">FB</a>
+            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1">IG</a>
+            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1">TW</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4 text-gold-light">Quick Links</h4>
+          <ul class="space-y-3 text-white/60">
+            <li><a href="about.html" class="hover:text-white hover:pl-2 transition-all">About Us</a></li>
+            <li><a href="faq.html" class="hover:text-white hover:pl-2 transition-all">FAQ</a></li>
+            <li><a href="contact.html" class="hover:text-white hover:pl-2 transition-all">Contact</a></li>
+            <li><a href="../registration/rsbsa_check.html" class="hover:text-white hover:pl-2 transition-all">Register</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4 text-gold-light">Contact</h4>
+          <ul class="space-y-3 text-white/60">
+            <li class="flex items-start gap-2"><span>📍</span><span>Lipa City, Batangas</span></li>
+            <li class="flex items-center gap-2"><span>✉️</span><span>agriculture@lipa.gov.ph</span></li>
+            <li class="flex items-center gap-2"><span>📞</span><span>+63 (043) 123-4567</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-white/40 text-sm">© 2024 APGORRS. All rights reserved.</p>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-white/40 hover:text-white text-sm flex items-center gap-2 transition-colors group">
+          Back to Top <span class="group-hover:-translate-y-1 transition-transform">↑</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Navbar ── */
+    /* ── Scroll reveal ── */
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('active'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* ── FAQ accordion ── */
+    function toggleFAQ(btn) {
+      const body    = btn.nextElementSibling;
+      const isOpen  = btn.getAttribute('aria-expanded') === 'true';
+
+      // close all others
+      document.querySelectorAll('.faq-btn[aria-expanded="true"]').forEach(b => {
+        if (b !== btn) {
+          b.setAttribute('aria-expanded','false');
+          b.nextElementSibling.classList.remove('open');
+        }
+      });
+
+      btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      body.classList.toggle('open', !isOpen);
+    }
+
+    /* ── Search ── */
+    function filterFAQ(query) {
+      const q = query.toLowerCase().trim();
+      const items = document.querySelectorAll('.faq-item');
+      let visible = 0;
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const show = !q || text.includes(q);
+        item.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      document.getElementById('noResults').classList.toggle('hidden', visible > 0);
+    }
+
+    /* ── Category filter ── */
+    function filterCategory(cat, pill) {
+      // update active pill
+      document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      // reset search
+      document.getElementById('faqSearch').value = '';
+
+      const items = document.querySelectorAll('.faq-item');
+      let visible = 0;
+      items.forEach(item => {
+        const show = cat === 'all' || item.dataset.category === cat;
+        item.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      document.getElementById('noResults').classList.toggle('hidden', visible > 0);
+    }
+  </script>
+</body>
+</html>
