@@ -1,9 +1,27 @@
 <?php
+session_start();
+header('Content-Type: application/json');
+
+if (!isset($_SESSION['AdminID'])) {
+    http_response_code(401);
+    echo json_encode(["error" => "Please log in as an admin to view report details."]);
+    exit();
+}
+
 require_once 'db_connection.php';
+require_once dirname(__DIR__, 4) . '/shared/report_image_storage.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+try {
+    scaims_ensure_report_image_columns($conn);
+} catch (RuntimeException $e) {
+    http_response_code(500);
+    echo json_encode(["error" => "Report image information is unavailable right now. Please try again later."]);
+    exit();
+}
 
 $id = $_POST['id'] ?? '';
 
@@ -22,6 +40,7 @@ if (is_numeric($id)) {
                    cr.number_of_trees AS NumberOfTrees,
                    cr.latitude AS Latitude,
                    cr.longitude AS Longitude,
+                   cr.image_path AS ImagePath,
                    cr.reportDate AS DateReported,
                    COALESCE(ca.AdminName, CONCAT(cf.FirstName, ' ', cf.Surname), cr.created_by) AS ReportedBy,
                    CASE WHEN ca.AdminName IS NOT NULL THEN 'Admin' ELSE 'Farmer' END AS ReporterType
@@ -39,6 +58,7 @@ if (is_numeric($id)) {
 
     if ($result->num_rows > 0) {
         $cropReportDetails = $result->fetch_assoc();
+        $imageUrl = scaims_report_image_url($cropReportDetails['ImagePath'] ?? null, '../../../../');
         
         // Apply ucwords to relevant fields
         $cropReportDetails['Name'] = htmlspecialchars(ucwords($cropReportDetails['Name']), ENT_QUOTES, 'UTF-8');
@@ -55,6 +75,8 @@ if (is_numeric($id)) {
         $cropReportDetails['DateReported'] = htmlspecialchars($cropReportDetails['DateReported'], ENT_QUOTES, 'UTF-8');
         $cropReportDetails['ReportedBy'] = htmlspecialchars(ucwords($cropReportDetails['ReportedBy']), ENT_QUOTES, 'UTF-8');
         $cropReportDetails['ReporterType'] = htmlspecialchars($cropReportDetails['ReporterType'], ENT_QUOTES, 'UTF-8');
+        $cropReportDetails['ImageUrl'] = $imageUrl ? htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') : '';
+        unset($cropReportDetails['ImagePath']);
 
         error_log("Crop Harvest Report Details: " . json_encode($cropReportDetails));
         echo json_encode($cropReportDetails);

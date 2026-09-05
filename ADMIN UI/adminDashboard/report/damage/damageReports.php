@@ -14,6 +14,7 @@ $damageCssVersion = @filemtime(__DIR__ . '/damages.css') ?: time();
 $damageJsVersion = @filemtime(__DIR__ . '/cropDamage.js') ?: time();
 $leafletCropIconsVersion = @filemtime(__DIR__ . '/../../../../shared/leaflet-crop-icons.js') ?: time();
 $cropCatalogVersion = @filemtime(__DIR__ . '/../../../../shared/crop-catalog.js') ?: time();
+$sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-capture.css') ?: time();
 ?>
 <html lang="en">
 <head>
@@ -21,6 +22,7 @@ $cropCatalogVersion = @filemtime(__DIR__ . '/../../../../shared/crop-catalog.js'
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crop Damage Reports</title>
     <link rel="stylesheet" href="damages.css?v=<?php echo $damageCssVersion; ?>">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($rootSharedPath); ?>report-image-capture.css?v=<?php echo $sharedImageCssVersion; ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -258,6 +260,11 @@ $cropCatalogVersion = @filemtime(__DIR__ . '/../../../../shared/crop-catalog.js'
                 <div class="modal-content">
                     <span class="close-button">&times;</span>
                     <h2 id="modalTitle">Crop Damage Report Details</h2>
+                    <div id="damageReportImagePanel" class="report-image-detail" hidden>
+                        <h3>Larawan ng Nasirang Pananim</h3>
+                        <img id="damageReportImage" src="" alt="Damaged crop report image" hidden>
+                        <p id="damageReportNoImage">Walang larawan.</p>
+                    </div>
                     <div id="modal-body">
                         <p><strong>Farmer:</strong> <span id="farmerID"></span></p>
                         <p><strong>Reported By:</strong> <span id="reportedBy"></span></p>

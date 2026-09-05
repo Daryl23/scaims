@@ -7,11 +7,15 @@ if (!isset($_SESSION['AdminID'])) {
 }
 
 require_once dirname(__DIR__, 3) . '/conn.php';
+require_once dirname(__DIR__, 3) . '/shared/report_image_storage.php';
 
 try {
     $conn = scaims_db_mysqli();
+    scaims_ensure_report_image_columns($conn);
 } catch (RuntimeException $e) {
-    die($e->getMessage());
+    $_SESSION['message'] = 'The report database is unavailable right now. Please try again later.';
+    header("Location: reportAnalytics.php");
+    exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
@@ -97,6 +101,15 @@ if ($reportType === 'crop') {
         exit();
     }
 
+    $imageResult = scaims_collect_report_image('crop-report-image', 'crop');
+    if (!$imageResult['ok']) {
+        $_SESSION['message'] = $imageResult['message'] ?? 'The crop image could not be uploaded. Please try again.';
+        $conn->close();
+        header("Location: reportAnalytics.php");
+        exit();
+    }
+    $imagePath = $imageResult['path'] ?? null;
+
     $stmt = $conn->prepare("INSERT INTO crop_reports (
         location,
         crop_commodity,
@@ -112,11 +125,20 @@ if ($reportType === 'crop') {
         crop_status,
         number_of_trees,
         latitude,
-        longitude
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, NULLIF(?, ''), NULLIF(?, ''))");
+        longitude,
+        image_path
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, NULLIF(?, ''), NULLIF(?, ''), ?)");
+
+    if (!$stmt) {
+        scaims_delete_report_image($imagePath);
+        $_SESSION['message'] = 'Error: ' . $conn->error;
+        $conn->close();
+        header("Location: reportAnalytics.php");
+        exit();
+    }
 
     $stmt->bind_param(
-        "sssssssissssss",
+        "sssssssisssssss",
         $location,
         $cropCommodity,
         $cropType,
@@ -130,12 +152,14 @@ if ($reportType === 'crop') {
         $cropStatus,
         $numberOfTrees,
         $latitude,
-        $longitude
+        $longitude,
+        $imagePath
     );
 
     if ($stmt->execute()) {
         $_SESSION['message'] = 'Crop report submitted successfully.';
     } else {
+        scaims_delete_report_image($imagePath);
         $_SESSION['message'] = 'Error: ' . $stmt->error;
     }
     $stmt->close();
@@ -170,6 +194,15 @@ if ($reportType === 'crop') {
         exit();
     }
 
+    $imageResult = scaims_collect_report_image('damage-report-image', 'damage');
+    if (!$imageResult['ok']) {
+        $_SESSION['message'] = $imageResult['message'] ?? 'The crop damage image could not be uploaded. Please try again.';
+        $conn->close();
+        header("Location: reportAnalytics.php");
+        exit();
+    }
+    $imagePath = $imageResult['path'] ?? null;
+
     $stmt = $conn->prepare("INSERT INTO damage_reports (
         dmgLocation,
         dmgCropCommodity,
@@ -185,11 +218,20 @@ if ($reportType === 'crop') {
         dmgFarmGatePrice,
         damage_number_of_trees,
         latitude,
-        longitude
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, NULLIF(?, ''), NULLIF(?, ''))");
+        longitude,
+        image_path
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, NULLIF(?, ''), NULLIF(?, ''), ?)");
+
+    if (!$stmt) {
+        scaims_delete_report_image($imagePath);
+        $_SESSION['message'] = 'Error: ' . $conn->error;
+        $conn->close();
+        header("Location: reportAnalytics.php");
+        exit();
+    }
 
     $stmt->bind_param(
-        "ssssssssisssss",
+        "ssssssssissssss",
         $location,
         $cropCommodity,
         $cropType,
@@ -203,12 +245,14 @@ if ($reportType === 'crop') {
         $farmGatePrice,
         $numberOfTrees,
         $latitude,
-        $longitude
+        $longitude,
+        $imagePath
     );
 
     if ($stmt->execute()) {
         $_SESSION['message'] = 'Damage report submitted successfully.';
     } else {
+        scaims_delete_report_image($imagePath);
         $_SESSION['message'] = 'Error: ' . $stmt->error;
     }
     $stmt->close();

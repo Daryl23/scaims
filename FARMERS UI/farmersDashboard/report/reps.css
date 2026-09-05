@@ -523,6 +523,310 @@ small {
     white-space: nowrap;
 }
 
+.report-status-message {
+    background: #e8f5ec;
+    border: 1px solid #b9e1c4;
+    border-radius: 8px;
+    color: #16663f;
+    margin: 12px 0 16px;
+    padding: 12px 16px;
+}
+
+.report-section-locked input:not([type="hidden"]),
+.report-section-locked select,
+.report-section-locked textarea,
+.is-readonly-field {
+    background-color: #f7faf6;
+    color: #2f3b2d;
+    opacity: 1;
+}
+
+.report-section-locked input:not([type="hidden"]),
+.report-section-locked textarea {
+    border-color: #d7e3d2;
+}
+
+.report-edit-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+    margin: 14px 0;
+}
+
+.report-edit-button,
+.report-save-button,
+.report-cancel-edit-button {
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 9px 14px;
+}
+
+.report-edit-button,
+.report-save-button {
+    background-color: #198754;
+    color: #ffffff;
+}
+
+.report-edit-button:hover,
+.report-save-button:hover {
+    background-color: #066338;
+}
+
+.report-cancel-edit-button {
+    background-color: #eef6ef;
+    border: 1px solid #c8dccb;
+    color: #198754;
+}
+
+.report-cancel-edit-button:hover {
+    background-color: #dff0e3;
+}
+
+.farmer-report-edit-form[hidden],
+.farmer-report-detail-grid[hidden],
+.farmer-report-edit-image-actions[hidden],
+.report-edit-actions[hidden] {
+    display: none;
+}
+
+.farmer-report-edit-image-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    margin: -6px 0 16px;
+}
+
+.farmer-report-edit-grid label {
+    color: #198754;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin: 0 0 6px;
+    text-transform: uppercase;
+}
+
+.farmer-report-edit-grid input,
+.farmer-report-edit-grid select {
+    border: 1px solid #d7e3d2;
+    border-radius: 6px;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    padding: 9px 10px;
+    width: 100%;
+}
+
+.report-edit-message {
+    color: #16663f;
+    font-size: 0.9rem;
+    min-height: 1.25rem;
+    text-align: right;
+}
+
+.report-edit-message.is-error {
+    color: #b42318;
+    font-weight: 600;
+}
+
+.farmer-report-list {
+    background-color: #F9F9F9;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-top: 24px;
+    padding: 18px;
+}
+
+.farmer-report-list-header {
+    align-items: flex-start;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.farmer-report-list-header h2 {
+    color: #198754;
+    font-size: 1.35rem;
+    margin: 0 0 4px;
+}
+
+.farmer-report-list-header p {
+    color: #5c6b4a;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.report-sort-form {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 190px;
+}
+
+.report-sort-form label {
+    color: #674636;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.report-sort-form select {
+    margin: 0;
+}
+
+.farmer-report-table-wrap {
+    overflow-x: auto;
+}
+
+.farmer-report-table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.farmer-report-table th {
+    background-color: #2aaa532d;
+    color: #198754;
+    font-size: 0.86rem;
+    padding: 12px;
+    text-align: left;
+}
+
+.farmer-report-table td {
+    border-bottom: 1px solid #dddddd;
+    color: #333;
+    font-size: 0.84rem;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.farmer-report-table tr:nth-of-type(even) {
+    background-color: #ffffff;
+}
+
+.farmer-report-empty {
+    color: #6e767d;
+    font-style: italic;
+    text-align: center;
+}
+
+.farmer-report-view-button {
+    background-color: #198754;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 600;
+    padding: 8px 12px;
+}
+
+.farmer-report-view-button:hover {
+    background-color: #066338;
+}
+
+.farmer-report-modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    height: 100%;
+    left: 0;
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.farmer-report-modal-content {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    margin: 3% auto;
+    max-width: 980px;
+    padding: 30px;
+    position: relative;
+    width: 86%;
+}
+
+.farmer-report-modal-close {
+    background: transparent;
+    border: 0;
+    color: #333;
+    cursor: pointer;
+    font-size: 30px;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+
+#farmerReportModalTitle {
+    border-bottom: 2px solid #198754;
+    color: #198754;
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.farmer-report-detail-grid {
+    background-color: #2aaa532d;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 20px;
+}
+
+.farmer-report-detail-grid p {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 12px;
+}
+
+.farmer-report-detail-grid strong {
+    color: #198754;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.farmer-report-detail-grid span {
+    color: #333;
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .farmer-report-list-header {
+        flex-direction: column;
+    }
+
+    .report-sort-form {
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .farmer-report-modal-content {
+        margin: 8% auto;
+        padding: 22px;
+        width: 92%;
+    }
+
+    .farmer-report-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 320px) {
     
     .profile-section h2 {

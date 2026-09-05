@@ -410,6 +410,23 @@ $(document).ready(function() {
         }
     });
 
+    function updateCropReportImage(imageUrl) {
+        const panel = $('#cropReportImagePanel');
+        const image = $('#cropReportImage');
+        const noImage = $('#cropReportNoImage');
+
+        panel.removeAttr('hidden').show();
+
+        if (imageUrl) {
+            image.attr('src', imageUrl).removeAttr('hidden').show();
+            noImage.attr('hidden', true).hide();
+            return;
+        }
+
+        image.removeAttr('src').attr('hidden', true).hide();
+        noImage.removeAttr('hidden').show();
+    }
+
     function showCropReportDetails(reportId) {
         $.ajax({
             url: 'getCropReports.php',
@@ -438,6 +455,7 @@ $(document).ready(function() {
                 $('#cropLatitude').text(report.Latitude || 'N/A');
                 $('#cropLongitude').text(report.Longitude || 'N/A');
                 $('#dateReported').text(report.DateReported);
+                updateCropReportImage(report.ImageUrl || '');
                 updateReportMapCard(report);
                 // Show the modal
                 $('#cropReportModal').show();

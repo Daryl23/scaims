@@ -85,7 +85,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Reports & Analytics</title>
     <?php $reportCssVersion = @filemtime(__DIR__ . '/reportAnalytics.css') ?: time(); ?>
+    <?php $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../shared/report-image-capture.css') ?: time(); ?>
     <link rel="stylesheet" href="reportAnalytics.css?v=<?php echo $reportCssVersion; ?>">
+    <link rel="stylesheet" href="../../../shared/report-image-capture.css?v=<?php echo $sharedImageCssVersion; ?>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -126,7 +128,7 @@
                     <p>Admins can file a crop or damage report on behalf of a farmer who is already registered in the database.</p>
                 </div>
 
-                <form action="report_submit.php" method="POST" class="admin-report-form" id="admin-report-form">
+                <form action="report_submit.php" method="POST" enctype="multipart/form-data" class="admin-report-form" id="admin-report-form">
                     <div class="form-grid reporting-grid">
                         <div class="form-group form-group-wide">
                             <label for="farmer-search">Search Farmer</label>
@@ -164,6 +166,15 @@
 
                     <div id="crop-report-fields" class="report-fields" hidden>
                         <h3>Crop Harvest Report</h3>
+                        <div
+                            data-report-image-capture
+                            data-input-name="crop-report-image"
+                            data-label="Larawan ng Inaning Pananim"
+                            data-capture-label="Kumuha ng Larawan"
+                            data-upload-label="Pumili mula sa Gallery"
+                            data-replace-label="Palitan ang Larawan"
+                            data-remove-label="Alisin ang Larawan"
+                        ></div>
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="crop-location">Location</label>
@@ -245,6 +256,15 @@
 
                     <div id="damage-report-fields" class="report-fields" hidden>
                         <h3>Crop Damage Report</h3>
+                        <div
+                            data-report-image-capture
+                            data-input-name="damage-report-image"
+                            data-label="Larawan ng Nasirang Pananim"
+                            data-capture-label="Kumuha ng Larawan"
+                            data-upload-label="Pumili mula sa Gallery"
+                            data-replace-label="Palitan ang Larawan"
+                            data-remove-label="Alisin ang Larawan"
+                        ></div>
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="damage-location">Location</label>
@@ -338,8 +358,10 @@
     <?php
     $reportScriptVersion = @filemtime(__DIR__ . '/admin-report-form.js') ?: time();
     $cropCatalogScriptVersion = @filemtime(__DIR__ . '/../../../shared/crop-catalog.js') ?: time();
+    $sharedImageScriptVersion = @filemtime(__DIR__ . '/../../../shared/report-image-capture.js') ?: time();
     ?>
     <script src="../../../shared/crop-catalog.js?v=<?php echo $cropCatalogScriptVersion; ?>"></script>
+    <script src="../../../shared/report-image-capture.js?v=<?php echo $sharedImageScriptVersion; ?>"></script>
     <script src="admin-report-form.js?v=<?php echo $reportScriptVersion; ?>"></script>
     <script>
         // Parse PHP data to JavaScript

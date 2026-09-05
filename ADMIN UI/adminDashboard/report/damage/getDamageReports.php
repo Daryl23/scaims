@@ -1,9 +1,27 @@
 <?php
+session_start();
+header('Content-Type: application/json');
+
+if (!isset($_SESSION['AdminID'])) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Please log in as an admin to view report details.']);
+    exit;
+}
+
 require_once 'db_connection.php';
+require_once dirname(__DIR__, 4) . '/shared/report_image_storage.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+try {
+    scaims_ensure_report_image_columns($conn);
+} catch (RuntimeException $e) {
+    http_response_code(500);
+    echo json_encode(['error' => 'Report image information is unavailable right now. Please try again later.']);
+    exit;
+}
 
 if (!isset($_POST['id']) || empty($_POST['id'])) {
     echo json_encode(['error' => 'Report ID is required']);
@@ -27,6 +45,7 @@ try {
                    dr.damage_number_of_trees AS NumberOfTrees,
                    dr.latitude AS Latitude,
                    dr.longitude AS Longitude,
+                   dr.image_path AS ImagePath,
                    dr.reportDate AS ReportDate,
                    COALESCE(ca.AdminName, CONCAT(cf.FirstName, ' ', cf.Surname), dr.created_by) AS ReportedBy,
                    CASE WHEN ca.AdminName IS NOT NULL THEN 'Admin' ELSE 'Farmer' END AS ReporterType
@@ -48,6 +67,7 @@ try {
     }
 
     $report = $result->fetch_assoc();
+    $imageUrl = scaims_report_image_url($report['ImagePath'] ?? null, '../../../../');
 
     echo json_encode([
         'id' => $report['id'],
@@ -66,7 +86,8 @@ try {
         'NumberOfTrees' => htmlspecialchars($report['NumberOfTrees'], ENT_QUOTES, 'UTF-8'),
         'Latitude' => htmlspecialchars($report['Latitude'] ?? '', ENT_QUOTES, 'UTF-8'),
         'Longitude' => htmlspecialchars($report['Longitude'] ?? '', ENT_QUOTES, 'UTF-8'),
-        'ReportDate' => htmlspecialchars($report['ReportDate'], ENT_QUOTES, 'UTF-8')
+        'ReportDate' => htmlspecialchars($report['ReportDate'], ENT_QUOTES, 'UTF-8'),
+        'ImageUrl' => $imageUrl ? htmlspecialchars($imageUrl, ENT_QUOTES, 'UTF-8') : ''
     ]);
 
     $stmt->close();

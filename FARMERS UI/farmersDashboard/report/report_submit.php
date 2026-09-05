@@ -1,16 +1,27 @@
 <?php
 session_start(); 
 
+if (!isset($_SESSION['UName'])) {
+    header("Location: ../../farmerLogin/farmerlogin.html");
+    exit();
+}
+
 require_once dirname(__DIR__, 3) . '/conn.php';
+require_once dirname(__DIR__, 3) . '/shared/report_image_storage.php';
+require_once dirname(__DIR__, 3) . '/shared/farmer_report_defaults.php';
 
 try {
     $conn = scaims_db_mysqli();
+    scaims_ensure_report_image_columns($conn);
+    scaims_ensure_farmer_report_defaults_table($conn);
 } catch (RuntimeException $e) {
-    die($e->getMessage());
+    $_SESSION['message'] = 'The report database is unavailable right now. Please try again later.';
+    header("Location: report.php");
+    exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $report_type = $_POST["report-type"];
+    $report_type = $_POST["report-type"] ?? '';
     $farmerId = null;
 
     function parseCoordinateValue($value) {
@@ -47,6 +58,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
             $farmerLookup->close();
         }
+    }
+
+    if ($farmerId === null) {
+        $_SESSION['message'] = 'Unable to find your farmer profile. Please sign in again.';
+        header("Location: report.php");
+        exit();
     }
 
     if ($report_type === "crop") {
@@ -86,6 +103,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
+        $imageResult = scaims_collect_report_image(
+            'crop-report-image',
+            'crop',
+            $_POST['crop-pending-report-image-token'] ?? null
+        );
+        if (!$imageResult['ok']) {
+            $_SESSION['message'] = $imageResult['message'] ?? 'The crop image could not be uploaded. Please try again.';
+            header("Location: report.php");
+            exit();
+        }
+        $imagePath = $imageResult['path'] ?? null;
+
         // Updated SQL with crop_status and number_of_trees
         $stmt = $conn->prepare("INSERT INTO crop_reports (
             location, 
@@ -101,11 +130,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             number_of_trees,
             latitude,
             longitude,
+            image_path,
             reportDate, 
             created_by
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULLIF(?, ''), NULLIF(?, ''), NOW(), ?)");
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULLIF(?, ''), NULLIF(?, ''), ?, NOW(), ?)");
+
+        if (!$stmt) {
+            scaims_delete_report_image($imagePath);
+            $_SESSION['message'] = 'Error: ' . $conn->error;
+            header("Location: report.php");
+            exit();
+        }
         
-        $stmt->bind_param("sssssssissssss", 
+        $stmt->bind_param("sssssssisssssss",
             $location, 
             $crop_commodity, 
             $crop_type, 
@@ -119,12 +156,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $number_of_trees,
             $latitude,
             $longitude,
+            $imagePath,
             $created_by
         );
         
         if ($stmt->execute()) {
-            $_SESSION['message'] = 'New crop report submitted successfully✅'; 
+            $defaultsSaved = scaims_save_farmer_report_defaults($conn, $farmerId, 'crop', [
+                'location' => $location,
+                'crop_commodity' => $crop_commodity,
+                'crop_type' => $crop_type,
+                'crop_variety' => $crop_variety,
+                'date_planted' => $date_planted,
+                'harvest_date' => $harvest_date,
+                'estimate_harvest' => $estimate_harvest,
+                'crop_status' => $crop_status,
+                'number_of_trees' => $number_of_trees,
+                'farm_gate_price' => $farm_gate_price,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+            ]);
+            $_SESSION['message'] = $defaultsSaved
+                ? 'New crop report submitted successfully✅'
+                : 'New crop report submitted successfully, but reusable report data could not be saved.';
         } else {
+            scaims_delete_report_image($imagePath);
             $_SESSION['message'] = 'Error: ' . $stmt->error; 
         }
 
@@ -161,6 +216,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: report.php");
                 exit();
             }
+
+            $imageResult = scaims_collect_report_image(
+                'damage-report-image',
+                'damage',
+                $_POST['damage-pending-report-image-token'] ?? null
+            );
+            if (!$imageResult['ok']) {
+                $_SESSION['message'] = $imageResult['message'] ?? 'The crop damage image could not be uploaded. Please try again.';
+                header("Location: report.php");
+                exit();
+            }
+            $imagePath = $imageResult['path'] ?? null;
             
             // Updated SQL with damage_number_of_trees
             $sql = "INSERT INTO damage_reports (
@@ -177,16 +244,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 damage_number_of_trees,
                 latitude,
                 longitude,
+                image_path,
                 reportDate,
                 created_by
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULLIF(?, ''), NULLIF(?, ''), NOW(), ?)";
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULLIF(?, ''), NULLIF(?, ''), ?, NOW(), ?)";
 
             $stmt = $conn->prepare($sql);
             if (!$stmt) {
                 throw new Exception("Prepare failed: " . $conn->error);
             }
 
-            $stmt->bind_param("ssssssssisssss",
+            $stmt->bind_param("ssssssssissssss",
                 $location,
                 $crop_commodity,
                 $crop_type,
@@ -200,16 +268,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $damage_number_of_trees,
                 $latitude,
                 $longitude,
+                $imagePath,
                 $created_by
             );
 
             if (!$stmt->execute()) {
+                scaims_delete_report_image($imagePath);
                 throw new Exception("Execute failed: " . $stmt->error);
             }
 
             if ($stmt->affected_rows > 0) {
-                $_SESSION['message'] = "Damage report submitted successfully✅";
+                $defaultsSaved = scaims_save_farmer_report_defaults($conn, $farmerId, 'damage', [
+                    'location' => $location,
+                    'crop_commodity' => $crop_commodity,
+                    'crop_type' => $crop_type,
+                    'crop_variety' => $crop_variety,
+                    'date_occurrence' => $date_occurrence,
+                    'damage_cause' => $damage_cause,
+                    'percent_damage' => $percent_damage,
+                    'estimated_loss' => $estimated_loss,
+                    'farm_gate_price' => $farm_gate_price,
+                    'number_of_trees' => $damage_number_of_trees,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                ]);
+                $_SESSION['message'] = $defaultsSaved
+                    ? "Damage report submitted successfully✅"
+                    : 'Damage report submitted successfully, but reusable report data could not be saved.';
             } else {
+                scaims_delete_report_image($imagePath);
                 throw new Exception("No rows were inserted.");
             }
 
@@ -219,6 +306,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['message'] = "Error: " . $e->getMessage();
             error_log("Error in damage report submission: " . $e->getMessage());
         }
+    } else {
+        $_SESSION['message'] = 'Please choose a report type.';
     }
 
     $conn->close();

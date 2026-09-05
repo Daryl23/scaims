@@ -342,6 +342,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const otherCropType = document.getElementById('other-crop-type');
     const otherDamageCropType = document.getElementById('other-damage-crop-type');
 
+    function setSubmitting(isSubmitting) {
+        if (!form) {
+            return;
+        }
+
+        form.dataset.submitting = isSubmitting ? 'true' : 'false';
+
+        const submitButton = form.querySelector('.submit-report-button');
+        if (submitButton) {
+            submitButton.disabled = isSubmitting;
+            submitButton.textContent = isSubmitting ? 'Uploading...' : 'Submit Report';
+        }
+
+        form.querySelectorAll('[data-report-image-capture] button').forEach(function (button) {
+            if (isSubmitting) {
+                button.dataset.submitWasDisabled = button.disabled ? 'true' : 'false';
+                button.disabled = true;
+            } else if (button.dataset.submitWasDisabled) {
+                button.disabled = button.dataset.submitWasDisabled === 'true';
+                delete button.dataset.submitWasDisabled;
+            }
+        });
+    }
+
     function setSectionEnabled(section, enabled) {
         if (!section) {
             return;
@@ -452,6 +476,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (form) {
         form.addEventListener('submit', function (event) {
+            if (form.dataset.submitting === 'true') {
+                event.preventDefault();
+                return;
+            }
+
             if (!farmerSelect || !farmerSelect.value) {
                 event.preventDefault();
                 alert('Please select the farmer you are reporting for.');
@@ -471,7 +500,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (!prepareCoordinateFieldsForSubmit(reportType.value)) {
                 event.preventDefault();
+                return;
             }
+
+            setSubmitting(true);
         });
     }
 });

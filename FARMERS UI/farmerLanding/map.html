@@ -146,7 +146,7 @@
           <svg class="w-5 h-5 text-gold-light" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
           <h2 class="font-serif font-bold text-lg">Crop Map</h2>
         </div>
-        <p class="text-white/55 text-xs">Lipa City, Batangas · Live data</p>
+        <p class="text-white/55 text-xs">Lipa City + Mataas na Kahoy · Live data</p>
       </div>
 
       <div class="flex-1 overflow-y-auto p-3 space-y-3">
@@ -393,15 +393,60 @@
   }
 
   /* ════ MAP SETUP ════ */
-  const map = L.map('map',{center:[13.9411,121.1631],zoom:13,zoomControl:false});
+  const FALLBACK_SCOPE = {
+    center:[13.9300,121.1400],
+    initialBounds:[[13.8400,121.0350],[14.0200,121.2450]],
+    maxBounds:[[13.8000,120.9900],[14.0600,121.2900]],
+    desktopMinZoom:12,
+    mobileMinZoom:11,
+    maxZoom:19
+  };
+  let mapScope = {...FALLBACK_SCOPE};
+  let locationLookup = {};
+  let lastFocusedLocationValue = null;
+
+  function mapMinZoomForViewport(scope = mapScope) {
+    return window.innerWidth < 768 ? (scope.mobileMinZoom || 11) : (scope.desktopMinZoom || 12);
+  }
+
+  function leafletBounds(bounds) {
+    return bounds ? L.latLngBounds(bounds[0], bounds[1]) : null;
+  }
+
+  function fitBoundsSafe(bounds, options = {}) {
+    const nextBounds = leafletBounds(bounds);
+    if (!nextBounds || !nextBounds.isValid()) return;
+    map.fitBounds(nextBounds, {
+      padding:[24,24],
+      maxZoom:options.maxZoom || 14,
+      animate:options.animate !== false
+    });
+  }
+
+  const map = L.map('map',{
+    center:FALLBACK_SCOPE.center,
+    zoom:12,
+    minZoom:mapMinZoomForViewport(FALLBACK_SCOPE),
+    maxZoom:FALLBACK_SCOPE.maxZoom,
+    maxBounds:leafletBounds(FALLBACK_SCOPE.maxBounds),
+    maxBoundsViscosity:.85,
+    zoomControl:false
+  });
   L.control.zoom({position:'bottomright'}).addTo(map);
 
   const tileLayers = {
-    street: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}),
-    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:19}),
+    street: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:FALLBACK_SCOPE.maxZoom}),
+    satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{attribution:'© Esri',maxZoom:FALLBACK_SCOPE.maxZoom}),
   };
   tileLayers.street.addTo(map);
   let activeLayer = 'street';
+  fitSupportedArea();
+
+  window.addEventListener('resize', () => {
+    const minZoom = mapMinZoomForViewport(mapScope);
+    map.setMinZoom(minZoom);
+    if (map.getZoom() < minZoom) map.setZoom(minZoom);
+  });
 
   function setLayer(name) {
     map.removeLayer(tileLayers[activeLayer]);
@@ -440,6 +485,36 @@
   let allFeatures = [], meta = {};
   const API_URL = 'get_crop_reports.php';
 
+  function configureMapScope(scope) {
+    mapScope = {...FALLBACK_SCOPE, ...(scope || {})};
+    const minZoom = mapMinZoomForViewport(mapScope);
+
+    map.setMinZoom(minZoom);
+    map.setMaxZoom(mapScope.maxZoom || FALLBACK_SCOPE.maxZoom);
+    if (mapScope.maxBounds) map.setMaxBounds(leafletBounds(mapScope.maxBounds));
+    if (map.getZoom() < minZoom) map.setZoom(minZoom);
+  }
+
+  function pointWithinBounds(lat, lng, bounds) {
+    return Array.isArray(bounds)
+      && lat >= bounds[0][0] && lat <= bounds[1][0]
+      && lng >= bounds[0][1] && lng <= bounds[1][1];
+  }
+
+  function buildLocationLookup(hierarchy) {
+    locationLookup = {};
+    (hierarchy || []).forEach(group => {
+      locationLookup[group.value] = group;
+      (group.locations || []).forEach(location => {
+        locationLookup[location.value] = location;
+      });
+    });
+  }
+
+  function fitSupportedArea() {
+    fitBoundsSafe(mapScope.initialBounds || FALLBACK_SCOPE.initialBounds, {maxZoom:13, animate:false});
+  }
+
   async function loadData() {
     try {
       const res  = await fetch(API_URL);
@@ -447,11 +522,16 @@
       if (data.error) throw new Error(data.error);
       allFeatures = data.features || [];
       meta        = data.meta    || {};
+      configureMapScope(meta.scope);
       populateFilters();
       renderMarkers(allFeatures);
       buildLegend();
       updateStats(allFeatures);
-      showFocusedReport();
+      if (focusParams) {
+        showFocusedReport();
+      } else {
+        focusSelectedLocation(allFeatures, true);
+      }
     } catch (err) {
       console.error(err);
       document.getElementById('resultList').innerHTML =
@@ -464,8 +544,9 @@
   function populateFilters() {
     fill('fCropType',  meta.cropTypes   || []);
     fill('fCommodity', meta.commodities || []);
-    fill('fLocation',  meta.locations   || []);
+    populateLocationFilter(meta.locationHierarchy || []);
     fill('fCropStatus',meta.cropStatuses|| []);
+    buildLocationLookup(meta.locationHierarchy || []);
 
     /* Dynamic status chips */
     const sc = document.getElementById('stageChips');
@@ -484,10 +565,40 @@
 
   function fill(id, arr) {
     const sel = document.getElementById(id);
+    while (sel.options.length > 1) sel.remove(1);
     arr.forEach(v => {
       const o = document.createElement('option');
       o.value = v; o.textContent = cap(v);
       sel.appendChild(o);
+    });
+  }
+
+  function populateLocationFilter(hierarchy) {
+    const sel = document.getElementById('fLocation');
+    while (sel.options.length > 1) sel.remove(1);
+
+    if (!hierarchy.length) {
+      fill('fLocation', meta.locations || []);
+      return;
+    }
+
+    hierarchy.forEach(group => {
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = group.label || group.shortLabel || 'Supported Location';
+
+      const allOption = document.createElement('option');
+      allOption.value = group.value;
+      allOption.textContent = `All ${group.shortLabel || group.label}`;
+      optgroup.appendChild(allOption);
+
+      (group.locations || []).forEach(location => {
+        const option = document.createElement('option');
+        option.value = location.value;
+        option.textContent = location.label;
+        optgroup.appendChild(option);
+      });
+
+      sel.appendChild(optgroup);
     });
   }
 
@@ -508,6 +619,7 @@
       const lat = f.geometry.coordinates[1];
       const lng = f.geometry.coordinates[0];
       const c   = markerColor(p);
+      const locationLabel = p.location_label || p.location || p.lgu_label || 'Supported area';
 
       const marker = L.marker([lat,lng],{icon:createIcon(p)});
 
@@ -528,7 +640,7 @@
               ${cap(p.crop_commodity || p.crop_type || 'Unknown')}
             </div>
             <div style="font-size:11px;color:rgba(255,255,255,.78);margin-top:2px;">
-              ${p.crop_variety ? cap(p.crop_variety)+' · ' : ''}${p.location || 'Lipa City'}
+              ${p.crop_variety ? cap(p.crop_variety)+' · ' : ''}${locationLabel}
             </div>
           </div>
           <div style="padding:12px 16px;background:#fff;font-size:12px;">
@@ -554,9 +666,9 @@
       item.className = 'r-item';
       item.innerHTML = `
         <div class="swatch" style="background:${c};"></div>
-        <div style="flex:1;min-width:0;">
-          <div style="font-size:11px;font-weight:700;color:#3b4918;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cap(p.crop_commodity||p.crop_type||'Unknown')}</div>
-          <div style="font-size:10px;color:rgba(59,73,24,.50);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.location||'—'} · ${cap(p.crop_status)||'—'}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:11px;font-weight:700;color:#3b4918;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${cap(p.crop_commodity||p.crop_type||'Unknown')}</div>
+          <div style="font-size:10px;color:rgba(59,73,24,.50);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${locationLabel} · ${cap(p.crop_status)||'—'}</div>
         </div>
         ${p.max_damage>0?`<span class="dmg-badge ${p.max_damage>=75?'dmg-high':p.max_damage>=40?'dmg-med':'dmg-low'}">${p.max_damage}%</span>`:''}
       `;
@@ -567,6 +679,7 @@
 
   function showFocusedReport() {
     if (!focusParams) return;
+    if (!pointWithinBounds(focusParams.lat, focusParams.lng, mapScope.maxBounds || FALLBACK_SCOPE.maxBounds)) return;
 
     if (externalFocusMarker) map.removeLayer(externalFocusMarker);
 
@@ -665,6 +778,53 @@
     if (groupId === 'valueChips') activeValueCat = el.dataset.val;
   }
 
+  function fitFeatureSet(features, maxZoom) {
+    if (!features.length) return false;
+
+    if (features.length === 1) {
+      const coords = features[0].geometry.coordinates;
+      map.setView([coords[1], coords[0]], Math.min(maxZoom || 16, mapScope.maxZoom || 19));
+      return true;
+    }
+
+    const bounds = L.latLngBounds([]);
+    features.forEach(f => {
+      bounds.extend([f.geometry.coordinates[1], f.geometry.coordinates[0]]);
+    });
+
+    if (!bounds.isValid()) return false;
+
+    map.fitBounds(bounds, {
+      padding:[36,36],
+      maxZoom:maxZoom || 15,
+      animate:true
+    });
+    return true;
+  }
+
+  function focusSelectedLocation(features, force = false) {
+    const loc = document.getElementById('fLocation').value;
+    if (!force && loc === lastFocusedLocationValue) return;
+    lastFocusedLocationValue = loc;
+
+    if (!loc) {
+      fitSupportedArea();
+      return;
+    }
+
+    const target = locationLookup[loc];
+    const isBarangay = loc.indexOf('barangay:') === 0;
+
+    if (features.length && fitFeatureSet(features, isBarangay ? 16 : 14)) return;
+    if (target && target.bounds) {
+      fitBoundsSafe(target.bounds, {maxZoom:isBarangay ? 15 : 13});
+      return;
+    }
+    if (target && target.center) {
+      map.setView(target.center, isBarangay ? 15 : 13);
+    }
+  }
+
   function currentFeatures() {
     const ct  = document.getElementById('fCropType').value;
     const com = document.getElementById('fCommodity').value;
@@ -680,7 +840,9 @@
       const p = f.properties;
       if (ct  && p.crop_type      !== ct)  return false;
       if (com && p.crop_commodity !== com) return false;
-      if (loc && p.location       !== loc) return false;
+      if (loc && loc.indexOf('lgu:') === 0 && p.lgu_key !== loc.slice(4)) return false;
+      if (loc && loc.indexOf('barangay:') === 0 && p.location_key !== loc.slice(9)) return false;
+      if (loc && loc.indexOf(':') === -1 && p.location !== loc && p.location_label !== loc) return false;
       if (cs  && p.crop_status    !== cs)  return false;
       if (!isNaN(yMin) && p.estimate_harvest < yMin) return false;
       if (!isNaN(yMax) && p.estimate_harvest > yMax) return false;
@@ -698,6 +860,7 @@
     const filtered = currentFeatures();
     renderMarkers(filtered);
     updateStats(filtered);
+    focusSelectedLocation(filtered);
   }
 
   function clearAllFilters() {
@@ -708,6 +871,7 @@
     document.querySelectorAll('.chip-group .chip:first-child').forEach(c=>c.classList.add('active'));
     renderMarkers(allFeatures);
     updateStats(allFeatures);
+    focusSelectedLocation(allFeatures, true);
   }
 
   /* ════ HELPERS ════ */

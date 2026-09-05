@@ -1,0 +1,5 @@
+ALTER TABLE crop_reports
+    ADD COLUMN IF NOT EXISTS image_path VARCHAR(255) NULL DEFAULT NULL AFTER longitude;
+
+ALTER TABLE damage_reports
+    ADD COLUMN IF NOT EXISTS image_path VARCHAR(255) NULL DEFAULT NULL AFTER longitude;

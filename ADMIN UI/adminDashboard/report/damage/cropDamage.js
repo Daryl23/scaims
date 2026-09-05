@@ -812,6 +812,23 @@ $(document).ready(function() {
     }
 });
 
+function updateDamageReportImage(imageUrl) {
+    const panel = $('#damageReportImagePanel');
+    const image = $('#damageReportImage');
+    const noImage = $('#damageReportNoImage');
+
+    panel.removeAttr('hidden').show();
+
+    if (imageUrl) {
+        image.attr('src', imageUrl).removeAttr('hidden').show();
+        noImage.attr('hidden', true).hide();
+        return;
+    }
+
+    image.removeAttr('src').attr('hidden', true).hide();
+    noImage.removeAttr('hidden').show();
+}
+
 $(document).on('click', '.action-button', function() {
     const reportId = $(this).closest('tr').data('id');
     console.log("Damage Report ID:", reportId);
@@ -852,6 +869,7 @@ $(document).on('click', '.action-button', function() {
                 $('#damageLongitude').text(data.Longitude || 'N/A');
                 $('#dmgReportDate').text(data.ReportDate || 'N/A');
                 $('#numberOfTrees').text(data.NumberOfTrees || 'N/A');
+                updateDamageReportImage(data.ImageUrl || '');
                 if (typeof window.updateDamageMapCard === 'function') {
                     window.updateDamageMapCard(data);
                 }
