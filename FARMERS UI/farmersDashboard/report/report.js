@@ -445,11 +445,13 @@ function setNewReportDefaultSaveState(reportType, isSaving) {
     });
 
     if (saveButton) {
+        // Target the text node next to the icon rather than the whole button.
+        const saveLabel = saveButton.querySelector('span') || saveButton;
         if (isSaving) {
-            saveButton.dataset.originalText = saveButton.textContent;
-            saveButton.textContent = 'Saving...';
+            saveButton.dataset.originalText = saveLabel.textContent;
+            saveLabel.textContent = 'Saving...';
         } else if (saveButton.dataset.originalText) {
-            saveButton.textContent = saveButton.dataset.originalText;
+            saveLabel.textContent = saveButton.dataset.originalText;
         }
     }
 }
@@ -1001,7 +1003,10 @@ document.addEventListener('DOMContentLoaded', function() {
         setOptionText('#crop-status option[value=""]', 'report_choose_status');
 
         document.querySelectorAll('.report-submit-action').forEach(function(button) {
-            button.textContent = window.dashboardI18n.t('report_submit');
+            // Write into the label span, not the button, so the icon survives
+            // a language switch.
+            const label = button.querySelector('span') || button;
+            label.textContent = window.dashboardI18n.t('report_submit');
         });
 
         const otherCropType = document.getElementById('other-crop-type');

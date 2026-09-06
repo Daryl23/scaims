@@ -128,15 +128,13 @@ try {
         }
         
         $hashedPassword = password_hash($_POST['newPassword'], PASSWORD_DEFAULT);
-        $plainPassword = $_POST['newPassword'];
-        
+
         $sql = "UPDATE user SET 
-                UPass = ?,
-                plain_password = ?
+                UPass = ?
                 WHERE UserID = ?";
                 
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssi", $hashedPassword, $plainPassword, $user['UserID']);
+        $stmt->bind_param("si", $hashedPassword, $user['UserID']);
         $stmt->execute();
     }
 

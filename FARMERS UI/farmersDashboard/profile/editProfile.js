@@ -222,12 +222,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (inputField.type === "password") {
             inputField.type = "text";
-            icon.classList.remove("fa-eye");
-            icon.classList.add("fa-eye-slash");
+            icon.classList.remove("bi-eye");
+            icon.classList.add("bi-eye-slash");
         } else {
             inputField.type = "password";
-            icon.classList.remove("fa-eye-slash");
-            icon.classList.add("fa-eye");
+            icon.classList.remove("bi-eye-slash");
+            icon.classList.add("bi-eye");
         }
     }
 

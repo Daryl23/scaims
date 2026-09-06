@@ -1,0 +1,104 @@
+/* ============================================================
+   APGORRS — Admin mobile layer
+   ------------------------------------------------------------
+   Linked from admin-sidebar.php, so every admin page picks it up
+   without editing each page's <head>. It loads after the page's
+   own stylesheet and before the shell's inline <style>, which
+   keeps the sidebar rules authoritative.
+
+   The admin shell already handles the drawer and the sidebar.
+   What was missing was inside the pages: wide tables that could
+   not be scrolled, filter rows that never wrapped, and controls
+   below a comfortable tap. Palette and type stay as they are.
+   ============================================================ */
+
+/* Wide data scrolls inside its own box, never past the page edge.
+   These are the containers the tables are rendered into. */
+#user-table-body,
+.table-container,
+.table-scroll,
+.cropreport-table-wrap,
+.damage-table-wrap {
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+
+    /* ---- Filter and search rows -----------------------------
+       All of these were single-line flex rows with fixed widths,
+       so the last controls sat off the right edge of the screen. */
+    .filters,
+    .filter-group,
+    #search-container,
+    .header,
+    .header-actions,
+    .header-with-filter,
+    .post-actions,
+    .section-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .filters > *,
+    .filter-group > *,
+    #search-container > *,
+    .header-actions > *,
+    .header-with-filter > *,
+    .post-actions > * {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+
+    /* Fixed 200px selects and search boxes become full width. */
+    .filters input,
+    .filters select,
+    .filter-select,
+    #searchBox,
+    #search-bar,
+    #month-filter,
+    input[type="search"],
+    input[type="month"] {
+        max-width: none !important;
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+
+    /* 16px stops iOS zooming the page when a field takes focus. */
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+        min-height: 48px;
+    }
+
+    /* ---- Controls -------------------------------------------
+       Admin is a desk tool, so these stay compact — but a report
+       reviewed in the field still needs a reachable target. */
+    button,
+    .btn,
+    .export-btn,
+    .edit-btn,
+    .delete-btn,
+    .toggle-status-btn,
+    .view-btn,
+    .pagination button {
+        min-height: 44px;
+    }
+
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    /* Tables keep their columns and scroll rather than compress
+       into an unreadable column of wrapped text. */
+    .user-table,
+    .cropreport-table,
+    .crops-table {
+        min-width: 640px;
+    }
+}

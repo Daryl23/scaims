@@ -1,0 +1,135 @@
+/* ============================================================
+   APGORRS — Minimum tap targets for public pages
+   ------------------------------------------------------------
+   Small controls that were fine with a mouse but not with a
+   thumb: the password eye, the short text links under the login
+   forms, and Leaflet's default map controls.
+
+   Phone widths only — the desktop presentation is unchanged.
+   No colours or type are altered here, only hit area.
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    /* Password visibility toggle — was 20 x 20. */
+    #togglePassword {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Short text links: "Forgot password?", "Login here", footer
+       links. Padding grows the hit area without moving the text. */
+    .tap-link,
+    .login-form-links a,
+    footer a {
+        display: inline-block;
+        padding: 14px 6px;
+    }
+
+
+    /* Public navigation drawer toggle — was 40 x 33. */
+    .public-nav__mobile-toggle {
+        align-items: center;
+        display: inline-flex;
+        justify-content: center;
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+
+    /* Round icon buttons (footer social links) keep their circle —
+       grow the box rather than adding padding. */
+    a.rounded-full,
+    button.rounded-full {
+        /* !important: these pages use Tailwind's runtime CDN build, which
+           injects its utility styles after this file loads. */
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+
+    /* Standalone call-to-action and "read more" style links on the
+       public pages. Inline links inside body copy are left alone. */
+    a.inline-flex,
+    .tap-link {
+        align-items: center;
+        min-height: 44px !important;
+    }
+
+
+    /* ---- Crop map filter panel ------------------------------
+       The map's own controls, not Leaflet's: crop/type selects,
+       the checkbox list and the basemap switcher. */
+    .f-select,
+    .map-chip,
+    .chip,
+    .layer-btn {
+        min-height: 44px !important;
+    }
+
+    .map-chip,
+    .chip,
+    .layer-btn {
+        align-items: center;
+        display: inline-flex;
+        justify-content: center;
+    }
+
+    /* Checkbox rows: grow the whole label so the text is tappable too. */
+    label:has(> input[type="checkbox"]) {
+        align-items: center;
+        display: flex;
+        gap: 8px;
+        min-height: 44px;
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        height: 22px;
+        width: 22px;
+    }
+
+    /* ---- Leaflet map controls -------------------------------
+       Left at their desktop size, the zoom and layer buttons are
+       roughly 26px. These are the main controls on the crop map. */
+    .leaflet-bar a,
+    .leaflet-touch .leaflet-bar a {
+        font-size: 20px;
+        height: 44px;
+        line-height: 44px;
+        width: 44px;
+    }
+
+    .leaflet-touch .leaflet-control-layers-toggle,
+    .leaflet-control-layers-toggle {
+        background-size: 26px 26px;
+        height: 44px;
+        width: 44px;
+    }
+
+    .leaflet-control-layers label {
+        min-height: 32px;
+        padding: 4px 0;
+    }
+
+    .leaflet-popup-close-button {
+        font-size: 22px !important;
+        height: 36px !important;
+        width: 36px !important;
+    }
+
+    /* Baseline for the remaining controls on these pages: any button
+       or text field is at least one comfortable thumb high. Applied
+       last so the specific rules above still set their own sizes. */
+    button,
+    input[type="text"],
+    input[type="number"],
+    input[type="search"],
+    input[type="date"],
+    input[type="month"],
+    select {
+        min-height: 44px;
+    }
+}

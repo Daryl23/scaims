@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../../shared/admin_auth.php';
+scaims_require_admin('../../adminLogin/adminLogin.html');
 require_once 'db_connection.php';
 
 $farmerId = $_POST['id'] ?? '';
@@ -15,8 +17,7 @@ if (is_numeric($farmerId)) {
                    f.Barangay,
                    f.Address,
                    f.RSBSA_Number,
-                   u.UName,
-                   u.plain_password as UPass
+                   u.UName
             FROM farmer f
             JOIN user u ON f.UserID = u.UserID
             WHERE f.FarmerID = ?";

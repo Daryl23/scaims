@@ -33,8 +33,8 @@ if (isset($_FILES['profileImage'])) {
     if ($_FILES['profileImage']['error'] === UPLOAD_ERR_OK) {
         $image = file_get_contents($_FILES['profileImage']['tmp_name']);
 
-        $stmt = $conn->prepare("INSERT INTO user (UName, UPass, UserRole, creationDate, ProfileImage, plain_password) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $uname, $hashed_password, $userRole, $creationDate, $image, $upass);
+        $stmt = $conn->prepare("INSERT INTO user (UName, UPass, UserRole, creationDate, ProfileImage) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $uname, $hashed_password, $userRole, $creationDate, $image);
 
         if ($stmt->execute()) {
             $userID = $conn->insert_id;

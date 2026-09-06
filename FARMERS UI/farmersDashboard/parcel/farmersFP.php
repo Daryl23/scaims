@@ -262,7 +262,7 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Farmers Parcel</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../shared/dashboard-shell.css">
     <link rel="stylesheet" href="farmerParcel.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -392,6 +392,7 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
             letter-spacing: 0.5px;
         }
     </style>
+    <link rel="stylesheet" href="../shared/farmer-mobile.css?v=<?php echo @filemtime(__DIR__ . '/../shared/farmer-mobile.css') ?: time(); ?>">
 </head>
 <body>
     <div class="container">
@@ -410,10 +411,10 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
                     </select>
                     <div class="parcel-buttons">
                         <button onclick="addNewParcel()" class="btn btn-add-parcel" data-i18n-aria-label="parcel_add_button">
-                            <i class="fas fa-plus"></i> <span data-i18n="parcel_add_button">Add Parcel</span>
+                            <i class="bi bi-plus-lg"></i> <span data-i18n="parcel_add_button">Add Parcel</span>
                         </button>
                         <button onclick="editCurrentParcel()" class="btn btn-edit-parcel" data-i18n-aria-label="parcel_edit_button">
-                            <i class="fas fa-edit"></i> <span data-i18n="parcel_edit_button">Edit Parcel</span>
+                            <i class="bi bi-pencil-square"></i> <span data-i18n="parcel_edit_button">Edit Parcel</span>
                         </button>
                     </div>
                 </div>

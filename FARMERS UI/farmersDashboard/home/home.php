@@ -21,6 +21,8 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
     <link rel="stylesheet" href="home.css?v=<?php echo $homeCssVersion; ?>">
     <link rel="stylesheet" href="../../../shared/report-image-capture.css?v=<?php echo $sharedImageCssVersion; ?>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../shared/farmer-mobile.css?v=<?php echo @filemtime(__DIR__ . '/../shared/farmer-mobile.css') ?: time(); ?>">
 </head>
 <body>
     <div class="container">
@@ -31,6 +33,29 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
             <div class="dashboard-help-note">
                 <p data-i18n="home_help">Check the newest announcements here before opening another menu.</p>
             </div>
+
+            <!-- Quick actions: the four things a farmer opens the dashboard to do.
+                 Icons are the existing nav artwork, so the tiles read the same
+                 as the sidebar items they lead to. -->
+            <h2 class="fm-launcher-title" data-i18n="home_quick_title">What would you like to do?</h2>
+            <nav class="fm-launcher" aria-label="Quick actions">
+                <a class="fm-tile" href="../report/report.php">
+                    <img src="assets/nav-icons/report.png" alt="">
+                    <span data-i18n="nav_report">Report Forms</span>
+                </a>
+                <a class="fm-tile" href="../parcel/farmersFP.php">
+                    <img src="assets/nav-icons/farm.png" alt="">
+                    <span data-i18n="nav_parcel">Farm Parcel</span>
+                </a>
+                <a class="fm-tile" href="../../farmerLanding/map.html">
+                    <img src="assets/nav-icons/location.png" alt="">
+                    <span data-i18n="nav_map">Crop Map</span>
+                </a>
+                <a class="fm-tile" href="../profile/editProfile.php">
+                    <img src="assets/nav-icons/settings.png" alt="">
+                    <span data-i18n="nav_profile">Account Settings</span>
+                </a>
+            </nav>
             <section class="home-report-image-panel" aria-labelledby="home-report-image-title">
                 <div class="home-report-image-heading">
                     <h2 id="home-report-image-title">Capture / Upload Crop Image</h2>
@@ -45,10 +70,10 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
                     data-remove-label="Remove image"
                 ></div>
                 <div id="home-report-type-panel" class="home-report-type-panel" hidden>
-                    <p>Choose report type</p>
+                    <p data-i18n="home_report_choose">Choose report type</p>
                     <div class="home-report-type-actions">
-                        <button type="button" data-home-report-type="crop">Harvest Report</button>
-                        <button type="button" data-home-report-type="damage">Damaged Crop Report</button>
+                        <button type="button" data-home-report-type="crop"><i class="bi bi-basket2"></i><span data-i18n="home_report_crop">Harvest Report</span></button>
+                        <button type="button" data-home-report-type="damage"><i class="bi bi-exclamation-triangle"></i><span data-i18n="home_report_damage">Damaged Crop Report</span></button>
                     </div>
                     <div id="home-report-upload-status" class="home-report-upload-status" role="alert" aria-live="polite"></div>
                 </div>

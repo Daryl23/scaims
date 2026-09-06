@@ -45,6 +45,39 @@ if (!function_exists('scaims_is_super_admin')) {
     }
 }
 
+if (!function_exists('scaims_require_admin')) {
+    /**
+     * Gate an admin page or endpoint behind a signed-in admin session.
+     *
+     * Pages get redirected to the admin login; XHR and export endpoints
+     * get a 401 instead, so the calling script sees a clear failure
+     * rather than a login page parsed as data.
+     */
+    function scaims_require_admin(string $loginPath = '../../adminLogin/adminLogin.html'): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!empty($_SESSION['AdminID'])) {
+            return;
+        }
+
+        $isXhr = strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest'
+            || strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false;
+
+        if ($isXhr) {
+            http_response_code(401);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Not signed in.']);
+            exit();
+        }
+
+        header('Location: ' . $loginPath);
+        exit();
+    }
+}
+
 if (!function_exists('scaims_require_super_admin')) {
     function scaims_require_super_admin(string $fallbackPath = '../home/home.php'): void
     {

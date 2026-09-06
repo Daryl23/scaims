@@ -75,7 +75,7 @@ $dashboardNavItems = [
                 </li>
             <?php endforeach; ?>
             <li>
-                <a href="../../farmerLogin/farmerlogin.html" class="menu-item">
+                <a href="../shared/logout.php" class="menu-item">
                     <img src="<?php echo htmlspecialchars($dashboardIconBase . '/logout.png'); ?>" class="icon" alt="">
                     <span data-i18n="nav_logout">Logout</span>
                 </a>

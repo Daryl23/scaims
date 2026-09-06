@@ -145,6 +145,7 @@
     }
     .c-playpause:hover { background: #3b4918; color: #fffcef; }
   </style>
+  <link rel="stylesheet" href="shared/tap-targets.css?v=20260907">
 </head>
 <body class="font-sans text-olive bg-cream antialiased">
 
@@ -273,7 +274,7 @@
           </div>
           <h3 class="text-xl font-bold text-olive mb-3">News & Updates</h3>
           <p class="text-olive/70 mb-6 leading-relaxed">Latest local agriculture news from Lipa City. Stay informed with market prices and weather alerts.</p>
-          <a href="#" class="text-harvest font-bold hover:text-harvest-dark transition-colors inline-flex items-center gap-1 group/link">Read More <span class="group-hover/link:translate-x-1 transition-transform">→</span></a>
+          <a href="#" class="tap-link text-harvest font-bold hover:text-harvest-dark transition-colors inline-flex items-center gap-1 group/link">Read More <span class="group-hover/link:translate-x-1 transition-transform">→</span></a>
         </div>
         <div class="group relative overflow-hidden rounded-3xl bg-harvest/10 p-8 reveal hover:shadow-xl transition-all duration-300 border border-harvest/20" style="transition-delay:200ms">
           <div class="w-14 h-14 bg-harvest rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-harvest/30">
@@ -281,7 +282,7 @@
           </div>
           <h3 class="text-xl font-bold text-olive mb-3">Suggestions</h3>
           <p class="text-olive/70 mb-6 leading-relaxed">Help us improve SCAIMS. Your feedback shapes the future of agricultural technology in Batangas.</p>
-          <button onclick="openModal()" class="text-harvest font-bold hover:text-harvest-dark transition-colors inline-flex items-center gap-1 group">Send Feedback <span class="group-hover:translate-x-1 transition-transform">→</span></button>
+          <button onclick="openModal()" class="tap-link text-harvest font-bold hover:text-harvest-dark transition-colors inline-flex items-center gap-1 group">Send Feedback <span class="group-hover:translate-x-1 transition-transform">→</span></button>
         </div>
       </div>
     </div>
@@ -374,7 +375,7 @@
       </div>
       <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <p class="text-white/40 text-sm">© 2024 SCAIMS. All rights reserved.</p>
-        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-white/40 hover:text-white text-sm flex items-center gap-2 transition-colors group">Back to Top <span class="group-hover:-translate-y-1 transition-transform">↑</span></button>
+        <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="tap-link text-white/40 hover:text-white text-sm flex items-center gap-2 transition-colors group">Back to Top <span class="group-hover:-translate-y-1 transition-transform">↑</span></button>
       </div>
     </div>
   </footer>
@@ -422,7 +423,7 @@
               <a href="#" class="text-harvest hover:text-harvest-dark font-medium">Forgot password?</a>
             </div>
             <button type="submit" class="w-full px-6 py-3 bg-olive text-white rounded-xl font-bold hover:bg-olive-light transition-all hover:shadow-lg">Login</button>
-            <p class="text-center text-olive/60 text-sm">Don't have an account? <a href="#" class="text-harvest font-bold hover:text-harvest-dark">Register here</a></p>
+            <p class="text-center text-olive/60 text-sm">Don't have an account? <a href="#" class="tap-link text-harvest font-bold hover:text-harvest-dark">Register here</a></p>
           </form>
         </div>
       </div>

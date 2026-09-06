@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../../shared/admin_auth.php';
+scaims_require_admin('../../adminLogin/adminLogin.html');
 // Completely suppress all output and errors
 ob_start();
 error_reporting(0);

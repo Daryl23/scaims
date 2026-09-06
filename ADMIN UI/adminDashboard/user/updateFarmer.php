@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../../shared/admin_auth.php';
+scaims_require_admin('../../adminLogin/adminLogin.html');
 // Ensure no output before headers
 ob_start();
 error_reporting(E_ALL);
@@ -24,8 +26,8 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 $rsbsaNumber = $_POST['rsbsaNumber'];
 
-// First, check if the password has changed by comparing with current hash
-$checkSql = "SELECT u.UName, u.UPass, u.plain_password FROM user u 
+// A blank password field means "leave the current password alone".
+$checkSql = "SELECT u.UName, u.UPass FROM user u 
              JOIN farmer f ON u.UserID = f.UserID 
              WHERE f.FarmerID = ?";
 $checkStmt = $conn->prepare($checkSql);
@@ -35,8 +37,8 @@ $result = $checkStmt->get_result();
 $currentUser = $result->fetch_assoc();
 $checkStmt->close();
 
-// Password validation
-if ($password !== $currentUser['plain_password']) {
+// Password validation — only when the admin actually typed a new one.
+if (trim($password) !== '') {
     // Check password requirements
     $errors = [];
     if (strlen($password) < 8) {
@@ -67,12 +69,11 @@ if ($password !== $currentUser['plain_password']) {
     $sql2 = "UPDATE user u 
              JOIN farmer f ON u.UserID = f.UserID 
              SET u.UName = ?, 
-                 u.UPass = ?,
-                 u.plain_password = ?
+                 u.UPass = ?
              WHERE f.FarmerID = ?";
     
     $stmt2 = $conn->prepare($sql2);
-    $stmt2->bind_param("sssi", $username, $hashedPassword, $password, $farmerId);
+    $stmt2->bind_param("ssi", $username, $hashedPassword, $farmerId);
     $success = $stmt2->execute();
     $stmt2->close();
 } else {

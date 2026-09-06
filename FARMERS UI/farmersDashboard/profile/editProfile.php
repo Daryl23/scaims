@@ -15,7 +15,7 @@ try {
 
 // Fetch user data
 $uname = $_SESSION['UName'];
-$sql = "SELECT f.*, u.ProfileImage, u.UName, u.plain_password 
+$sql = "SELECT f.*, u.ProfileImage, u.UName 
         FROM farmer f 
         JOIN user u ON f.UserID = u.UserID 
         WHERE u.UName = ?";
@@ -37,7 +37,8 @@ $dashboardCurrentPage = 'profile';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../shared/dashboard-shell.css">
     <link rel="stylesheet" href="editProfile.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../shared/farmer-mobile.css?v=<?php echo @filemtime(__DIR__ . '/../shared/farmer-mobile.css') ?: time(); ?>">
 </head>
 <body>
     <div class="container">
@@ -71,9 +72,9 @@ $dashboardCurrentPage = 'profile';
                             <div>
                                 <label for="currentPassword">Current Password*</label>
                                 <div class="password-field">
-                                    <input type="password" id="currentPassword" name="currentPassword" value="<?php echo htmlspecialchars($userData['plain_password']); ?>">
+                                    <input type="password" id="currentPassword" name="currentPassword" autocomplete="current-password" placeholder="Enter your current password">
                                     <span onclick="togglePasswordVisibility('currentPassword', 'currentPasswordIcon')" class="show-password-icon">
-                                        <i id="currentPasswordIcon" class="fas fa-eye"></i>
+                                        <i id="currentPasswordIcon" class="bi bi-eye"></i>
                                     </span>
                                 </div>
                             </div>
@@ -85,7 +86,7 @@ $dashboardCurrentPage = 'profile';
                                 <div class="password-field">
                                     <input type="password" id="newPassword" name="newPassword">
                                     <span onclick="togglePasswordVisibility('newPassword', 'newPasswordIcon')" class="show-password-icon">
-                                        <i id="newPasswordIcon" class="fas fa-eye"></i>
+                                        <i id="newPasswordIcon" class="bi bi-eye"></i>
                                     </span>
                                 </div>
                                 <small class="password-hint">Leave blank if you don't want to change password</small>
@@ -95,7 +96,7 @@ $dashboardCurrentPage = 'profile';
                                 <div class="password-field">
                                     <input type="password" id="confirmPassword" name="confirmPassword">
                                     <span onclick="togglePasswordVisibility('confirmPassword', 'confirmPasswordIcon')" class="show-password-icon">
-                                        <i id="confirmPasswordIcon" class="fas fa-eye"></i>
+                                        <i id="confirmPasswordIcon" class="bi bi-eye"></i>
                                     </span>
                                 </div>
                             </div>
@@ -162,7 +163,7 @@ $dashboardCurrentPage = 'profile';
                     
                     <hr>
                     <div class="button-container">
-                        <button type="submit">Save Changes</button>
+                        <button type="submit" class="fm-action"><i class="bi bi-save"></i>Save Changes</button>
                         <button type="button">Cancel</button>
                     </div>
                 </form>

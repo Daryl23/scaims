@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../../shared/admin_auth.php';
+scaims_require_admin('../../adminLogin/adminLogin.html');
 require_once 'db_connection.php';
 
 $barangay = $_GET['barangay'] ?? '';
@@ -57,11 +59,10 @@ echo '
             <th>Address</th>
             <th>Registration Date</th>
             <th>Username</th>
-            <th>Password</th>
             <th>RSBSA Number</th>
         </tr>';
 
-// Updated SQL query to include username, plain password, and RSBSA number
+// Username and RSBSA number. Passwords are never exported.
 $sql = "SELECT 
             CONCAT(f.FirstName, ' ', f.Surname) AS Name,
             f.MiddleName,
@@ -82,7 +83,6 @@ $sql = "SELECT
             f.Address,
             DATE_FORMAT(f.registration_date, '%M %d, %Y') as RegistrationDate,
             u.UName as Username,
-            u.plain_password as Password,  -- Assuming you have a plain_password column
             f.RSBSA_Number  -- Add RSBSA number here
         FROM farmer f
         JOIN user u ON f.UserID = u.UserID 

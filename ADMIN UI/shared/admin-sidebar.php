@@ -96,6 +96,8 @@ $navItems = array_merge($navItems, [
 ]);
 ?>
 
+<link rel="stylesheet" href="<?php echo htmlspecialchars($sharedPath); ?>admin-mobile.css?v=<?php echo @filemtime(__DIR__ . '/admin-mobile.css') ?: time(); ?>">
+
 <style>
     :root {
         --admin-sidebar-bg: linear-gradient(180deg, #41561a 0%, #314112 100%);

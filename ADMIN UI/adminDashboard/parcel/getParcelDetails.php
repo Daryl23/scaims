@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../../shared/admin_auth.php';
+scaims_require_admin('../../adminLogin/adminLogin.html');
 // Enable error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);

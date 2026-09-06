@@ -1,0 +1,389 @@
+/* ============================================================
+   APGORRS — Farmer mobile layer
+   ------------------------------------------------------------
+   Loaded AFTER each farmer dashboard page's own stylesheet.
+
+   Purpose: on phones, grow the interface instead of shrinking it.
+   The existing stylesheets step padding and font-size down at
+   768 / 480 / 375 / 320px; the rules below step them back up so
+   primary actions stay reachable with a thumb.
+
+   Palette, radii and type are the ones already used across
+   APGORRS (olive #576f1b, brown #674636, cream #f7f2e8, Poppins).
+   Icons come from the vendored Bootstrap Icons set and the
+   existing nav-icon artwork. Nothing new is introduced.
+   ============================================================ */
+
+:root {
+    --fm-olive:       #576f1b;
+    --fm-olive-dark:  #465a15;
+    --fm-olive-tint:  #f0f4e8;
+    --fm-brown:       #674636;
+    --fm-cream:       #f7f2e8;
+    --fm-border:      #d9c7ad;
+    --fm-border-soft: #e6dcc9;
+
+    /* A comfortable thumb target. */
+    --fm-tap: 56px;
+
+    /* Primary call to action ≈ 20% of the phone screen.
+       clamp() keeps it sensible on very short and very tall screens. */
+    --fm-cta: clamp(112px, 20vh, 176px);
+
+    /* Launcher tile ≈ 20% of screen height; four tiles ≈ 40% as a block. */
+    --fm-tile: clamp(104px, 19vh, 168px);
+
+    --fm-radius: 14px;
+    --fm-gap: 12px;
+}
+
+/* ------------------------------------------------------------
+   1. Home launcher — four icon tiles, existing nav artwork
+   ------------------------------------------------------------ */
+
+.fm-launcher-title {
+    color: var(--fm-brown);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0 0 12px;
+}
+
+.fm-launcher {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--fm-gap);
+    margin: 0 0 22px;
+}
+
+/* On a desk the four tiles sit in one row and stay a quiet quick-access
+   strip rather than dominating the page. */
+@media (min-width: 769px) {
+    .fm-launcher {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .fm-tile {
+        min-height: 118px;
+    }
+}
+
+.fm-tile {
+    align-items: center;
+    background: var(--fm-cream);
+    border: 1px solid var(--fm-border);
+    border-radius: var(--fm-radius);
+    color: var(--fm-brown);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    min-height: var(--fm-tile);
+    padding: 14px 10px;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.fm-tile img {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+}
+
+.fm-tile span {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.fm-tile:hover,
+.fm-tile:focus-visible {
+    background: var(--fm-olive-tint);
+    border-color: var(--fm-olive);
+    transform: translateY(-2px);
+}
+
+.fm-tile.is-active {
+    background: var(--fm-olive-tint);
+    border-color: var(--fm-olive);
+    color: var(--fm-olive);
+}
+
+/* ------------------------------------------------------------
+   2. Primary call to action — icon above label, ≈20% of screen
+   ------------------------------------------------------------ */
+
+.fm-cta {
+    align-items: center;
+    background: var(--fm-olive);
+    border: none;
+    border-radius: var(--fm-radius);
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    gap: 8px;
+    justify-content: center;
+    line-height: 1.3;
+    min-height: var(--fm-cta);
+    padding: 16px 18px;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    width: 100%;
+}
+
+.fm-cta i {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.fm-cta:hover,
+.fm-cta:focus-visible {
+    background: var(--fm-olive-dark);
+}
+
+.fm-cta:disabled {
+    background: #a9b39a;
+    cursor: not-allowed;
+}
+
+/* Secondary weight: same shape, quieter, still a full thumb target. */
+.fm-cta--ghost {
+    background: var(--fm-cream);
+    border: 1px solid var(--fm-border);
+    color: var(--fm-brown);
+}
+
+.fm-cta--ghost:hover,
+.fm-cta--ghost:focus-visible {
+    background: var(--fm-olive-tint);
+    border-color: var(--fm-olive);
+    color: var(--fm-olive);
+}
+
+/* Inline action — icon beside label, one comfortable tap high. */
+.fm-action {
+    align-items: center;
+    display: inline-flex;
+    gap: 10px;
+    justify-content: center;
+    min-height: var(--fm-tap);
+}
+
+.fm-action i {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+/* Icons added to existing buttons sit beside their label. */
+.submit-btn i,
+.report-save-button i,
+.report-cancel-edit-button i,
+.btn i,
+.home-report-type-actions button i,
+.add-parcel-btn i {
+    margin-right: 8px;
+}
+
+/* ------------------------------------------------------------
+   3. Phones — grow the targets the page stylesheets shrink
+   ------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+
+    /* Sidebar navigation: the page CSS drops these to ~36px. */
+    .menu-item {
+        align-items: center;
+        border-radius: 10px;
+        display: flex;
+        font-size: 1rem;
+        gap: 14px;
+        min-height: var(--fm-tap);
+        padding: 12px 18px;
+    }
+
+    .icon {
+        height: 28px;
+        margin-right: 0;
+        width: 28px;
+    }
+
+    .language-toggle-button {
+        font-size: 1rem;
+        min-height: var(--fm-tap);
+    }
+
+    /* Every button stays at least one thumb high and spans the column,
+       so nothing is a small floating target. The primary CTA is raised
+       above this baseline further down. */
+    .submit-btn,
+    .report-save-button,
+    .report-cancel-edit-button,
+    .report-edit-button,
+    .btn,
+    .add-parcel-btn,
+    .home-report-type-actions button {
+        align-items: center;
+        display: flex;
+        font-size: 1rem;
+        height: auto;
+        justify-content: center;
+        min-height: var(--fm-tap);
+        padding: 14px 18px;
+        width: 100%;
+    }
+
+    .parcel-buttons,
+    .home-report-type-actions {
+        display: flex;
+        flex-direction: column;
+        gap: var(--fm-gap);
+    }
+
+    /* The two report-type choices are real decisions, not minor buttons. */
+    .home-report-type-actions button {
+        flex-direction: column;
+        gap: 8px;
+        min-height: var(--fm-tile);
+    }
+
+    .home-report-type-actions button i {
+        font-size: 1.9rem;
+        margin-right: 0;
+    }
+
+    /* The one primary action on the form is raised to ~20% of the
+       screen. Written with both classes so it beats the .submit-btn
+       baseline above rather than depending on source order. */
+    .submit-btn.report-submit-action {
+        border-radius: var(--fm-radius);
+        flex-direction: column;
+        font-size: 1.05rem;
+        gap: 8px;
+        min-height: var(--fm-cta);
+        padding: 16px 18px;
+        width: 100%;
+    }
+
+    .submit-btn.report-submit-action i {
+        font-size: 2rem;
+        margin-right: 0;
+    }
+
+    .pagination {
+        display: flex;
+        gap: var(--fm-gap);
+    }
+
+    .pagination button {
+        flex: 1;
+        font-size: 1rem;
+        min-height: var(--fm-tap);
+        padding: 14px 16px;
+    }
+
+    /* Form fields deserve the same courtesy as buttons. */
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="password"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea {
+        font-size: 16px; /* also stops iOS zooming on focus */
+        min-height: 50px;
+    }
+
+    textarea {
+        min-height: 110px;
+    }
+
+    /* Wide data never breaks the page. */
+    .farmer-report-table-wrap,
+    .crops-table-wrap,
+    .table-responsive {
+        -webkit-overflow-scrolling: touch;
+        overflow-x: auto;
+    }
+}
+
+/* Below 480px the page stylesheets shrink hardest — hold the line. */
+@media (max-width: 480px) {
+    .menu-item {
+        font-size: 1rem;
+        min-height: var(--fm-tap);
+        padding: 12px 16px;
+    }
+
+    .icon {
+        height: 26px;
+        width: 26px;
+    }
+
+    .fm-launcher {
+        gap: 10px;
+    }
+
+    .fm-tile span {
+        font-size: 0.9rem;
+    }
+}
+
+/* The 320px block in the page stylesheets is the most aggressive of all. */
+@media (max-width: 360px) {
+    .submit-btn,
+    .report-save-button,
+    .btn,
+    .add-parcel-btn,
+    .home-report-type-actions button {
+        font-size: 0.95rem;
+        min-height: 52px;
+        padding: 12px 14px;
+    }
+
+    .fm-cta {
+        font-size: 1rem;
+    }
+
+    .fm-tile img {
+        height: 34px;
+        width: 34px;
+    }
+}
+
+/* Short screens: keep the CTA present without crowding out content. */
+@media (max-height: 640px) {
+    :root {
+        --fm-cta: 104px;
+        --fm-tile: 96px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fm-tile,
+    .fm-cta {
+        transition: none;
+    }
+
+    .fm-tile:hover,
+    .fm-tile:focus-visible {
+        transform: none;
+    }
+}
+
+/* Keyboard users must always see where they are. */
+.fm-tile:focus-visible,
+.fm-cta:focus-visible,
+.menu-item:focus-visible,
+.submit-btn:focus-visible,
+.btn:focus-visible {
+    outline: 3px solid var(--fm-olive);
+    outline-offset: 2px;
+}

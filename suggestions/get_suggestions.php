@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../shared/admin_auth.php';
+scaims_require_admin('../ADMIN UI/adminLogin/adminLogin.html');
 require_once dirname(__DIR__) . '/conn.php';
 
 try {

@@ -183,7 +183,7 @@ $(document).ready(function () {
                 $('#editBarangay').val(farmer.Barangay);
                 $('#editAddress').val(farmer.Address);
                 $('#editUsername').val(farmer.UName);
-                $('#editPassword').val(farmer.UPass);
+                $('#editPassword').val('');
                 $('#editRsbsaNumber').val(farmer.RSBSA_Number);
                 $('.modal-overlay').fadeIn();
             }
@@ -279,7 +279,7 @@ $(document).ready(function () {
                                 <div>
                                     <label for="password">Password</label>
                                     <div class="password-container">
-                                        <input type="password" id="editPassword" name="password" required>
+                                        <input type="password" id="editPassword" name="password" autocomplete="new-password" placeholder="Leave blank to keep current password">
                                         <button type="button" class="toggle-password">👁️</button>
                                     </div>
                                 </div>

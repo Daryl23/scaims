@@ -208,6 +208,8 @@ try {
     <link rel="stylesheet" href="reps.css?v=<?php echo $reportCssVersion; ?>">
     <link rel="stylesheet" href="../../../shared/report-image-capture.css?v=<?php echo $sharedImageCssVersion; ?>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../shared/farmer-mobile.css?v=<?php echo @filemtime(__DIR__ . '/../shared/farmer-mobile.css') ?: time(); ?>">
 </head>
 <body>
     <div class="container">
@@ -403,7 +405,7 @@ try {
                             </div>
                             <div class="form-group" id="crop-coordinate-action" style="display: none;">
                                 <label>GPS Access:</label>
-                                <button type="button" class="submit-btn gps-button" id="crop-use-gps">Use Current Location</button>
+                                <button type="button" class="submit-btn gps-button" id="crop-use-gps"><i class="bi bi-geo-alt"></i><span>Use Current Location</span></button>
                                 <small id="crop-coordinate-status">Allow location access to fill latitude and longitude automatically.</small>
                             </div>
                             <div class="form-group coordinate-field-group coordinate-field-group-wide">
@@ -417,11 +419,11 @@ try {
                         <hr>
                         <div class="report-edit-actions" data-new-report-actions="crop">
                             <button type="button" class="report-edit-button" data-new-report-edit="crop">Edit / I-edit</button>
-                            <button type="button" class="report-save-button" data-new-report-save="crop" hidden>Save</button>
+                            <button type="button" class="report-save-button" data-new-report-save="crop" hidden><i class="bi bi-save"></i><span>Save</span></button>
                             <button type="button" class="report-cancel-edit-button" data-new-report-cancel="crop" hidden>Cancel Edit</button>
                         </div>
                         <div class="report-edit-message" data-new-report-message="crop" role="alert" aria-live="polite"></div>
-                        <button type="button" onclick="confirmSubmission()" class="submit-btn report-submit-action">Submit Report</button>
+                        <button type="button" onclick="confirmSubmission()" class="submit-btn report-submit-action"><i class="bi bi-send-check"></i><span>Submit Report</span></button>
                     </div>
                     
                     <div id="damage-report-fields" style="display: none;">
@@ -587,7 +589,7 @@ try {
                             </div>
                             <div class="form-group" id="damage-coordinate-action" style="display: none;">
                                 <label>GPS Access:</label>
-                                <button type="button" class="submit-btn gps-button" id="damage-use-gps">Use Current Location</button>
+                                <button type="button" class="submit-btn gps-button" id="damage-use-gps"><i class="bi bi-geo-alt"></i><span>Use Current Location</span></button>
                                 <small id="damage-coordinate-status">Allow location access to fill latitude and longitude automatically.</small>
                             </div>
                             <div class="form-group coordinate-field-group coordinate-field-group-wide">
@@ -601,11 +603,11 @@ try {
                         <hr>
                         <div class="report-edit-actions" data-new-report-actions="damage">
                             <button type="button" class="report-edit-button" data-new-report-edit="damage">Edit / I-edit</button>
-                            <button type="button" class="report-save-button" data-new-report-save="damage" hidden>Save</button>
+                            <button type="button" class="report-save-button" data-new-report-save="damage" hidden><i class="bi bi-save"></i><span>Save</span></button>
                             <button type="button" class="report-cancel-edit-button" data-new-report-cancel="damage" hidden>Cancel Edit</button>
                         </div>
                         <div class="report-edit-message" data-new-report-message="damage" role="alert" aria-live="polite"></div>
-                        <button type="button" onclick="confirmSubmission()" class="submit-btn report-submit-action">Submit Report</button>
+                        <button type="button" onclick="confirmSubmission()" class="submit-btn report-submit-action"><i class="bi bi-send-check"></i><span>Submit Report</span></button>
                     </div>
                 </form>
             </div>
@@ -703,7 +705,7 @@ try {
                         </div>
                         <div id="farmerReportEditFields" class="farmer-report-detail-grid farmer-report-edit-grid"></div>
                         <div class="report-edit-actions">
-                            <button type="submit" class="report-save-button">Save Changes</button>
+                            <button type="submit" class="report-save-button"><i class="bi bi-save"></i><span>Save Changes</span></button>
                             <button type="button" class="report-cancel-edit-button" id="farmerReportCancelEdit">Cancel</button>
                         </div>
                         <div id="farmerReportEditMessage" class="report-edit-message" role="alert" aria-live="polite"></div>

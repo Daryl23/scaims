@@ -205,6 +205,7 @@ $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-
             
             <!-- New Reports Section -->
             <h3 class="section-title">NEW CROP DAMAGE REPORTS (last 7 days)</h3>
+            <div class="table-scroll">
             <table class="damagereport-table">
                 <thead>
                     <tr>
@@ -224,9 +225,11 @@ $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-
                     <!-- New reports will be inserted here -->
                 </tbody>
             </table>
+            </div>
 
             <!-- Previous Reports Section -->
             <h3 class="section-title">PREVIOUS CROP DAMAGE REPORTS</h3>
+            <div class="table-scroll">
             <table class="damagereport-table">
                 <thead>
                     <tr>
@@ -246,6 +249,7 @@ $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-
                     <!-- Previous reports will be inserted here -->
                 </tbody>
             </table>
+            </div>
 
             <div class="pagination-container">
                 <div class="pagination">

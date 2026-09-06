@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/../../../shared/admin_auth.php';
+scaims_require_admin('../../adminLogin/adminLogin.html');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
