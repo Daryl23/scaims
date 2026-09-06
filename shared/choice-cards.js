@@ -66,15 +66,26 @@
             card.setAttribute('role', 'radio');
             card.dataset.value = opt.value;
 
+            // Each option can name its own icon with data-icon; without one
+            // the card is simply a label.
+            if (opt.dataset.icon) {
+                var glyph = document.createElement('i');
+                glyph.className = 'bi ' + opt.dataset.icon + ' cc-glyph';
+                glyph.setAttribute('aria-hidden', 'true');
+                card.appendChild(glyph);
+            }
+
+            var text = document.createElement('span');
+            text.className = 'cc-label';
+            text.textContent = opt.textContent.trim();
+            card.appendChild(text);
+
+            // The chosen card carries a small tick in the corner.
             var mark = document.createElement('i');
             mark.className = 'bi bi-check-circle-fill cc-mark';
             mark.setAttribute('aria-hidden', 'true');
-
-            var text = document.createElement('span');
-            text.textContent = opt.textContent.trim();
-
             card.appendChild(mark);
-            card.appendChild(text);
+
             group.appendChild(card);
 
             card.addEventListener('click', function () {

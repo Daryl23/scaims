@@ -210,8 +210,8 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../shared/farmer-mobile.css?v=<?php echo @filemtime(__DIR__ . '/../shared/farmer-mobile.css') ?: time(); ?>">
-    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260908">
-    <script src="../../../shared/choice-cards.js?v=20260908" defer></script>
+    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260909">
+    <script src="../../../shared/choice-cards.js?v=20260909" defer></script>
 </head>
 <body>
     <div class="container">
@@ -234,8 +234,8 @@ try {
                 <label for="report-type"><h2><b data-i18n="report_type_label">Type of Report</b></h2></label>
                     <select id="report-type" name="report-type" data-choice-cards onchange="toggleCropReport()">
                         <option value="" disabled selected data-i18n="report_type_placeholder">Select a type of report</option>
-                        <option value="crop" data-i18n="report_type_crop">Crop Harvest Report</option>
-                        <option value="damage" data-i18n="report_type_damage">Crop Damage Report</option>
+                        <option value="crop" data-i18n="report_type_crop" data-icon="bi-basket2">Crop Harvest Report</option>
+                        <option value="damage" data-i18n="report_type_damage" data-icon="bi-exclamation-triangle">Crop Damage Report</option>
                     </select>
                     
                     <div id="crop-report-fields" style="display: none;">
@@ -380,9 +380,9 @@ try {
                                 <label for="crop-status">Crop Status:</label>
                                 <select id="crop-status" name="crop-status" data-choice-cards required>
                                     <option value="" disabled selected>Pumili ng Status ng Pananim</option>
-                                    <option value="Seedling/Vegetative">Seedling/Vegetative</option>
-                                    <option value="Bearing">Bearing</option>
-                                    <option value="Non-Bearing">Non-Bearing</option>
+                                    <option value="Seedling/Vegetative" data-icon="bi-flower1">Seedling/Vegetative</option>
+                                    <option value="Bearing" data-icon="bi-tree-fill">Bearing</option>
+                                    <option value="Non-Bearing" data-icon="bi-tree">Non-Bearing</option>
                                 </select>
                             </div>
 
@@ -400,9 +400,9 @@ try {
                             <div class="form-group">
                                 <label for="crop-coordinate-mode">Coordinates:</label>
                                 <select id="crop-coordinate-mode" name="crop-coordinate-mode" data-choice-cards>
-                                    <option value="" selected>Do not include coordinates</option>
-                                    <option value="auto">Auto via GPS</option>
-                                    <option value="manual">Manual input</option>
+                                    <option value="" selected data-icon="bi-slash-circle">Do not include coordinates</option>
+                                    <option value="auto" data-icon="bi-crosshair">Auto via GPS</option>
+                                    <option value="manual" data-icon="bi-pencil">Manual input</option>
                                 </select>
                             </div>
                             <div class="form-group" id="crop-coordinate-action" style="display: none;">
@@ -584,9 +584,9 @@ try {
                             <div class="form-group">
                                 <label for="damage-coordinate-mode">Coordinates:</label>
                                 <select id="damage-coordinate-mode" name="damage-coordinate-mode" data-choice-cards>
-                                    <option value="" selected>Do not include coordinates</option>
-                                    <option value="auto">Auto via GPS</option>
-                                    <option value="manual">Manual input</option>
+                                    <option value="" selected data-icon="bi-slash-circle">Do not include coordinates</option>
+                                    <option value="auto" data-icon="bi-crosshair">Auto via GPS</option>
+                                    <option value="manual" data-icon="bi-pencil">Manual input</option>
                                 </select>
                             </div>
                             <div class="form-group" id="damage-coordinate-action" style="display: none;">

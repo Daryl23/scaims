@@ -39,8 +39,8 @@ $dashboardCurrentPage = 'profile';
     <link rel="stylesheet" href="editProfile.css">
     <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../shared/farmer-mobile.css?v=<?php echo @filemtime(__DIR__ . '/../shared/farmer-mobile.css') ?: time(); ?>">
-    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260908">
-    <script src="../../../shared/choice-cards.js?v=20260908" defer></script>
+    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260909">
+    <script src="../../../shared/choice-cards.js?v=20260909" defer></script>
 </head>
 <body>
     <div class="container">
@@ -136,8 +136,8 @@ $dashboardCurrentPage = 'profile';
                         <div>
                             <label for="sex">Sex*</label>
                             <select id="sex" name="sex" data-choice-cards required>
-                                <option value="Male" <?php echo ($userData['Sex'] == 'Male') ? 'selected' : ''; ?>>Male</option>
-                                <option value="Female" <?php echo ($userData['Sex'] == 'Female') ? 'selected' : ''; ?>>Female</option>
+                                <option value="Male" <?php echo ($userData['Sex'] == 'Male') ? 'selected' : ''; ?> data-icon="bi-gender-male">Male</option>
+                                <option value="Female" <?php echo ($userData['Sex'] == 'Female') ? 'selected' : ''; ?> data-icon="bi-gender-female">Female</option>
                             </select>
                         </div>
                         <div>

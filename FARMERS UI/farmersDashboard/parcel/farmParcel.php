@@ -113,8 +113,8 @@ if (!isset($_SESSION['UName'])) {
         }
     </style>
     <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260908">
-    <script src="../../../shared/choice-cards.js?v=20260908" defer></script>
+    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260909">
+    <script src="../../../shared/choice-cards.js?v=20260909" defer></script>
 </head>
 <body>
     <div class="container">
@@ -243,9 +243,9 @@ if (!isset($_SESSION['UName'])) {
                     <label for="farmType">Farm Type:</label>
                     <select id="farmType" name="farmType" data-choice-cards required>
                         <option value="" disabled selected>Pumili ng Farm Type</option>
-                        <option value="irrigated">Irrigated</option>
-                        <option value="rainfed_upland">Rainfed Upland</option>
-                        <option value="rainfed_lowland">Rainfed Lowland</option>
+                        <option value="irrigated" data-icon="bi-droplet-fill">Irrigated</option>
+                        <option value="rainfed_upland" data-icon="bi-cloud-rain-heavy">Rainfed Upland</option>
+                        <option value="rainfed_lowland" data-icon="bi-cloud-rain">Rainfed Lowland</option>
                     </select>
                 </div>
                 
@@ -253,8 +253,8 @@ if (!isset($_SESSION['UName'])) {
                     <label for="organic">Organic Practitioner:</label>
                     <select id="organic" name="organic" data-choice-cards required>
                         <option value="" disabled selected></option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="yes" data-icon="bi-flower2">Yes</option>
+                        <option value="no" data-icon="bi-slash-circle">No</option>
                     </select>
                 </div>
             </div>

@@ -163,8 +163,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
     <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260908">
-    <script src="../../../shared/choice-cards.js?v=20260908" defer></script>
+    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260909">
+    <script src="../../../shared/choice-cards.js?v=20260909" defer></script>
 </head>
 <body>
     <div class="container">
@@ -266,9 +266,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="ownership">Ownership Type:</label>
                         <select id="ownership" name="ownership" required data-choice-cards>
                             <option value="" disabled selected></option>
-                            <option value="registered_owner" <?php echo ($parcelDetails['ownership_type'] === 'registered_owner') ? 'selected' : ''; ?>>Registered Owner</option>
-                            <option value="lessee" <?php echo ($parcelDetails['ownership_type'] === 'lessee') ? 'selected' : ''; ?>>Lessee</option>
-                            <option value="tenant" <?php echo ($parcelDetails['ownership_type'] === 'tenant') ? 'selected' : ''; ?>>Tenant</option>
+                            <option value="registered_owner" <?php echo ($parcelDetails['ownership_type'] === 'registered_owner') ? 'selected' : ''; ?> data-icon="bi-patch-check">Registered Owner</option>
+                            <option value="lessee" <?php echo ($parcelDetails['ownership_type'] === 'lessee') ? 'selected' : ''; ?> data-icon="bi-file-earmark-text">Lessee</option>
+                            <option value="tenant" <?php echo ($parcelDetails['ownership_type'] === 'tenant') ? 'selected' : ''; ?> data-icon="bi-house-door">Tenant</option>
                         </select>
                     </div>
 
@@ -346,9 +346,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             name="treeStatus_<?php echo $cropIndex; ?>"
                                             required data-choice-cards>
                                         <option value="" disabled selected>Pumili ng Tree Status</option>
-                                        <option value="seedling" <?php echo ($crop['tree_status'] === 'seedling') ? 'selected' : ''; ?>>Seedling/Vegetative</option>
-                                        <option value="bearing" <?php echo ($crop['tree_status'] === 'bearing') ? 'selected' : ''; ?>>Bearing</option>
-                                        <option value="non-bearing" <?php echo ($crop['tree_status'] === 'non-bearing') ? 'selected' : ''; ?>>Non-Bearing</option>
+                                        <option value="seedling" <?php echo ($crop['tree_status'] === 'seedling') ? 'selected' : ''; ?> data-icon="bi-flower1">Seedling/Vegetative</option>
+                                        <option value="bearing" <?php echo ($crop['tree_status'] === 'bearing') ? 'selected' : ''; ?> data-icon="bi-tree-fill">Bearing</option>
+                                        <option value="non-bearing" <?php echo ($crop['tree_status'] === 'non-bearing') ? 'selected' : ''; ?> data-icon="bi-tree">Non-Bearing</option>
                                     </select>
                                 </div>
                             </div>
@@ -366,9 +366,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <select id="treeStatus_<?php echo $cropIndex; ?>" 
                                             name="treeStatus_<?php echo $cropIndex; ?>" data-choice-cards>
                                         <option value="" disabled selected>Pumili ng Tree Status</option>
-                                        <option value="seedling">Seedling/Vegetative</option>
-                                        <option value="bearing">Bearing</option>
-                                        <option value="non-bearing">Non-Bearing</option>
+                                        <option value="seedling" data-icon="bi-flower1">Seedling/Vegetative</option>
+                                        <option value="bearing" data-icon="bi-tree-fill">Bearing</option>
+                                        <option value="non-bearing" data-icon="bi-tree">Non-Bearing</option>
                                     </select>
                                 </div>
                             </div>
@@ -588,9 +588,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         name="treeStatus_${i}"
                                         required data-choice-cards>
                                     <option value="" disabled selected>Pumili ng Tree Status</option>
-                                    <option value="seedling">Seedling/Vegetative</option>
-                                    <option value="bearing">Bearing</option>
-                                    <option value="non-bearing">Non-Bearing</option>
+                                    <option value="seedling" data-icon="bi-flower1">Seedling/Vegetative</option>
+                                    <option value="bearing" data-icon="bi-tree-fill">Bearing</option>
+                                    <option value="non-bearing" data-icon="bi-tree">Non-Bearing</option>
                                 </select>
                             </div>
                         </div>
