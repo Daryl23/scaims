@@ -1,0 +1,157 @@
+/* ============================================================
+   APGORRS — Choice cards
+   ------------------------------------------------------------
+   Turns a short dropdown (two or three preset options) into a
+   row of tappable cards. A dropdown costs a tap, a scroll and a
+   second tap; a card costs one tap and shows every option at
+   once.
+
+   The original <select> stays in the form and keeps its value,
+   so existing onchange handlers, POST fields and required
+   validation are unaffected — see choice-cards.js.
+
+   Palette and type are the existing APGORRS ones.
+   ============================================================ */
+
+.cc-group {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    margin: 0 0 4px;
+}
+
+/* Two or three options sit side by side; below 420px they stack
+   so the labels never truncate. */
+.cc-group[data-count="2"] {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.cc-group[data-count="3"] {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.cc-group .cc-card {
+    -webkit-appearance: none;
+    appearance: none;
+    align-items: center;
+    background: #ffffff;
+    border: 1.5px solid #d9c7ad;
+    border-radius: 12px;
+    color: #674636;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    gap: 6px;
+    justify-content: center;
+    line-height: 1.3;
+    min-height: 68px;
+    padding: 12px 10px;
+    position: relative;
+    text-align: center;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+    width: 100%;
+}
+
+.cc-group .cc-card:hover {
+    background: #f7f2e8;
+    border-color: #b8a58a;
+}
+
+.cc-group .cc-card .cc-mark {
+    color: #576f1b;
+    font-size: 1.15rem;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.cc-group .cc-card[aria-checked="true"] {
+    background: #f0f4e8;
+    border-color: #576f1b;
+    border-width: 2px;
+    color: #576f1b;
+    font-weight: 600;
+    padding: 11px 9px; /* keep the box the same size as the thicker border */
+}
+
+.cc-group .cc-card[aria-checked="true"] .cc-mark {
+    opacity: 1;
+}
+
+.cc-group .cc-card:focus-visible {
+    outline: 3px solid #576f1b;
+    outline-offset: 2px;
+}
+
+/* Locked form: the report and parcel forms disable their fields until
+   the farmer taps Edit. */
+.cc-group.cc-locked .cc-card {
+    background: #f4f2ec;
+    border-color: #e0d8c8;
+    color: #9a8f80;
+    cursor: not-allowed;
+}
+
+.cc-group.cc-locked .cc-card[aria-checked="true"] {
+    background: #eceee4;
+    border-color: #b3bf99;
+    color: #6f7d56;
+}
+
+/* The group is flagged when the form is submitted with nothing
+   chosen, mirroring the browser's own required-field warning. */
+.cc-group.cc-invalid .cc-card {
+    border-color: #a4402d;
+}
+
+.cc-error {
+    color: #a4402d;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    margin: 6px 0 0;
+}
+
+/* The original control stays in the form so it still submits and
+   still validates. It is hidden from view but deliberately NOT
+   display:none — a display:none required field makes the browser
+   refuse to report validity. */
+.cc-native {
+    border: 0;
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+@media (max-width: 420px) {
+    .cc-group[data-count="3"] {
+        grid-template-columns: 1fr;
+    }
+
+    .cc-group .cc-card {
+        flex-direction: row;
+        gap: 10px;
+        justify-content: flex-start;
+        min-height: 56px;
+        text-align: left;
+    }
+
+    .cc-group .cc-card .cc-mark {
+        order: -1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cc-group .cc-card,
+    .cc-group .cc-card .cc-mark {
+        transition: none;
+    }
+}

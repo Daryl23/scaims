@@ -162,6 +162,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             min-width: 200px;
         }
     </style>
+    <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260908">
+    <script src="../../../shared/choice-cards.js?v=20260908" defer></script>
 </head>
 <body>
     <div class="container">
@@ -261,7 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                         <label for="ownership">Ownership Type:</label>
-                        <select id="ownership" name="ownership" required>
+                        <select id="ownership" name="ownership" required data-choice-cards>
                             <option value="" disabled selected></option>
                             <option value="registered_owner" <?php echo ($parcelDetails['ownership_type'] === 'registered_owner') ? 'selected' : ''; ?>>Registered Owner</option>
                             <option value="lessee" <?php echo ($parcelDetails['ownership_type'] === 'lessee') ? 'selected' : ''; ?>>Lessee</option>
@@ -341,7 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <label for="treeStatus_<?php echo $cropIndex; ?>">Tree Status:</label>
                                     <select id="treeStatus_<?php echo $cropIndex; ?>" 
                                             name="treeStatus_<?php echo $cropIndex; ?>"
-                                            required>
+                                            required data-choice-cards>
                                         <option value="" disabled selected>Pumili ng Tree Status</option>
                                         <option value="seedling" <?php echo ($crop['tree_status'] === 'seedling') ? 'selected' : ''; ?>>Seedling/Vegetative</option>
                                         <option value="bearing" <?php echo ($crop['tree_status'] === 'bearing') ? 'selected' : ''; ?>>Bearing</option>
@@ -361,7 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="crop-group">
                                     <label for="treeStatus_<?php echo $cropIndex; ?>">Tree Status:</label>
                                     <select id="treeStatus_<?php echo $cropIndex; ?>" 
-                                            name="treeStatus_<?php echo $cropIndex; ?>">
+                                            name="treeStatus_<?php echo $cropIndex; ?>" data-choice-cards>
                                         <option value="" disabled selected>Pumili ng Tree Status</option>
                                         <option value="seedling">Seedling/Vegetative</option>
                                         <option value="bearing">Bearing</option>
@@ -583,7 +586,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <label for="treeStatus_${i}">Tree Status:</label>
                                 <select id="treeStatus_${i}" 
                                         name="treeStatus_${i}"
-                                        required>
+                                        required data-choice-cards>
                                     <option value="" disabled selected>Pumili ng Tree Status</option>
                                     <option value="seedling">Seedling/Vegetative</option>
                                     <option value="bearing">Bearing</option>

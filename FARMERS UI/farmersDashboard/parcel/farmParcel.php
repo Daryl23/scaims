@@ -112,6 +112,9 @@ if (!isset($_SESSION['UName'])) {
             }
         }
     </style>
+    <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260908">
+    <script src="../../../shared/choice-cards.js?v=20260908" defer></script>
 </head>
 <body>
     <div class="container">
@@ -238,7 +241,7 @@ if (!isset($_SESSION['UName'])) {
             <div class="form-row">
                 <div class="form-group">
                     <label for="farmType">Farm Type:</label>
-                    <select id="farmType" name="farmType" required>
+                    <select id="farmType" name="farmType" data-choice-cards required>
                         <option value="" disabled selected>Pumili ng Farm Type</option>
                         <option value="irrigated">Irrigated</option>
                         <option value="rainfed_upland">Rainfed Upland</option>
@@ -248,7 +251,7 @@ if (!isset($_SESSION['UName'])) {
                 
                 <div class="form-group">
                     <label for="organic">Organic Practitioner:</label>
-                    <select id="organic" name="organic" required>
+                    <select id="organic" name="organic" data-choice-cards required>
                         <option value="" disabled selected></option>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>

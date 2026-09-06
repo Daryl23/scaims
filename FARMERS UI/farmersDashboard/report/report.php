@@ -210,6 +210,8 @@ try {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../shared/farmer-mobile.css?v=<?php echo @filemtime(__DIR__ . '/../shared/farmer-mobile.css') ?: time(); ?>">
+    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260908">
+    <script src="../../../shared/choice-cards.js?v=20260908" defer></script>
 </head>
 <body>
     <div class="container">
@@ -230,7 +232,7 @@ try {
             <div class="report-form">
                 <form action="report_submit.php" method="POST" enctype="multipart/form-data" id="farmer-report-form" data-initial-report-type="<?php echo htmlspecialchars($initialReportType, ENT_QUOTES, 'UTF-8'); ?>">
                 <label for="report-type"><h2><b data-i18n="report_type_label">Type of Report</b></h2></label>
-                    <select id="report-type" name="report-type" onchange="toggleCropReport()">
+                    <select id="report-type" name="report-type" data-choice-cards onchange="toggleCropReport()">
                         <option value="" disabled selected data-i18n="report_type_placeholder">Select a type of report</option>
                         <option value="crop" data-i18n="report_type_crop">Crop Harvest Report</option>
                         <option value="damage" data-i18n="report_type_damage">Crop Damage Report</option>
@@ -376,7 +378,7 @@ try {
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="crop-status">Crop Status:</label>
-                                <select id="crop-status" name="crop-status" required>
+                                <select id="crop-status" name="crop-status" data-choice-cards required>
                                     <option value="" disabled selected>Pumili ng Status ng Pananim</option>
                                     <option value="Seedling/Vegetative">Seedling/Vegetative</option>
                                     <option value="Bearing">Bearing</option>
@@ -397,7 +399,7 @@ try {
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="crop-coordinate-mode">Coordinates:</label>
-                                <select id="crop-coordinate-mode" name="crop-coordinate-mode">
+                                <select id="crop-coordinate-mode" name="crop-coordinate-mode" data-choice-cards>
                                     <option value="" selected>Do not include coordinates</option>
                                     <option value="auto">Auto via GPS</option>
                                     <option value="manual">Manual input</option>
@@ -581,7 +583,7 @@ try {
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="damage-coordinate-mode">Coordinates:</label>
-                                <select id="damage-coordinate-mode" name="damage-coordinate-mode">
+                                <select id="damage-coordinate-mode" name="damage-coordinate-mode" data-choice-cards>
                                     <option value="" selected>Do not include coordinates</option>
                                     <option value="auto">Auto via GPS</option>
                                     <option value="manual">Manual input</option>
