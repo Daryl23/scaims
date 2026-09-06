@@ -3,7 +3,7 @@
 // Update these values in one place when moving between XAMPP and InfinityFree.
 if (!defined('SCAIMS_DB_HOST')) {
     define('SCAIMS_DB_HOST', 'localhost');
-    define('SCAIMS_DB_NAME', 'apgorrs');
+    define('SCAIMS_DB_NAME', 'u330456998_apgorrsdb');
     define('SCAIMS_DB_USER', 'root');
     define('SCAIMS_DB_PASS', '');
     define('SCAIMS_DB_PORT', 3306);

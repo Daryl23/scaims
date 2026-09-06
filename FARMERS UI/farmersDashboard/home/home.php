@@ -64,11 +64,17 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
                     data-replace-label="Replace image"
                     data-remove-label="Remove image"
                 ></div>
-                <div id="home-report-type-panel" class="home-report-type-panel" hidden>
-                    <p data-i18n="home_report_choose">Choose report type</p>
+                <div id="home-report-type-panel" class="home-report-type-panel" aria-labelledby="home-report-type-title" hidden>
+                    <h3 id="home-report-type-title" data-i18n="home_report_choose">Uri ng Ulat</h3>
                     <div class="home-report-type-actions">
-                        <button type="button" data-home-report-type="crop"><i class="bi bi-basket2"></i><span data-i18n="home_report_crop">Harvest Report</span></button>
-                        <button type="button" data-home-report-type="damage"><i class="bi bi-exclamation-triangle"></i><span data-i18n="home_report_damage">Damaged Crop Report</span></button>
+                        <button type="button" data-home-report-type="crop">
+                            <i class="bi bi-basket2" aria-hidden="true"></i>
+                            <span data-i18n="home_report_crop">Crop Harvest Report</span>
+                        </button>
+                        <button type="button" data-home-report-type="damage">
+                            <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
+                            <span data-i18n="home_report_damage">Crop Damage Report</span>
+                        </button>
                     </div>
                     <div id="home-report-upload-status" class="home-report-upload-status" role="alert" aria-live="polite"></div>
                 </div>
