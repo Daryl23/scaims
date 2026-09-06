@@ -29,15 +29,10 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
         <?php include '../shared/sidebar.php'; ?>
 
         <div class="main-content">
-            <h1 data-i18n="home_title">LATEST UPDATES</h1>
-            <div class="dashboard-help-note">
-                <p data-i18n="home_help">Check the newest announcements here before opening another menu.</p>
-            </div>
-
             <!-- Quick actions: the four things a farmer opens the dashboard to do.
                  Icons are the existing nav artwork, so the tiles read the same
                  as the sidebar items they lead to. -->
-            <h2 class="fm-launcher-title" data-i18n="home_quick_title">What would you like to do?</h2>
+            <h1 class="fm-launcher-title" data-i18n="home_quick_title">What would you like to do?</h1>
             <nav class="fm-launcher" aria-label="Quick actions">
                 <a class="fm-tile" href="../report/report.php">
                     <img src="assets/nav-icons/report.png" alt="">
@@ -78,7 +73,16 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
                     <div id="home-report-upload-status" class="home-report-upload-status" role="alert" aria-live="polite"></div>
                 </div>
             </section>
-            <div id="posts-container"></div>
+            <section class="fm-updates" aria-labelledby="home-updates-title">
+                <h2 class="fm-section-title" id="home-updates-title">
+                    <i class="bi bi-broadcast" aria-hidden="true"></i>
+                    <span data-i18n="home_title">LATEST UPDATES</span>
+                </h2>
+                <div class="dashboard-help-note">
+                    <p data-i18n="home_help">Check the newest announcements here before opening another menu.</p>
+                </div>
+                <div id="posts-container"></div>
+            </section>
         </div>
     </div>
 

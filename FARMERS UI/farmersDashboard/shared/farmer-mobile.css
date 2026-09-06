@@ -56,6 +56,47 @@
     margin: 0 0 22px;
 }
 
+/* ------------------------------------------------------------
+   1b. Section headings — a heading sits with the content it names
+   ------------------------------------------------------------ */
+
+.fm-updates {
+    margin-top: 28px;
+}
+
+.fm-section-title {
+    align-items: center;
+    border-top: 1px solid var(--fm-border-soft);
+    color: var(--fm-brown);
+    display: flex;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    gap: 10px;
+    margin: 0 0 10px;
+    padding-top: 20px;
+}
+
+.fm-section-title i {
+    color: var(--fm-olive);
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+/* The heading introduces the posts, so the note between them stays
+   compact and the three read as one block. */
+.fm-updates .dashboard-help-note {
+    font-size: 0.9rem;
+    line-height: 1.45;
+    margin: 0 0 12px;
+    padding: 10px 14px;
+}
+
+.fm-updates #posts-container {
+    margin-top: 0;
+    padding-top: 0;
+}
+
 /* On a desk the four tiles sit in one row and stay a quiet quick-access
    strip rather than dominating the page. */
 @media (min-width: 769px) {
