@@ -10,12 +10,13 @@
     <link rel="stylesheet" href="regs.css">
     <script src="../../shared/app-path.js"></script>
     <script src="../../shared/public-nav-config.js"></script>
-    <script src="../../shared/public-nav.js" defer></script>
-    <link rel="stylesheet" href="../../shared/public-nav.css">
+    <script src="../../shared/public-nav.js?v=20260908-2" defer></script>
+    <link rel="stylesheet" href="../../shared/public-nav.css?v=20260908-2">
     <style>
         .rsbsa-container {
+            width: min(600px, calc(100% - 32px));
             max-width: 600px;
-            margin: 150px auto;
+            margin: clamp(110px, 18vh, 150px) auto 40px;
             padding: 30px;
             background-color: #f5f5f3;
             border-radius: 10px;
@@ -29,6 +30,7 @@
         
         .rsbsa-buttons {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             gap: 20px;
             margin-top: 30px;
@@ -41,6 +43,23 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s;
+            max-width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .rsbsa-container {
+                width: min(100% - 24px, 600px);
+                padding: 24px 18px;
+            }
+
+            .rsbsa-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .rsbsa-btn {
+                width: 100%;
+            }
         }
         
         .btn-yes {

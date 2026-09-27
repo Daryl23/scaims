@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . '/../../../../shared/admin_auth.php';
 scaims_require_admin('../../../adminLogin/adminLogin.html');
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['AdminID'])) {
@@ -12,6 +14,7 @@ if (!isset($_SESSION['AdminID'])) {
 
 require_once 'db_connection.php';
 require_once dirname(__DIR__, 4) . '/shared/report_image_storage.php';
+require_once dirname(__DIR__, 4) . '/shared/gps_photo.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -19,6 +22,7 @@ error_reporting(E_ALL);
 
 try {
     scaims_ensure_report_image_columns($conn);
+    scaims_ensure_gps_photo_columns($conn);
 } catch (RuntimeException $e) {
     http_response_code(500);
     echo json_encode(['error' => 'Report image information is unavailable right now. Please try again later.']);
@@ -48,6 +52,7 @@ try {
                    dr.latitude AS Latitude,
                    dr.longitude AS Longitude,
                    dr.image_path AS ImagePath,
+                   dr.photo_capture_date, dr.photo_capture_time, dr.photo_location, dr.photo_latitude, dr.photo_longitude, dr.photo_timezone, dr.photo_ocr_version,
                    dr.reportDate AS ReportDate,
                    COALESCE(ca.AdminName, CONCAT(cf.FirstName, ' ', cf.Surname), dr.created_by) AS ReportedBy,
                    CASE WHEN ca.AdminName IS NOT NULL THEN 'Admin' ELSE 'Farmer' END AS ReporterType
@@ -73,6 +78,7 @@ try {
 
     echo json_encode([
         'id' => $report['id'],
+        'gps_photo' => scaims_photo_from_row($report),
         'Name' => htmlspecialchars(ucwords($report['Name']), ENT_QUOTES, 'UTF-8'),
         'ReportedBy' => htmlspecialchars($report['ReportedBy'], ENT_QUOTES, 'UTF-8'),
         'ReporterType' => htmlspecialchars($report['ReporterType'], ENT_QUOTES, 'UTF-8'),

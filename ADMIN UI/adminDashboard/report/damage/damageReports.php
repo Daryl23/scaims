@@ -265,9 +265,9 @@ $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-
                     <span class="close-button">&times;</span>
                     <h2 id="modalTitle">Crop Damage Report Details</h2>
                     <div id="damageReportImagePanel" class="report-image-detail" hidden>
-                        <h3>Larawan ng Nasirang Pananim</h3>
-                        <img id="damageReportImage" src="" alt="Damaged crop report image" hidden>
-                        <p id="damageReportNoImage">Walang larawan.</p>
+                        <h3 data-i18n="gps_photo_title">GPS Camera Photo</h3>
+                        <img id="damageReportImage" alt="Damaged crop report image" hidden>
+                        <p id="damageReportNoImage" data-i18n="gps_photo_empty">No image available</p>
                     </div>
                     <div id="modal-body">
                         <p><strong>Farmer:</strong> <span id="farmerID"></span></p>
@@ -353,5 +353,6 @@ $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-
             </div>
         </div>
     </div>
+<script src="../../../../shared/report-image-capture.js?v=<?php echo filemtime(__DIR__ . "/../../../../shared/report-image-capture.js"); ?>"></script>
 </body>
 </html>

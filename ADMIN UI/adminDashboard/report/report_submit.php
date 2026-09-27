@@ -1,17 +1,14 @@
 <?php
-session_start();
-
-if (!isset($_SESSION['AdminID'])) {
-    header('Location: ../../adminLogin/adminLogin.html');
-    exit();
-}
-
+require_once dirname(__DIR__, 3) . '/shared/admin_auth.php';
+scaims_require_admin('../../adminLogin/adminLogin.html');
 require_once dirname(__DIR__, 3) . '/conn.php';
 require_once dirname(__DIR__, 3) . '/shared/report_image_storage.php';
+require_once dirname(__DIR__, 3) . '/shared/gps_photo.php';
 
 try {
     $conn = scaims_db_mysqli();
     scaims_ensure_report_image_columns($conn);
+    scaims_ensure_gps_photo_columns($conn);
 } catch (RuntimeException $e) {
     $_SESSION['message'] = 'The report database is unavailable right now. Please try again later.';
     header("Location: reportAnalytics.php");
@@ -50,6 +47,53 @@ function normalizeCoordinateValue($value, $min, $max) {
     return number_format($numericValue, 7, '.', '');
 }
 
+function cleanAdminReportValue(string $key): string {
+    return trim((string) ($_POST[$key] ?? ''));
+}
+
+function requireAdminReportValue(string $value, string $label): void {
+    if ($value === '') {
+        $_SESSION['message'] = $label . ' is required.';
+        header("Location: reportAnalytics.php");
+        exit();
+    }
+}
+
+function requireAdminReportDate(string $value, string $label): void {
+    requireAdminReportValue($value, $label);
+    $date = DateTime::createFromFormat('Y-m-d', $value);
+    if (!$date || $date->format('Y-m-d') !== $value) {
+        $_SESSION['message'] = 'Please enter a valid date for ' . $label . '.';
+        header("Location: reportAnalytics.php");
+        exit();
+    }
+}
+
+function requirePositiveAdminReportNumber(string $value, string $label): void {
+    if ($value === '' || !is_numeric($value) || (float) $value <= 0) {
+        $_SESSION['message'] = 'Please enter a valid positive number for ' . $label . '.';
+        header("Location: reportAnalytics.php");
+        exit();
+    }
+}
+
+function requireAdminReportPercentage(string $value): void {
+    if ($value === '' || !is_numeric($value) || (float) $value < 0 || (float) $value > 100) {
+        $_SESSION['message'] = 'Please enter a valid damage percentage between 0 and 100.';
+        header("Location: reportAnalytics.php");
+        exit();
+    }
+}
+
+function adminReportImageField(string $legacyField): string {
+    $adminField = 'admin-report-image';
+    if (isset($_FILES[$adminField]) && ($_FILES[$adminField]['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
+        return $adminField;
+    }
+
+    return $legacyField;
+}
+
 if ($farmerId <= 0) {
     $_SESSION['message'] = 'Please select the farmer you are reporting for.';
     $conn->close();
@@ -57,7 +101,7 @@ if ($farmerId <= 0) {
     exit();
 }
 
-$farmerCheck = $conn->prepare("SELECT FarmerID FROM farmer WHERE FarmerID = ? LIMIT 1");
+$farmerCheck = $conn->prepare("SELECT FarmerID FROM farmer WHERE FarmerID = ? AND (is_active = 1 OR is_active IS NULL) LIMIT 1");
 $farmerCheck->bind_param("i", $farmerId);
 $farmerCheck->execute();
 $farmerResult = $farmerCheck->get_result();
@@ -70,22 +114,53 @@ if ($farmerResult->num_rows === 0) {
 }
 $farmerCheck->close();
 
+$gpsPending = scaims_pending_gps_photo($_POST['pending-report-image-token'] ?? null);
+if (!$gpsPending || !empty($_FILES['report-image']['tmp_name']) || !empty($_FILES['admin-report-image']['tmp_name']) || !empty($_FILES['crop-report-image']['tmp_name']) || !empty($_FILES['damage-report-image']['tmp_name'])) {
+    $_SESSION['message'] = 'Please upload a GPS Camera photo and wait for GPS information to be detected.';
+    header('Location: reportAnalytics.php'); exit();
+}
+$photo = $gpsPending['photo'];
+
 if ($reportType === 'crop') {
-    $location = $_POST["crop-location"] ?? '';
-    $cropCommodity = $_POST["crop-commodity"] ?? '';
-    $cropType = $_POST["crop-type"] ?? '';
+    $location = mb_substr($photo['location'], 0, 255);
+    $cropCommodity = cleanAdminReportValue("crop-commodity");
+    $cropType = cleanAdminReportValue("crop-type");
     if ($cropType === "Other") {
-        $cropType = $_POST["other-crop-type"] ?? '';
+        $cropType = cleanAdminReportValue("other-crop-type");
     }
-    $cropVariety = $_POST["crop-variety"] ?? '';
-    $datePlanted = $_POST["date-planted"] ?? '';
-    $harvestDate = $_POST["harvest-date"] ?? '';
-    $estimateHarvest = $_POST["estimate-harvest"] ?? '';
-    $cropStatus = $_POST["crop-status"] ?? '';
-    $farmGatePrice = $_POST["farm-gate-price"] ?? '';
-    $numberOfTrees = $_POST["number-of-trees"] ?? null;
-    $latitude = normalizeCoordinateValue(parseCoordinateValue($_POST["crop-latitude"] ?? ''), -90, 90);
-    $longitude = normalizeCoordinateValue(parseCoordinateValue($_POST["crop-longitude"] ?? ''), -180, 180);
+    $cropVariety = cleanAdminReportValue("crop-variety");
+    $datePlanted = cleanAdminReportValue("date-planted");
+    $harvestDate = cleanAdminReportValue("harvest-date");
+    $estimateHarvest = cleanAdminReportValue("estimate-harvest");
+    $cropStatus = cleanAdminReportValue("crop-status");
+    $farmGatePrice = cleanAdminReportValue("farm-gate-price");
+    $numberOfTrees = cleanAdminReportValue("number-of-trees");
+    $latitude = $photo['latitude'];
+    $longitude = $photo['longitude'];
+
+    requireAdminReportValue($location, 'Location');
+    requireAdminReportValue($cropCommodity, 'Crop commodity');
+    requireAdminReportValue($cropType, 'Crop type');
+    requireAdminReportValue($cropVariety, 'Crop variety');
+    requireAdminReportDate($datePlanted, 'date planted');
+    requireAdminReportDate($harvestDate, 'harvest date');
+    requirePositiveAdminReportNumber($estimateHarvest, 'estimated harvest');
+    requireAdminReportValue($cropStatus, 'Crop status');
+    requirePositiveAdminReportNumber($farmGatePrice, 'farm gate price');
+
+    if (strtotime($datePlanted) > strtotime(date('Y-m-d'))) {
+        $_SESSION['message'] = 'Date planted cannot be in the future.';
+        $conn->close();
+        header("Location: reportAnalytics.php");
+        exit();
+    }
+
+    if (strtotime($harvestDate) <= strtotime($datePlanted)) {
+        $_SESSION['message'] = 'Harvest date must be after the date planted.';
+        $conn->close();
+        header("Location: reportAnalytics.php");
+        exit();
+    }
 
     if (($latitude === null) xor ($longitude === null)) {
         $_SESSION['message'] = 'Please provide both latitude and longitude, or leave both empty.';
@@ -101,9 +176,9 @@ if ($reportType === 'crop') {
         exit();
     }
 
-    $imageResult = scaims_collect_report_image('crop-report-image', 'crop');
-    if (!$imageResult['ok']) {
-        $_SESSION['message'] = $imageResult['message'] ?? 'The crop image could not be uploaded. Please try again.';
+    $imageResult = scaims_finalize_pending_report_image($gpsPending['token'], $reportType);
+    if (!$imageResult['ok'] || empty($imageResult['path'])) {
+        $_SESSION['message'] = $imageResult['message'] ?? 'Please upload a GPS Camera photo.';
         $conn->close();
         header("Location: reportAnalytics.php");
         exit();
@@ -156,7 +231,7 @@ if ($reportType === 'crop') {
         $imagePath
     );
 
-    if ($stmt->execute()) {
+    if (scaims_execute_photo_report($conn, $stmt, $reportType, $photo)) {
         $_SESSION['message'] = 'Crop report submitted successfully.';
     } else {
         scaims_delete_report_image($imagePath);
@@ -164,21 +239,38 @@ if ($reportType === 'crop') {
     }
     $stmt->close();
 } elseif ($reportType === 'damage') {
-    $location = $_POST["damage-location"] ?? '';
-    $cropCommodity = $_POST["damage-crop-commodity"] ?? '';
-    $cropType = $_POST["damage-crop-type"] ?? '';
+    $location = mb_substr($photo['location'], 0, 255);
+    $cropCommodity = cleanAdminReportValue("damage-crop-commodity");
+    $cropType = cleanAdminReportValue("damage-crop-type");
     if ($cropType === "Other") {
-        $cropType = $_POST["other-damage-crop-type"] ?? '';
+        $cropType = cleanAdminReportValue("other-damage-crop-type");
     }
-    $cropVariety = $_POST["damage-crop-variety"] ?? '';
-    $dateOccurrence = $_POST["date-occurrence"] ?? '';
-    $damageCause = $_POST["damage-cause"] ?? '';
-    $percentDamage = $_POST["damage-percentage"] ?? '';
-    $estimatedLoss = $_POST["estimated-loss"] ?? '';
-    $farmGatePrice = $_POST["damage-farm-gate-price"] ?? '';
-    $numberOfTrees = $_POST["damage-number-of-trees"] ?? null;
-    $latitude = normalizeCoordinateValue(parseCoordinateValue($_POST["damage-latitude"] ?? ''), -90, 90);
-    $longitude = normalizeCoordinateValue(parseCoordinateValue($_POST["damage-longitude"] ?? ''), -180, 180);
+    $cropVariety = cleanAdminReportValue("damage-crop-variety");
+    $dateOccurrence = $photo['date'];
+    $damageCause = cleanAdminReportValue("damage-cause");
+    $percentDamage = cleanAdminReportValue("damage-percentage");
+    $estimatedLoss = cleanAdminReportValue("estimated-loss");
+    $farmGatePrice = cleanAdminReportValue("damage-farm-gate-price");
+    $numberOfTrees = cleanAdminReportValue("damage-number-of-trees");
+    $latitude = $photo['latitude'];
+    $longitude = $photo['longitude'];
+
+    requireAdminReportValue($location, 'Location');
+    requireAdminReportValue($cropCommodity, 'Crop commodity');
+    requireAdminReportValue($cropType, 'Crop type');
+    requireAdminReportValue($cropVariety, 'Crop variety');
+    requireAdminReportDate($dateOccurrence, 'date of occurrence');
+    requireAdminReportValue($damageCause, 'Damage cause');
+    requireAdminReportPercentage($percentDamage);
+    requirePositiveAdminReportNumber($estimatedLoss, 'estimated loss');
+    requirePositiveAdminReportNumber($farmGatePrice, 'farm gate price');
+
+    if (strtotime($dateOccurrence) > strtotime(date('Y-m-d'))) {
+        $_SESSION['message'] = 'Date of occurrence cannot be in the future.';
+        $conn->close();
+        header("Location: reportAnalytics.php");
+        exit();
+    }
 
     if (($latitude === null) xor ($longitude === null)) {
         $_SESSION['message'] = 'Please provide both latitude and longitude, or leave both empty.';
@@ -194,9 +286,9 @@ if ($reportType === 'crop') {
         exit();
     }
 
-    $imageResult = scaims_collect_report_image('damage-report-image', 'damage');
-    if (!$imageResult['ok']) {
-        $_SESSION['message'] = $imageResult['message'] ?? 'The crop damage image could not be uploaded. Please try again.';
+    $imageResult = scaims_finalize_pending_report_image($gpsPending['token'], $reportType);
+    if (!$imageResult['ok'] || empty($imageResult['path'])) {
+        $_SESSION['message'] = $imageResult['message'] ?? 'Please upload a GPS Camera photo.';
         $conn->close();
         header("Location: reportAnalytics.php");
         exit();
@@ -249,7 +341,7 @@ if ($reportType === 'crop') {
         $imagePath
     );
 
-    if ($stmt->execute()) {
+    if (scaims_execute_photo_report($conn, $stmt, $reportType, $photo)) {
         $_SESSION['message'] = 'Damage report submitted successfully.';
     } else {
         scaims_delete_report_image($imagePath);

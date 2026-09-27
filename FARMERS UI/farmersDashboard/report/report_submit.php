@@ -8,11 +8,13 @@ if (!isset($_SESSION['UName'])) {
 
 require_once dirname(__DIR__, 3) . '/conn.php';
 require_once dirname(__DIR__, 3) . '/shared/report_image_storage.php';
+require_once dirname(__DIR__, 3) . '/shared/gps_photo.php';
 require_once dirname(__DIR__, 3) . '/shared/farmer_report_defaults.php';
 
 try {
     $conn = scaims_db_mysqli();
     scaims_ensure_report_image_columns($conn);
+    scaims_ensure_gps_photo_columns($conn);
     scaims_ensure_farmer_report_defaults_table($conn);
 } catch (RuntimeException $e) {
     $_SESSION['message'] = 'The report database is unavailable right now. Please try again later.';
@@ -66,8 +68,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
+$gpsPending = scaims_pending_gps_photo($_POST['pending-report-image-token'] ?? null);
+if (!$gpsPending || !empty($_FILES['report-image']['tmp_name']) || !empty($_FILES['admin-report-image']['tmp_name']) || !empty($_FILES['crop-report-image']['tmp_name']) || !empty($_FILES['damage-report-image']['tmp_name'])) {
+    $_SESSION['message'] = 'Please upload a GPS Camera photo and wait for GPS information to be detected.';
+    header('Location: report.php'); exit();
+}
+$photo = $gpsPending['photo'];
+
     if ($report_type === "crop") {
-        $location = $_POST["crop-location"];
+        $location = mb_substr($photo['location'], 0, 255);
         $crop_commodity = $_POST["crop-commodity"];
         $crop_type = $_POST["crop-type"];
         if ($crop_type === "Other") {
@@ -80,8 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $crop_status = $_POST["crop-status"];
         $farm_gate_price = $_POST["farm-gate-price"];
         $number_of_trees = $_POST["number-of-trees"] ?? null;
-        $latitude = normalizeCoordinateValue(parseCoordinateValue($_POST["crop-latitude"] ?? ''), -90, 90);
-        $longitude = normalizeCoordinateValue(parseCoordinateValue($_POST["crop-longitude"] ?? ''), -180, 180);
+        $latitude = $photo['latitude'];
+        $longitude = $photo['longitude'];
         $created_by = $_SESSION['UName'];
 
         if (($latitude === null) xor ($longitude === null)) {
@@ -103,13 +112,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
 
-        $imageResult = scaims_collect_report_image(
-            'crop-report-image',
-            'crop',
-            $_POST['crop-pending-report-image-token'] ?? null
-        );
-        if (!$imageResult['ok']) {
-            $_SESSION['message'] = $imageResult['message'] ?? 'The crop image could not be uploaded. Please try again.';
+        $imageResult = scaims_finalize_pending_report_image($gpsPending['token'], $report_type);
+        if (!$imageResult['ok'] || empty($imageResult['path'])) {
+            $_SESSION['message'] = $imageResult['message'] ?? 'Please upload a GPS Camera photo.';
             header("Location: report.php");
             exit();
         }
@@ -160,9 +165,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $created_by
         );
         
-        if ($stmt->execute()) {
+        if (scaims_execute_photo_report($conn, $stmt, $report_type, $photo)) {
             $defaultsSaved = scaims_save_farmer_report_defaults($conn, $farmerId, 'crop', [
-                'location' => $location,
                 'crop_commodity' => $crop_commodity,
                 'crop_type' => $crop_type,
                 'crop_variety' => $crop_variety,
@@ -172,8 +176,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'crop_status' => $crop_status,
                 'number_of_trees' => $number_of_trees,
                 'farm_gate_price' => $farm_gate_price,
-                'latitude' => $latitude,
-                'longitude' => $longitude,
             ]);
             $_SESSION['message'] = $defaultsSaved
                 ? 'New crop report submitted successfully✅'
@@ -188,21 +190,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif ($report_type === "damage") {
         try {
             // Get form data
-            $location = $_POST["damage-location"];
+            $location = mb_substr($photo['location'], 0, 255);
             $crop_commodity = $_POST["damage-crop-commodity"];
             $crop_type = $_POST["damage-crop-type"];
             if ($crop_type === "Other") {
                 $crop_type = $_POST["other-damage-crop-type"];
             }
             $crop_variety = $_POST["damage-crop-variety"];
-            $date_occurrence = $_POST["date-occurrence"];
+            $date_occurrence = $photo['date'];
             $damage_cause = $_POST["damage-cause"];
             $percent_damage = $_POST["damage-percentage"];
             $estimated_loss = $_POST["estimated-loss"];
             $farm_gate_price = $_POST["damage-farm-gate-price"];
             $damage_number_of_trees = $_POST["damage-number-of-trees"] ?? null;
-            $latitude = normalizeCoordinateValue(parseCoordinateValue($_POST["damage-latitude"] ?? ''), -90, 90);
-            $longitude = normalizeCoordinateValue(parseCoordinateValue($_POST["damage-longitude"] ?? ''), -180, 180);
+            $latitude = $photo['latitude'];
+            $longitude = $photo['longitude'];
             $created_by = $_SESSION['UName'];
 
             if (($latitude === null) xor ($longitude === null)) {
@@ -217,13 +219,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             }
 
-            $imageResult = scaims_collect_report_image(
-                'damage-report-image',
-                'damage',
-                $_POST['damage-pending-report-image-token'] ?? null
-            );
-            if (!$imageResult['ok']) {
-                $_SESSION['message'] = $imageResult['message'] ?? 'The crop damage image could not be uploaded. Please try again.';
+            $imageResult = scaims_finalize_pending_report_image($gpsPending['token'], $report_type);
+            if (!$imageResult['ok'] || empty($imageResult['path'])) {
+                $_SESSION['message'] = $imageResult['message'] ?? 'Please upload a GPS Camera photo.';
                 header("Location: report.php");
                 exit();
             }
@@ -272,25 +270,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $created_by
             );
 
-            if (!$stmt->execute()) {
+            if (!scaims_execute_photo_report($conn, $stmt, $report_type, $photo)) {
                 scaims_delete_report_image($imagePath);
                 throw new Exception("Execute failed: " . $stmt->error);
             }
 
             if ($stmt->affected_rows > 0) {
                 $defaultsSaved = scaims_save_farmer_report_defaults($conn, $farmerId, 'damage', [
-                    'location' => $location,
                     'crop_commodity' => $crop_commodity,
                     'crop_type' => $crop_type,
                     'crop_variety' => $crop_variety,
-                    'date_occurrence' => $date_occurrence,
                     'damage_cause' => $damage_cause,
                     'percent_damage' => $percent_damage,
                     'estimated_loss' => $estimated_loss,
                     'farm_gate_price' => $farm_gate_price,
                     'number_of_trees' => $damage_number_of_trees,
-                    'latitude' => $latitude,
-                    'longitude' => $longitude,
                 ]);
                 $_SESSION['message'] = $defaultsSaved
                     ? "Damage report submitted successfully✅"

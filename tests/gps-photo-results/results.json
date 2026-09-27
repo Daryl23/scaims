@@ -1,0 +1,18 @@
+{
+  "checks": [
+    "Shared upload, replace/remove, report-type attachment retention, no built-in capture, EN/TL",
+    "Undisplayable image rejected by client",
+    "Unstamped photo fails real OCR before submission, loading blocks progression, no manual fallback",
+    "Farmer Home staging through real Harvest form saves original 1600px JPEG without EXIF",
+    "Farmer Damage saves photo values and ignores forged ownership/date/location/coordinates",
+    "Personnel Damage UI + Harvest API, registered prefill only, FarmerID/created_by and same image in both portals",
+    "Admin Harvest/Damage details display persisted read-only photo information on mobile",
+    "Another session cannot reuse an extraction token or inject photo metadata",
+    "Server rejects missing image, spoofed MIME, oversized file, invalid/missing Farmer and unauthenticated upload",
+    "View locked, Edit replacement preview, Cancel restores original",
+    "UI Save persists replacement and reopening in a new signed-in session retains evidence",
+    "Save updates same record; modern evidence removal rejected; old reports editable; photo GIS source preserved; cross-Farmer edit denied",
+    "Farmer and Admin desktop/tablet/mobile image and form layout"
+  ],
+  "pageErrors": []
+}

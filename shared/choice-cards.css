@@ -177,6 +177,12 @@
     }
 }
 
+@media (max-width: 360px) {
+    .cc-group[data-count="2"] {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .cc-group .cc-card,
     .cc-group .cc-card .cc-glyph,

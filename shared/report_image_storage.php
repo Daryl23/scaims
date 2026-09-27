@@ -163,69 +163,6 @@ if (!function_exists('scaims_detect_report_image_mime')) {
     }
 }
 
-if (!function_exists('scaims_resize_report_image_if_needed')) {
-    function scaims_resize_report_image_if_needed(string $sourcePath, string $targetPath, string $mime, array $imageSize): bool
-    {
-        if (!extension_loaded('gd')) {
-            return false;
-        }
-
-        $width = (int) ($imageSize[0] ?? 0);
-        $height = (int) ($imageSize[1] ?? 0);
-        $maxDimension = 1600;
-
-        if ($width <= 0 || $height <= 0 || ($width <= $maxDimension && $height <= $maxDimension && filesize($sourcePath) < 1800000)) {
-            return false;
-        }
-
-        $ratio = min($maxDimension / $width, $maxDimension / $height, 1);
-        $targetWidth = max(1, (int) round($width * $ratio));
-        $targetHeight = max(1, (int) round($height * $ratio));
-
-        if ($mime === 'image/jpeg') {
-            $source = imagecreatefromjpeg($sourcePath);
-        } elseif ($mime === 'image/png') {
-            $source = imagecreatefrompng($sourcePath);
-        } elseif ($mime === 'image/webp' && function_exists('imagecreatefromwebp')) {
-            $source = imagecreatefromwebp($sourcePath);
-        } else {
-            return false;
-        }
-
-        if (!$source) {
-            return false;
-        }
-
-        $target = imagecreatetruecolor($targetWidth, $targetHeight);
-        if (!$target) {
-            imagedestroy($source);
-            return false;
-        }
-
-        if ($mime === 'image/png' || $mime === 'image/webp') {
-            imagealphablending($target, false);
-            imagesavealpha($target, true);
-        }
-
-        imagecopyresampled($target, $source, 0, 0, 0, 0, $targetWidth, $targetHeight, $width, $height);
-
-        if ($mime === 'image/jpeg') {
-            $saved = imagejpeg($target, $targetPath, 84);
-        } elseif ($mime === 'image/png') {
-            $saved = imagepng($target, $targetPath, 6);
-        } elseif ($mime === 'image/webp' && function_exists('imagewebp')) {
-            $saved = imagewebp($target, $targetPath, 84);
-        } else {
-            $saved = false;
-        }
-
-        imagedestroy($source);
-        imagedestroy($target);
-
-        return (bool) $saved;
-    }
-}
-
 if (!function_exists('scaims_store_uploaded_report_image')) {
     function scaims_store_uploaded_report_image(array $file, string $reportType): array
     {
@@ -275,8 +212,8 @@ if (!function_exists('scaims_store_uploaded_report_image')) {
         $targetPath = $directory . DIRECTORY_SEPARATOR . $filename;
         $relativePath = 'uploads/reports/' . $folder . '/' . $filename;
 
-        $savedByResize = scaims_resize_report_image_if_needed($tmpPath, $targetPath, $mime, $imageSize);
-        if (!$savedByResize && !move_uploaded_file($tmpPath, $targetPath)) {
+        // Preserve original resolution and visible GPS Camera stamps. No metadata extraction.
+        if (!move_uploaded_file($tmpPath, $targetPath)) {
             return ['ok' => false, 'path' => null, 'has_upload' => true, 'message' => 'The image could not be saved. Please try again.'];
         }
 

@@ -72,11 +72,11 @@ $stats = [
     'hectaresMonitored' => scalarFloat($conn, "SELECT COALESCE(SUM(total_area), 0) FROM parcel_details"),
     'cropTypesTracked' => scalarInt($conn, "
         SELECT COUNT(*) FROM (
-            SELECT DISTINCT crop_type
+            SELECT DISTINCT CONVERT(crop_type USING utf8mb4) COLLATE utf8mb4_general_ci AS crop_type
             FROM crop_details
             WHERE crop_type IS NOT NULL AND crop_type <> ''
             UNION
-            SELECT DISTINCT crop_type
+            SELECT DISTINCT CONVERT(crop_type USING utf8mb4) COLLATE utf8mb4_general_ci AS crop_type
             FROM crop_reports
             WHERE crop_type IS NOT NULL AND crop_type <> ''
         ) tracked_crops

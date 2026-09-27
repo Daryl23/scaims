@@ -151,7 +151,7 @@ if (!empty($allRows['new'])) {
             <td>" . htmlspecialchars($row['ReporterType'], ENT_QUOTES, 'UTF-8') . "</td>
             <td>{$harvestDate}</td>
             <td>{$dateReported}</td>
-            <td><button class='action-button' onclick='showCropReportDetails({$row['id']})'>View</button></td>
+            <td><button class='action-button'>View</button></td>
         </tr>";
     }
 }
@@ -185,7 +185,7 @@ if (!empty($allRows['previous'])) {
             <td>" . htmlspecialchars($row['ReporterType'], ENT_QUOTES, 'UTF-8') . "</td>
             <td>{$harvestDate}</td>
             <td>{$dateReported}</td>
-            <td><button class='action-button' onclick='showCropReportDetails({$row['id']})'>View</button></td>
+            <td><button class='action-button'>View</button></td>
         </tr>";
     }
 } else {

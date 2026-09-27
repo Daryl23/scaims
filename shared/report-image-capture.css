@@ -96,10 +96,17 @@
     border-radius: 8px;
     display: block;
     height: auto;
-    max-height: 360px;
+    max-height: none;
     max-width: 100%;
     object-fit: contain;
-    width: min(100%, 520px);
+    width: 100%;
+}
+
+.report-image-preview-wrap img,
+.report-image-camera video {
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .report-image-preview-wrap .report-image-actions {
@@ -172,7 +179,29 @@
         width: 100%;
     }
 
+    .report-image-preview-wrap img,
+    .report-image-camera video {
+        height: auto;
+    }
+
     .report-thumbnail-empty {
         white-space: normal;
     }
 }
+
+.report-image-uploader [hidden], .report-image-detail [hidden] { display: none !important; }
+.report-image-uploader, .report-image-detail { min-width: 0; overflow-wrap: anywhere; }
+.report-image-preview-wrap > a, .report-image-detail > a { display: inline-block; margin-top: 10px; }
+.gps-photo-details { margin: 18px 0; padding: clamp(14px, 3vw, 22px); border: 1px solid #b5cdbd; border-radius: 10px; background: #f1f8f3; min-width: 0; }
+.gps-photo-details[hidden] { display: none !important; }
+.gps-photo-details h3 { color: #16663f; margin: 0 0 6px; font-size: 1rem; }
+.gps-photo-details > p { font-size: .85rem; margin: 0 0 16px; color: #506456; }
+.gps-photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0; }
+.gps-photo-value { min-width: 0; }
+.gps-photo-location { grid-column: 1 / -1; }
+.gps-photo-value dt { color: #506456; font-size: .85rem; margin-bottom: 4px; }
+.gps-photo-value dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; white-space: pre-wrap; }
+.report-image-feedback.is-reading::before { content: ''; display: inline-block; width: 1em; height: 1em; border: 2px solid #c3d8c8; border-top-color: #198754; border-radius: 50%; margin-right: 8px; vertical-align: middle; animation: gps-reading .8s linear infinite; }
+@keyframes gps-reading { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .report-image-feedback.is-reading::before { animation: none; } }
+@media (max-width: 576px) { .gps-photo-grid { grid-template-columns: minmax(0, 1fr); } }

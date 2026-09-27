@@ -2,7 +2,6 @@
 session_start();
 
 require_once dirname(__DIR__, 2) . '/conn.php';
-require_once dirname(__DIR__, 2) . '/shared/dev_mode.php';
 
 try {
     $conn = scaims_db_mysqli();
@@ -13,28 +12,7 @@ try {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = trim($_POST['username']);
     $pass = trim($_POST['password']);
-    $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
-    // Verify reCAPTCHA response.
-    // Skipped only for local smoke tests — see shared/dev_mode.php. Delete the
-    // .dev-bypass marker file in the project root to turn this off everywhere.
-    $recaptchaPassed = scaims_dev_bypass_enabled();
-
-    if (!$recaptchaPassed) {
-        $secretKey = '6LfJyocqAAAAABLIFEfuK9YxZzHLzG9kv7z4LtME';
-        $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
-        $response = file_get_contents($recaptchaUrl . '?secret=' . $secretKey . '&response=' . $recaptchaResponse);
-        $responseData = json_decode($response);
-        $recaptchaPassed = !empty($responseData->success);
-    }
-
-    // Check if reCAPTCHA is valid
-    if (!$recaptchaPassed) {
-        echo "<script>alert('Please complete the reCAPTCHA.'); window.location.href='farmerlogin.html';</script>";
-        exit();
-    }
-
-    // Proceed with normal login validation after reCAPTCHA check
     if (empty($user) || empty($pass)) {
         echo "<script>alert('Please fill in all fields.'); window.location.href='farmerlogin.html';</script>";
         exit();

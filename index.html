@@ -12,7 +12,7 @@
   <script src="shared/app-path.js"></script>
   <script src="shared/public-nav-config.js"></script>
   <script src="landing.js"></script>
-  <script src="shared/public-nav.js" defer></script>
+  <script src="shared/public-nav.js?v=20260908-2" defer></script>
   <script>
     tailwind.config = {
       theme: {
@@ -32,7 +32,7 @@
     }
   </script>
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="shared/public-nav.css">
+  <link rel="stylesheet" href="shared/public-nav.css?v=20260908-2">
 
   <style>
     html { scroll-behavior: smooth; }
@@ -152,7 +152,70 @@
   <div
     data-public-navbar
     data-active-page="home"
-  ></div>
+  >
+    <nav id="navbar" class="public-nav public-nav--fallback" data-public-nav aria-label="Main navigation">
+      <input class="public-nav__fallback-checkbox" type="checkbox" id="publicNavFallbackToggle" aria-label="Toggle menu">
+
+      <div class="public-nav__container">
+        <a href="index.html" class="public-nav__brand">
+          <span class="public-nav__brand-badge">
+            <svg class="public-nav__brand-svg" width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </span>
+          <span class="public-nav__brand-copy">
+            <span class="public-nav__brand-title">SCAIMS</span>
+            <span class="public-nav__brand-subtitle">Lipa City Agriculture</span>
+          </span>
+        </a>
+
+        <div class="public-nav__desktop">
+          <div class="public-nav__links">
+            <a href="FARMERS%20UI/farmerLanding/about.html" class="public-nav__link">About Us</a>
+            <a href="FARMERS%20UI/farmerLanding/faq.html" class="public-nav__link">FAQ</a>
+            <a href="FARMERS%20UI/farmerLanding/contact.html" class="public-nav__link">Contact</a>
+            <a href="FARMERS%20UI/farmerLanding/map.html" class="public-nav__link">Map</a>
+          </div>
+          <div class="public-nav__actions public-nav__fallback-actions">
+            <a href="ADMIN%20UI/adminLogin/adminLogin.html" class="public-nav__fallback-login">Admin Login</a>
+            <a href="FARMERS%20UI/farmerLogin/farmerlogin.html" class="public-nav__fallback-login">Farmer Login</a>
+            <a href="FARMERS%20UI/registration/rsbsa_check.html" class="public-nav__register">Register</a>
+          </div>
+        </div>
+
+        <div class="public-nav__mobile-controls public-nav__fallback-controls">
+          <label class="public-nav__mobile-toggle public-nav__fallback-toggle" for="publicNavFallbackToggle" aria-label="Open menu" role="button">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+      </div>
+
+      <div id="mobileMenu" class="public-nav__mobile-menu translate-x-full" data-public-mobile-menu>
+        <a href="FARMERS%20UI/farmerLanding/about.html" class="public-nav__mobile-link">About Us</a>
+        <a href="FARMERS%20UI/farmerLanding/faq.html" class="public-nav__mobile-link">FAQ</a>
+        <a href="FARMERS%20UI/farmerLanding/contact.html" class="public-nav__mobile-link">Contact</a>
+        <a href="FARMERS%20UI/farmerLanding/map.html" class="public-nav__mobile-link">Map</a>
+        <div class="public-nav__mobile-section">
+          <div class="public-nav__mobile-label">Login As</div>
+          <a href="ADMIN%20UI/adminLogin/adminLogin.html" class="public-nav__mobile-login">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+            <span>Admin</span>
+          </a>
+          <a href="FARMERS%20UI/farmerLogin/farmerlogin.html" class="public-nav__mobile-login">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            <span>Farmer</span>
+          </a>
+        </div>
+        <a href="FARMERS%20UI/registration/rsbsa_check.html" class="public-nav__mobile-register">Register</a>
+      </div>
+    </nav>
+  </div>
 
   <!-- ══ HERO ══ -->
   <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
@@ -368,7 +431,7 @@
           <h4 class="font-bold mb-4 text-gold-light">Contact</h4>
           <ul class="space-y-3 text-white/60">
             <li class="flex items-start gap-2"><span>📍</span><span>Lipa City, Batangas</span></li>
-            <li class="flex items-center gap-2"><span>✉️</span><span>agriculture@lipa.gov.ph</span></li>
+            <li class="flex items-start gap-2"><span>✉️</span><span class="min-w-0 break-all">agriculture@lipa.gov.ph</span></li>
             <li class="flex items-center gap-2"><span>📞</span><span>+63 (043) 123-4567</span></li>
           </ul>
         </div>

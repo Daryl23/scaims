@@ -40,300 +40,50 @@ function populateCropTypes(commoditySelectId, cropTypeSelectId, otherInputId) {
     otherInput.value = '';
 }
 
-function normalizeCoordinateNumber(value, min, max) {
-    if (value === '' || value === null || typeof value === 'undefined') {
-        return '';
+function setSelectValue(select, value) {
+    if (!select || value === null || typeof value === 'undefined') {
+        return;
     }
 
-    const parsedValue = Number.parseFloat(value);
-    if (!Number.isFinite(parsedValue) || parsedValue < min || parsedValue > max) {
-        return null;
+    const normalizedValue = String(value);
+    if (normalizedValue === '') {
+        select.value = '';
+        return;
     }
 
-    return parsedValue.toFixed(7);
-}
-
-function convertDmsToDecimal(degrees, minutes, seconds, direction) {
-    const absoluteValue = Number(degrees) + (Number(minutes) / 60) + (Number(seconds) / 3600);
-    const upperDirection = String(direction || '').toUpperCase();
-    const signedValue = (upperDirection === 'S' || upperDirection === 'W') ? -absoluteValue : absoluteValue;
-    return signedValue.toFixed(7);
-}
-
-function convertDecimalToDms(value, positiveDirection, negativeDirection) {
-    const numericValue = Number.parseFloat(value);
-    if (!Number.isFinite(numericValue)) {
-        return '';
-    }
-
-    const absoluteValue = Math.abs(numericValue);
-    const degrees = Math.floor(absoluteValue);
-    const minutesFloat = (absoluteValue - degrees) * 60;
-    const minutes = Math.floor(minutesFloat);
-    let seconds = (minutesFloat - minutes) * 60;
-    seconds = Math.round(seconds * 10) / 10;
-
-    let normalizedDegrees = degrees;
-    let normalizedMinutes = minutes;
-    let normalizedSeconds = seconds;
-
-    if (normalizedSeconds >= 60) {
-        normalizedSeconds = 0;
-        normalizedMinutes += 1;
-    }
-
-    if (normalizedMinutes >= 60) {
-        normalizedMinutes = 0;
-        normalizedDegrees += 1;
-    }
-
-    const direction = numericValue >= 0 ? positiveDirection : negativeDirection;
-    return `${normalizedDegrees}°${normalizedMinutes}'${normalizedSeconds.toFixed(1)}"${direction}`;
-}
-
-function parseCoordinatePair(value) {
-    const trimmedValue = String(value || '').trim();
-    if (trimmedValue === '') {
-        return { empty: true, valid: true, latitude: '', longitude: '' };
-    }
-
-    let match = trimmedValue.match(/(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)/);
-    if (!match) {
-        match = trimmedValue.match(/(\d{1,3})\s*[°º]\s*(\d{1,2})\s*['′]\s*(\d{1,2}(?:\.\d+)?)\s*(?:"|″)?\s*([NS])[\s,]+(\d{1,3})\s*[°º]\s*(\d{1,2})\s*['′]\s*(\d{1,2}(?:\.\d+)?)\s*(?:"|″)?\s*([EW])/i);
-        if (!match) {
-            return { empty: false, valid: false, latitude: '', longitude: '' };
-        }
-
-        const latitudeFromDms = normalizeCoordinateNumber(convertDmsToDecimal(match[1], match[2], match[3], match[4]), -90, 90);
-        const longitudeFromDms = normalizeCoordinateNumber(convertDmsToDecimal(match[5], match[6], match[7], match[8]), -180, 180);
-
-        if (latitudeFromDms === null || longitudeFromDms === null) {
-            return { empty: false, valid: false, latitude: '', longitude: '' };
-        }
-
-        return { empty: false, valid: true, latitude: latitudeFromDms, longitude: longitudeFromDms };
-    }
-
-    const latitude = normalizeCoordinateNumber(match[1], -90, 90);
-    const longitude = normalizeCoordinateNumber(match[2], -180, 180);
-
-    if (latitude === null || longitude === null) {
-        return { empty: false, valid: false, latitude: '', longitude: '' };
-    }
-
-    return { empty: false, valid: true, latitude, longitude };
-}
-
-function formatCoordinatePair(latitude, longitude) {
-    if (!latitude || !longitude) {
-        return '';
-    }
-
-    return `${convertDecimalToDms(latitude, 'N', 'S')} ${convertDecimalToDms(longitude, 'E', 'W')}`;
-}
-
-function initCoordinateControls(prefix) {
-    const mode = document.getElementById(prefix + '-coordinate-mode');
-    const coordinateInput = document.getElementById(prefix + '-coordinate-input');
-    const latitude = document.getElementById(prefix + '-latitude');
-    const longitude = document.getElementById(prefix + '-longitude');
-    const gpsButton = document.getElementById(prefix + '-use-gps');
-    const action = document.getElementById(prefix + '-coordinate-action');
-    const status = document.getElementById(prefix + '-coordinate-status');
-
-    if (!mode || !coordinateInput || !latitude || !longitude || !action) {
-        return function () {};
-    }
-
-    function clearValues() {
-        coordinateInput.value = '';
-        latitude.value = '';
-        longitude.value = '';
-    }
-
-    function setCoordinateValues(nextLatitude, nextLongitude) {
-        latitude.value = nextLatitude;
-        longitude.value = nextLongitude;
-        coordinateInput.value = formatCoordinatePair(nextLatitude, nextLongitude);
-    }
-
-    function updateManualCoordinates(showAlert) {
-        const parsedCoordinates = parseCoordinatePair(coordinateInput.value);
-
-        if (parsedCoordinates.empty) {
-            latitude.value = '';
-            longitude.value = '';
-            return true;
-        }
-
-        if (!parsedCoordinates.valid) {
-            latitude.value = '';
-            longitude.value = '';
-            if (showAlert) {
-                window.alert('Use the Google Maps or Waze format: 13°50\'11.2"N 121°16\'50.5"E');
-            }
-            return false;
-        }
-
-        setCoordinateValues(parsedCoordinates.latitude, parsedCoordinates.longitude);
-        return true;
-    }
-
-    function requestCurrentLocation() {
-        if (!navigator.geolocation) {
-            window.alert('Geolocation is not supported by this browser.');
-            return;
-        }
-
-        if (status) {
-            status.textContent = 'Getting your current location...';
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                setCoordinateValues(
-                    position.coords.latitude.toFixed(7),
-                    position.coords.longitude.toFixed(7)
-                );
-                if (status) {
-                    status.textContent = 'Current GPS location loaded.';
-                }
-            },
-            function (error) {
-                const message = error && error.message ? error.message : 'Unable to get your current location.';
-                if (status) {
-                    status.textContent = message;
-                }
-                window.alert(message);
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
-            }
-        );
-    }
-
-    function updateMode() {
-        clearValues();
-
-        if (mode.value === 'auto') {
-            action.hidden = false;
-            coordinateInput.disabled = true;
-            coordinateInput.readOnly = true;
-            if (status) {
-                status.textContent = 'Getting your current location...';
-            }
-            requestCurrentLocation();
-        } else if (mode.value === 'manual') {
-            action.hidden = true;
-            coordinateInput.disabled = false;
-            coordinateInput.readOnly = false;
-            if (status) {
-                status.textContent = 'Use the Google Maps or Waze format: 13°50\'11.2"N 121°16\'50.5"E';
-            }
-        } else {
-            action.hidden = true;
-            clearValues();
-            coordinateInput.disabled = true;
-            coordinateInput.readOnly = true;
-            if (status) {
-                status.textContent = 'Allow location access to fill latitude and longitude automatically.';
-            }
-        }
-    }
-
-    mode.addEventListener('change', updateMode);
-    updateMode();
-
-    if (gpsButton) {
-        gpsButton.addEventListener('click', requestCurrentLocation);
-    }
-
-    coordinateInput.addEventListener('input', function () {
-        if (mode.value === 'manual') {
-            updateManualCoordinates(false);
-        }
+    const hasOption = Array.from(select.options).some(function (option) {
+        return option.value === normalizedValue;
     });
 
-    coordinateInput.addEventListener('blur', function () {
-        if (mode.value === 'manual') {
-            updateManualCoordinates(false);
-        }
-    });
+    if (!hasOption) {
+        const option = document.createElement('option');
+        option.value = normalizedValue;
+        option.textContent = normalizedValue;
+        select.appendChild(option);
+    }
 
-    return updateMode;
+    select.value = normalizedValue;
 }
 
-function prepareCoordinateFieldsForSubmit(prefix) {
-    const mode = document.getElementById(prefix + '-coordinate-mode');
-    const coordinateInput = document.getElementById(prefix + '-coordinate-input');
-    const latitude = document.getElementById(prefix + '-latitude');
-    const longitude = document.getElementById(prefix + '-longitude');
-
-    if (!mode || !coordinateInput || !latitude || !longitude) {
-        return true;
+function normalizeCommodityKey(value) {
+    if (window.SCAIMSCropCatalog && typeof window.SCAIMSCropCatalog.normalizeCommodityKey === 'function') {
+        return window.SCAIMSCropCatalog.normalizeCommodityKey(value);
     }
 
-    if (mode.value === '') {
-        clearCoordinateFields(prefix);
-        return true;
-    }
-
-    if (mode.value === 'auto') {
-        if (!latitude.value || !longitude.value) {
-            window.alert('Please allow GPS access or click "Use Current Location" before submitting the report.');
-            return false;
-        }
-        coordinateInput.value = formatCoordinatePair(latitude.value, longitude.value);
-        return true;
-    }
-
-    if (mode.value === 'manual') {
-        const parsedCoordinates = parseCoordinatePair(coordinateInput.value);
-        if (parsedCoordinates.empty) {
-            window.alert('Please enter the coordinates in Google Maps or Waze format: 13°50\'11.2"N 121°16\'50.5"E');
-            return false;
-        }
-
-        if (!parsedCoordinates.valid) {
-            window.alert('Coordinates are invalid. Use the format: 13°50\'11.2"N 121°16\'50.5"E');
-            return false;
-        }
-
-        latitude.value = parsedCoordinates.latitude;
-        longitude.value = parsedCoordinates.longitude;
-        coordinateInput.value = formatCoordinatePair(parsedCoordinates.latitude, parsedCoordinates.longitude);
-    }
-
-    return true;
-}
-
-function clearCoordinateFields(prefix) {
-    const coordinateInput = document.getElementById(prefix + '-coordinate-input');
-    const latitude = document.getElementById(prefix + '-latitude');
-    const longitude = document.getElementById(prefix + '-longitude');
-
-    if (coordinateInput) {
-        coordinateInput.value = '';
-    }
-
-    if (latitude) {
-        latitude.value = '';
-    }
-
-    if (longitude) {
-        longitude.value = '';
-    }
+    const key = String(value || '').toLowerCase().trim().replace(/[-\s]+/g, '_');
+    return key === 'root_crops' || key === 'root_crop' ? 'root' : key;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const coordinateRefreshers = [];
     const reportType = document.getElementById('report-type');
     const cropFields = document.getElementById('crop-report-fields');
     const damageFields = document.getElementById('damage-report-fields');
     const farmerSearch = document.getElementById('farmer-search');
     const farmerSelect = document.getElementById('reporting-for');
+    const registeredCropGroup = document.getElementById('registered-crop-group');
+    const registeredCropSelect = document.getElementById('registered-crop');
+    const prefillStatus = document.getElementById('admin-farmer-prefill-status');
+    const imagePanel = document.querySelector('#admin-report-image-step [data-report-image-capture]');
     const form = document.getElementById('admin-report-form');
     const cropCommodity = document.getElementById('crop-commodity');
     const damageCommodity = document.getElementById('damage-crop-commodity');
@@ -341,6 +91,61 @@ document.addEventListener('DOMContentLoaded', function () {
     const damageCropType = document.getElementById('damage-crop-type');
     const otherCropType = document.getElementById('other-crop-type');
     const otherDamageCropType = document.getElementById('other-damage-crop-type');
+    let farmerPrefillByType = { crop: {}, damage: {} };
+    let farmerCropChoices = [];
+    let selectedCropChoice = null;
+    let farmerPrefillRequest = 0;
+    const reportState = {
+        crop: { snapshot: null, editing: true, loaded: false },
+        damage: { snapshot: null, editing: true, loaded: false }
+    };
+
+    const reportFieldMap = {
+        crop: {
+            section: cropFields,
+            fields: {
+
+                'crop-commodity': 'crop_commodity',
+                'crop-type': 'crop_type',
+                'crop-variety': 'crop_variety',
+                'date-planted': 'date_planted',
+                'harvest-date': 'harvest_date',
+                'estimate-harvest': 'estimate_harvest',
+                'crop-status': 'crop_status',
+                'number-of-trees': 'number_of_trees',
+                'farm-gate-price': 'farm_gate_price',
+
+
+            },
+            commodityField: 'crop-commodity',
+            cropTypeField: 'crop-type',
+            otherCropTypeField: 'other-crop-type',
+
+
+        },
+        damage: {
+            section: damageFields,
+            fields: {
+
+                'damage-crop-commodity': 'crop_commodity',
+                'damage-crop-type': 'crop_type',
+                'damage-crop-variety': 'crop_variety',
+
+                'damage-cause': 'damage_cause',
+                'damage-percentage': 'percent_damage',
+                'estimated-loss': 'estimated_loss',
+                'damage-farm-gate-price': 'farm_gate_price',
+                'damage-number-of-trees': 'number_of_trees',
+
+
+            },
+            commodityField: 'damage-crop-commodity',
+            cropTypeField: 'damage-crop-type',
+            otherCropTypeField: 'other-damage-crop-type',
+
+
+        }
+    };
 
     function setSubmitting(isSubmitting) {
         if (!form) {
@@ -366,20 +171,188 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function setSectionEnabled(section, enabled) {
+    function setStatus(message, isError) {
+        if (!prefillStatus) {
+            return;
+        }
+
+        prefillStatus.textContent = message || '';
+        prefillStatus.classList.toggle('is-error', Boolean(isError && message));
+    }
+
+    function getFieldValue(fieldId) {
+        const field = document.getElementById(fieldId);
+        return field ? field.value : '';
+    }
+
+    function setFieldValue(fieldId, value) {
+        const field = document.getElementById(fieldId);
+        if (!field || value === null || typeof value === 'undefined') {
+            return;
+        }
+
+        if (field.tagName === 'SELECT') {
+            setSelectValue(field, value);
+            return;
+        }
+
+        field.value = value;
+    }
+
+    function setSectionSelected(section, selected) {
         if (!section) {
             return;
         }
 
         const fields = section.querySelectorAll('input, select, textarea, button');
         fields.forEach(function (field) {
+            if (field.dataset.adminReportEdit || field.dataset.adminReportApply || field.dataset.adminReportCancel) {
+                field.disabled = !selected;
+                return;
+            }
+
+            if (field.type === 'hidden') {
+                field.disabled = !selected;
+                return;
+            }
+
             if (!field.dataset.wasRequired) {
                 field.dataset.wasRequired = field.required ? 'true' : 'false';
             }
 
-            field.disabled = !enabled;
-            field.required = enabled && field.dataset.wasRequired === 'true';
+            field.disabled = !selected;
+            field.required = selected && field.dataset.wasRequired === 'true';
         });
+    }
+
+    function getReportSnapshot(type) {
+        const config = reportFieldMap[type];
+        const snapshot = {};
+        if (!config) {
+            return snapshot;
+        }
+
+        Object.keys(config.fields).forEach(function (fieldId) {
+            snapshot[fieldId] = getFieldValue(fieldId);
+        });
+        snapshot[config.coordinateMode] = getFieldValue(config.coordinateMode);
+        snapshot[config.coordinateInput] = getFieldValue(config.coordinateInput);
+
+        return snapshot;
+    }
+
+    function restoreReportSnapshot(type) {
+        const config = reportFieldMap[type];
+        const state = reportState[type];
+        if (!config || !state || !state.snapshot) {
+            return;
+        }
+
+        Object.keys(state.snapshot).forEach(function (fieldId) {
+            setFieldValue(fieldId, state.snapshot[fieldId]);
+        });
+    }
+
+
+    function currentPrefillFor(type) {
+        const prefill = Object.assign({}, farmerPrefillByType[type] || {});
+        if (selectedCropChoice) {
+            ['location', 'crop_commodity', 'crop_type', 'crop_variety', 'number_of_trees', 'crop_status'].forEach(function (key) {
+                if (selectedCropChoice[key] !== null && typeof selectedCropChoice[key] !== 'undefined' && selectedCropChoice[key] !== '') {
+                    prefill[key] = selectedCropChoice[key];
+                }
+            });
+        }
+        return prefill;
+    }
+
+    function applyPrefill(type) {
+        const config = reportFieldMap[type];
+        const state = reportState[type];
+        if (!config || !state) {
+            return;
+        }
+
+        const prefill = currentPrefillFor(type);
+        const commodity = normalizeCommodityKey(prefill.crop_commodity || '');
+
+        Object.keys(config.fields).forEach(function (fieldId) {
+            if (fieldId === config.commodityField || fieldId === config.cropTypeField) {
+                return;
+            }
+            setFieldValue(fieldId, prefill[config.fields[fieldId]] || '');
+        });
+
+        setFieldValue(config.commodityField, commodity);
+        populateCropTypes(config.commodityField, config.cropTypeField, config.otherCropTypeField);
+        setFieldValue(config.cropTypeField, prefill.crop_type || '');
+
+
+        state.snapshot = getReportSnapshot(type);
+        state.loaded = true;
+    }
+
+    function setReportEditMode(type, editing) {
+        const config = reportFieldMap[type];
+        const state = reportState[type];
+        if (!config || !state || !config.section) {
+            return;
+        }
+
+        state.editing = editing;
+        config.section.classList.toggle('report-section-locked', !editing);
+
+        config.section.querySelectorAll('input, select, textarea, button').forEach(function (field) {
+            if (field.type === 'hidden' || field.dataset.adminReportEdit || field.dataset.adminReportApply || field.dataset.adminReportCancel) {
+                return;
+            }
+
+            if (field.tagName === 'SELECT' || field.type === 'date' || field.classList.contains('gps-button')) {
+                field.disabled = !editing;
+            } else {
+                field.disabled = false;
+                field.readOnly = !editing;
+            }
+            field.classList.toggle('is-readonly-field', !editing);
+        });
+
+        const editButton = config.section.querySelector('[data-admin-report-edit]');
+        const applyButton = config.section.querySelector('[data-admin-report-apply]');
+        const cancelButton = config.section.querySelector('[data-admin-report-cancel]');
+        if (editButton) {
+            editButton.disabled = false;
+            editButton.hidden = editing;
+        }
+        if (applyButton) {
+            applyButton.disabled = false;
+            applyButton.hidden = !editing;
+        }
+        if (cancelButton) {
+            cancelButton.disabled = false;
+            cancelButton.hidden = !editing;
+        }
+    }
+
+    function setReportMessage(type, message, isError) {
+        const messageEl = document.querySelector('[data-admin-report-message="' + type + '"]');
+        if (!messageEl) {
+            return;
+        }
+
+        messageEl.textContent = message || '';
+        messageEl.classList.toggle('is-error', Boolean(isError && message));
+    }
+
+    function applyReportEdits(type) {
+        reportState[type].snapshot = getReportSnapshot(type);
+        setReportEditMode(type, false);
+        setReportMessage(type, 'Applied to this report draft. Submit Report will save it for the selected farmer.', false);
+    }
+
+    function cancelReportEdits(type) {
+        restoreReportSnapshot(type);
+        setReportEditMode(type, false);
+        setReportMessage(type, '', false);
     }
 
     function toggleReportType() {
@@ -390,11 +363,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedType = reportType.value;
         cropFields.hidden = selectedType !== 'crop';
         damageFields.hidden = selectedType !== 'damage';
-        setSectionEnabled(cropFields, selectedType === 'crop');
-        setSectionEnabled(damageFields, selectedType === 'damage');
-        coordinateRefreshers.forEach(function (refresh) {
-            refresh();
-        });
+        setSectionSelected(cropFields, selectedType === 'crop');
+        setSectionSelected(damageFields, selectedType === 'damage');
+
+        if (selectedType === 'crop' || selectedType === 'damage') {
+            if (!reportState[selectedType].loaded) {
+                applyPrefill(selectedType);
+            }
+            setReportEditMode(selectedType, reportState[selectedType].editing);
+        }
     }
 
     function filterFarmers() {
@@ -424,6 +401,112 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function resetFarmerLoadedData() {
+        farmerPrefillByType = { crop: {}, damage: {} };
+        farmerCropChoices = [];
+        selectedCropChoice = null;
+        reportState.crop.editing = true;
+        reportState.damage.editing = true;
+        reportState.crop.loaded = false;
+        reportState.damage.loaded = false;
+        reportState.crop.snapshot = null;
+        reportState.damage.snapshot = null;
+
+        if (registeredCropSelect) {
+            registeredCropSelect.innerHTML = '<option value="">Use farmer default information</option>';
+        }
+        if (registeredCropGroup) {
+            registeredCropGroup.hidden = true;
+        }
+        if (reportType) {
+            reportType.value = '';
+            reportType.disabled = true;
+        }
+        if (imagePanel && imagePanel.scaimsReportImageCapture) {
+            imagePanel.scaimsReportImageCapture.setLocked(true);
+            imagePanel.scaimsReportImageCapture.resetToInitial();
+        }
+        toggleReportType();
+    }
+
+    function populateRegisteredCropChoices() {
+        if (!registeredCropSelect || !registeredCropGroup) {
+            return;
+        }
+
+        registeredCropSelect.innerHTML = '<option value="">Use farmer default information</option>';
+        farmerCropChoices.forEach(function (crop, index) {
+            const labelParts = [crop.crop_type, crop.crop_variety, crop.location].filter(Boolean);
+            const option = document.createElement('option');
+            option.value = String(index);
+            option.textContent = labelParts.length ? labelParts.join(' - ') : 'Registered crop ' + (index + 1);
+            registeredCropSelect.appendChild(option);
+        });
+
+        registeredCropGroup.hidden = farmerCropChoices.length === 0;
+    }
+
+    function loadSelectedFarmer() {
+        const requestId = ++farmerPrefillRequest;
+        if (!farmerSelect || !farmerSelect.value) {
+            resetFarmerLoadedData();
+            setStatus('', false);
+            return;
+        }
+
+        resetFarmerLoadedData();
+        setStatus('Loading farmer farm and crop information...', false);
+
+        fetch('get_farmer_report_prefill.php?farmer_id=' + encodeURIComponent(farmerSelect.value), {
+            headers: { Accept: 'application/json' },
+            credentials: 'same-origin'
+        })
+            .then(function (response) {
+                return response.json().then(function (data) {
+                    if (!response.ok || !data.success) {
+                        throw new Error(data.message || data.error || 'Unable to load farmer information.');
+                    }
+                    return data;
+                });
+            })
+            .then(function (data) {
+                if (farmerPrefillRequest !== requestId) {
+                    return;
+                }
+
+                farmerPrefillByType = data.prefill_by_type || { crop: {}, damage: {} };
+                farmerCropChoices = Array.isArray(data.crop_choices) ? data.crop_choices : [];
+                populateRegisteredCropChoices();
+
+                if (reportType) {
+                    reportType.disabled = !imagePanel || imagePanel.dataset.hasImage !== 'true';
+                }
+                if (imagePanel && imagePanel.scaimsReportImageCapture) {
+                    imagePanel.scaimsReportImageCapture.setLocked(false);
+                }
+
+                if (reportType && reportType.value) {
+                    reportState[reportType.value].loaded = false;
+                    toggleReportType();
+                }
+
+                setStatus('Farmer information loaded. Upload a GPS Camera photo, then choose the report type.', false);
+            })
+            .catch(function (error) {
+                if (farmerPrefillRequest !== requestId) {
+                    return;
+                }
+                resetFarmerLoadedData();
+                setStatus(error.message || 'Unable to load farmer information.', true);
+            });
+    }
+
+    if (imagePanel) {
+        imagePanel.addEventListener('scaims:report-image-changed', function (event) {
+            reportType.disabled = !event.detail.hasImage;
+        });
+    }
+
     if (reportType) {
         reportType.addEventListener('change', toggleReportType);
         toggleReportType();
@@ -431,6 +514,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (farmerSearch) {
         farmerSearch.addEventListener('input', filterFarmers);
+    }
+
+    if (farmerSelect) {
+        farmerSelect.addEventListener('change', loadSelectedFarmer);
+    }
+
+    if (registeredCropSelect) {
+        registeredCropSelect.addEventListener('change', function () {
+            selectedCropChoice = registeredCropSelect.value === ''
+                ? null
+                : farmerCropChoices[Number.parseInt(registeredCropSelect.value, 10)] || null;
+
+            ['crop', 'damage'].forEach(function (type) {
+                reportState[type].loaded = false;
+            });
+            if (reportType && reportType.value) {
+                applyPrefill(reportType.value);
+                setReportEditMode(reportType.value, true);
+            }
+        });
     }
 
     if (cropCommodity) {
@@ -457,6 +560,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    document.querySelectorAll('[data-admin-report-edit]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            setReportMessage(button.dataset.adminReportEdit, '', false);
+            setReportEditMode(button.dataset.adminReportEdit, true);
+        });
+    });
+
+    document.querySelectorAll('[data-admin-report-apply]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            applyReportEdits(button.dataset.adminReportApply);
+        });
+    });
+
+    document.querySelectorAll('[data-admin-report-cancel]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            cancelReportEdits(button.dataset.adminReportCancel);
+        });
+    });
+
     document.addEventListener('scaims:crop-catalog-ready', function () {
         if (cropCommodity && cropCommodity.value) {
             populateCropTypes('crop-commodity', 'crop-type', 'other-crop-type');
@@ -466,13 +588,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    coordinateRefreshers.push(initCoordinateControls('crop'));
-    coordinateRefreshers.push(initCoordinateControls('damage'));
-    coordinateRefreshers.forEach(function (refresh) {
-        if (typeof refresh === 'function') {
-            refresh();
-        }
-    });
 
     if (form) {
         form.addEventListener('submit', function (event) {
@@ -493,17 +608,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            if (!imagePanel || !imagePanel.scaimsReportImageCapture.hasImage()) {
+                event.preventDefault();
+                alert(window.SCAIMSGPSPhoto.t('gps_photo_required'));
+                return;
+            }
+
             if (!window.confirm('Submit this report for the selected farmer?')) {
                 event.preventDefault();
                 return;
             }
 
-            if (!prepareCoordinateFieldsForSubmit(reportType.value)) {
+            const selectedType = reportType.value;
+            const wasEditing = reportState[selectedType] ? reportState[selectedType].editing : false;
+            setReportEditMode(selectedType, true);
+
+
+            if (!form.reportValidity()) {
                 event.preventDefault();
+                setReportEditMode(selectedType, wasEditing);
                 return;
             }
 
             setSubmitting(true);
         });
     }
+
+    resetFarmerLoadedData();
 });

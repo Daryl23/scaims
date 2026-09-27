@@ -53,16 +53,11 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
             </nav>
             <section class="home-report-image-panel" aria-labelledby="home-report-image-title">
                 <div class="home-report-image-heading">
-                    <h2 id="home-report-image-title">Capture / Upload Crop Image</h2>
+                    <h2 id="home-report-image-title" data-i18n="gps_photo_upload">Upload GPS Camera Photo</h2>
                 </div>
                 <div
                     data-report-image-capture
                     data-input-name="home-report-image"
-                    data-label="Larawan ng Pananim"
-                    data-capture-label="Take Photo / Capture Image"
-                    data-upload-label="Choose from Gallery / Upload Image"
-                    data-replace-label="Replace image"
-                    data-remove-label="Remove image"
                 ></div>
                 <div id="home-report-type-panel" class="home-report-type-panel" aria-labelledby="home-report-type-title" hidden>
                     <h3 id="home-report-type-title" data-i18n="home_report_choose">Uri ng Ulat</h3>
@@ -184,44 +179,10 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
         typeButtons.forEach(function (button) {
             button.addEventListener('click', function () {
                 const selectedType = button.dataset.homeReportType;
-                const fileInput = imagePanel.querySelector('[data-report-image-input]');
-                const file = fileInput && fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
-
-                if (!file) {
-                    setStatus('Please capture or choose an image first.', true);
-                    return;
-                }
-
-                const formData = new FormData();
-                formData.append('report_image', file);
-
-                setHomeUploading(true);
-                setStatus('Uploading image...', false);
-
-                fetch('../../../shared/report_image_stage.php', {
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'same-origin'
-                })
-                    .then(function (response) {
-                        return response.json().then(function (data) {
-                            if (!response.ok || !data.success) {
-                                throw new Error(data.message || 'Upload failed. Please try again.');
-                            }
-                            return data;
-                        });
-                    })
-                    .then(function (data) {
-                        const params = new URLSearchParams({
-                            report_type: selectedType,
-                            image_token: data.token
-                        });
-                        window.location.href = '../report/report.php?' + params.toString();
-                    })
-                    .catch(function (error) {
-                        setStatus(error.message || 'Network interruption. Please try uploading again.', true);
-                        setHomeUploading(false);
-                    });
+                const token = imagePanel.querySelector('input[data-pending-image-token]').value;
+                if (!imagePanel.scaimsReportImageCapture.hasImage() || !token) return;
+                const params = new URLSearchParams({ report_type: selectedType, image_token: token });
+                window.location.href = '../report/report.php?' + params.toString();
             });
         });
     });

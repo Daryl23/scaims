@@ -351,7 +351,119 @@
     .crops-table-wrap,
     .table-responsive {
         -webkit-overflow-scrolling: touch;
+        max-width: 100%;
         overflow-x: auto;
+    }
+
+    /* Form pages: keep every field inside the viewport and stop older
+       page styles from shrinking controls below mobile-friendly sizes. */
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .container,
+    .main-content,
+    .content,
+    .report-form,
+    .edit-profile-container,
+    .account-section,
+    .parcel-card,
+    .farmer-report-list,
+    #farmForm,
+    #editParcelForm {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .form-row,
+    #crop-report-fields .form-row,
+    #damage-report-fields .form-row,
+    .flex-container,
+    .flex-container-1,
+    .flex-container-2,
+    .flex-container-3,
+    .flex-container-4,
+    .crop-row,
+    .tree-fields-container,
+    .button-container,
+    .report-edit-actions,
+    .farmer-report-edit-image-actions {
+        align-items: stretch;
+        display: flex;
+        flex-direction: column;
+        gap: var(--fm-gap);
+        min-width: 0;
+        width: 100%;
+    }
+
+    .form-group,
+    #crop-report-fields .form-group,
+    #damage-report-fields .form-group,
+    .crop-group,
+    .flex-container > div,
+    .flex-container-1 > div,
+    .flex-container-2 > div,
+    .flex-container-3 > div,
+    .flex-container-4 > div {
+        flex: 1 1 100%;
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+    }
+
+    fieldset,
+    .report-fields,
+    .crops-information,
+    .crops-container,
+    .farmer-report-modal-content,
+    .farmer-report-detail-grid,
+    .farmer-report-edit-form,
+    .farmer-report-edit-grid {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+    select,
+    textarea {
+        max-width: 100%;
+        min-width: 0;
+        width: 100%;
+    }
+
+    input[type="file"] {
+        min-height: auto;
+    }
+
+    .button-container button,
+    .button-container .btn,
+    .report-edit-actions button,
+    .farmer-report-edit-image-actions button,
+    input[type="submit"].submit-button {
+        margin-left: 0;
+        margin-right: 0;
+        max-width: none;
+        width: 100%;
+    }
+
+    .farmer-report-table {
+        min-width: 640px;
+    }
+
+    .farmer-report-modal {
+        padding: 12px;
+    }
+
+    .farmer-report-modal-content {
+        margin: 0 auto;
+        max-height: calc(100dvh - 24px);
+        overflow-y: auto;
+        padding: 20px 16px;
+        width: 100%;
     }
 }
 

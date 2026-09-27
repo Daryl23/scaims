@@ -16,8 +16,10 @@
    These are the containers the tables are rendered into. */
 #user-table-body,
 .table-container,
+.table-wrap,
 .table-scroll,
 .cropreport-table-wrap,
+.damagereport-table-wrap,
 .damage-table-wrap {
     -webkit-overflow-scrolling: touch;
     max-width: 100%;
@@ -100,5 +102,158 @@
     .cropreport-table,
     .crops-table {
         min-width: 640px;
+    }
+
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .admin-content,
+    .content,
+    .main-content,
+    .content-card,
+    .admin-report-form-panel,
+    .crop-form,
+    .crop-list-panel,
+    .post-form,
+    .post,
+    .registration-section {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .content,
+    .main-content,
+    .admin-content {
+        overflow-x: hidden;
+        padding-left: clamp(12px, 4vw, 18px);
+        padding-right: clamp(12px, 4vw, 18px);
+    }
+
+    .form-grid,
+    .reporting-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .coordinate-field-group,
+    .form-group-wide {
+        grid-column: auto !important;
+    }
+
+    .form-row,
+    .button-row,
+    .form-actions,
+    .post-actions,
+    .image-upload,
+    #export-buttons-container {
+        align-items: stretch;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .form-row > div,
+    .form-group,
+    .crop-form label,
+    .checkbox-row {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+    select,
+    textarea {
+        font-size: 16px !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        width: 100% !important;
+    }
+
+    textarea {
+        min-height: 120px;
+    }
+
+    .button-row button,
+    .form-actions button,
+    .submit-report-button,
+    .post-button,
+    .primary-button,
+    .ghost-button,
+    #export-button,
+    #view-graph-button,
+    #export-graph-button,
+    .export-button {
+        margin-left: 0;
+        margin-right: 0;
+        max-width: none;
+        width: 100%;
+    }
+
+    .modal-overlay,
+    .pin-modal-overlay {
+        align-items: flex-start;
+        overflow-y: auto;
+        padding: 12px;
+    }
+
+    .modal-overlay > .modal,
+    .pin-modal,
+    .modal-content {
+        left: auto !important;
+        margin: 0 auto !important;
+        max-height: calc(100dvh - 24px);
+        max-width: 100% !important;
+        overflow-y: auto;
+        padding: 18px !important;
+        position: relative !important;
+        top: auto !important;
+        transform: none !important;
+        width: 100% !important;
+    }
+
+    .modal-header,
+    .modal .modal-header,
+    .report-map-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #modal-body,
+    .detail-grid,
+    .detail-grid-1,
+    .parcel-section,
+    .report-map-stats {
+        grid-template-columns: 1fr !important;
+    }
+
+    .detail-item {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .detail-item .label,
+    .detail-item .value {
+        flex: 1 1 auto;
+        width: 100%;
+    }
+
+    .cropreport-table,
+    .damagereport-table,
+    #farmersTable table {
+        min-width: 720px;
+    }
+
+    #graphModal .modal-content {
+        min-height: 0 !important;
+    }
+
+    #harvestGraph,
+    #damageChart {
+        height: min(420px, 58vh) !important;
+        width: 100% !important;
     }
 }

@@ -540,6 +540,68 @@ body {
     .form-row {
         font-size: 0.9em;
     }
+
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    form,
+    .container,
+    .modal-content {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="barangay"],
+    input[type="date"],
+    input[type="file"],
+    select {
+        font-size: 16px;
+        min-height: 48px;
+    }
+
+    .flex-container-4,
+    .button-container {
+        align-items: stretch;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .submit-button,
+    button[type="button"] {
+        margin-left: 0;
+        max-width: none;
+        min-height: 48px;
+        width: 100%;
+    }
+
+    .terms-section {
+        align-items: flex-start;
+        line-height: 1.45;
+    }
+
+    .modal {
+        overflow-y: auto;
+        padding: 12px;
+    }
+
+    .modal-content {
+        left: auto;
+        margin: 12px auto;
+        max-height: calc(100dvh - 24px);
+        overflow-y: auto;
+        padding: 22px 16px;
+        position: relative;
+        top: auto;
+        transform: none;
+        width: 100%;
+    }
 }
 
 @media (max-width: 576px) {

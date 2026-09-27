@@ -112,7 +112,7 @@
           </div>
         </div>
 
-        <div id="mobileMenu" class="public-nav__mobile-menu translate-x-full" data-public-mobile-menu>
+        <div id="mobileMenu" class="public-nav__mobile-menu translate-x-full" data-public-mobile-menu aria-hidden="true">
           ${buildMobileLinks(activePage)}
           <div class="public-nav__mobile-section">
             <div class="public-nav__mobile-label">Login As</div>
@@ -137,19 +137,23 @@
     const mobileExtra = nav.querySelector("[data-mobile-extra-action]");
     const isStatic = nav.classList.contains("public-nav--static");
 
-    function closeMobileMenu() {
+    function setMobileMenuOpen(isOpen) {
       if (!mobileMenu || !mobileToggle) return;
-      mobileMenu.classList.add("translate-x-full");
-      mobileToggle.setAttribute("aria-expanded", "false");
-      document.body.classList.remove("public-nav-lock");
+      mobileMenu.classList.toggle("translate-x-full", !isOpen);
+      mobileMenu.setAttribute("aria-hidden", String(!isOpen));
+      mobileToggle.setAttribute("aria-expanded", String(isOpen));
+      mobileToggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+      document.body.classList.toggle("public-nav-lock", isOpen);
+    }
+
+    function closeMobileMenu() {
+      setMobileMenuOpen(false);
     }
 
     function toggleMobileMenu() {
       if (!mobileMenu || !mobileToggle) return;
       const nextState = mobileMenu.classList.contains("translate-x-full");
-      mobileMenu.classList.toggle("translate-x-full", !nextState);
-      mobileToggle.setAttribute("aria-expanded", String(nextState));
-      document.body.classList.toggle("public-nav-lock", nextState);
+      setMobileMenuOpen(nextState);
     }
 
     function closeDropdown() {

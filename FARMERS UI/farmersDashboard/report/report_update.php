@@ -10,6 +10,7 @@ if (!isset($_SESSION['UName'])) {
 
 require_once dirname(__DIR__, 3) . '/conn.php';
 require_once dirname(__DIR__, 3) . '/shared/report_image_storage.php';
+require_once dirname(__DIR__, 3) . '/shared/gps_photo.php';
 require_once dirname(__DIR__, 3) . '/shared/crop_catalog.php';
 require_once dirname(__DIR__, 3) . '/shared/farmer_report_defaults.php';
 
@@ -115,7 +116,8 @@ function fetch_updated_farmer_report(mysqli $conn, string $reportType, int $repo
                     longitude,
                     reportDate,
                     created_by,
-                    image_path
+                    image_path,
+                    photo_capture_date, photo_capture_time, photo_location, photo_latitude, photo_longitude, photo_timezone, photo_ocr_version
                 FROM crop_reports
                 WHERE id = ? AND FarmerID = ?";
     } else {
@@ -140,7 +142,8 @@ function fetch_updated_farmer_report(mysqli $conn, string $reportType, int $repo
                     longitude,
                     reportDate,
                     created_by,
-                    image_path
+                    image_path,
+                    photo_capture_date, photo_capture_time, photo_location, photo_latitude, photo_longitude, photo_timezone, photo_ocr_version
                 FROM damage_reports
                 WHERE id = ? AND FarmerID = ?";
     }
@@ -159,6 +162,7 @@ function fetch_updated_farmer_report(mysqli $conn, string $reportType, int $repo
         respond_report_update(false, 'Report not found.', [], 404);
     }
 
+    $row['gps_photo'] = scaims_photo_from_row($row);
     $row['image_url'] = scaims_report_image_url($row['image_path'] ?? null, '../../../');
     unset($row['image_path']);
 
@@ -179,6 +183,7 @@ if (!in_array($reportType, ['crop', 'damage'], true) || $reportId <= 0) {
 try {
     $conn = scaims_db_mysqli();
     scaims_ensure_report_image_columns($conn);
+    scaims_ensure_gps_photo_columns($conn);
     scaims_ensure_farmer_report_defaults_table($conn);
 } catch (RuntimeException $e) {
     respond_report_update(false, 'The report database is unavailable right now. Please try again later.', [], 500);
@@ -188,9 +193,9 @@ $farmerId = get_current_farmer_id($conn);
 
 $oldImagePath = null;
 if ($reportType === 'crop') {
-    $existingStmt = $conn->prepare('SELECT image_path FROM crop_reports WHERE id = ? AND FarmerID = ? LIMIT 1');
+    $existingStmt = $conn->prepare('SELECT * FROM crop_reports WHERE id = ? AND FarmerID = ? LIMIT 1');
 } else {
-    $existingStmt = $conn->prepare('SELECT image_path FROM damage_reports WHERE id = ? AND FarmerID = ? LIMIT 1');
+    $existingStmt = $conn->prepare('SELECT * FROM damage_reports WHERE id = ? AND FarmerID = ? LIMIT 1');
 }
 
 if (!$existingStmt) {
@@ -212,9 +217,23 @@ $oldImagePath = $existingRow['image_path'] ?? null;
 $uploadedImagePath = null;
 $newImagePath = $oldImagePath;
 $removeImage = clean_report_value('remove-report-image') === '1';
+$photo = scaims_photo_from_row($existingRow);
+$replacement = null;
+if ($photo !== null) {
+    if ($removeImage || !empty($_FILES['report-image']['tmp_name'])) {
+        respond_report_update(false, 'Replace this GPS photo with another successfully read GPS Camera photo.', [], 400);
+    }
+    $replacementToken = clean_report_value('edit-pending-report-image-token');
+    if ($replacementToken !== '') {
+        $replacement = scaims_pending_gps_photo($replacementToken);
+        if (!$replacement) respond_report_update(false, 'GPS extraction is missing or expired. Choose the photo again.', [], 400);
+        $photo = $replacement['photo'];
+    }
+}
 
-$latitude = normalize_report_coordinate(clean_optional_report_value('latitude'), -90, 90);
-$longitude = normalize_report_coordinate(clean_optional_report_value('longitude'), -180, 180);
+
+$latitude = $photo ? $photo['latitude'] : normalize_report_coordinate(clean_optional_report_value('latitude'), -90, 90);
+$longitude = $photo ? $photo['longitude'] : normalize_report_coordinate(clean_optional_report_value('longitude'), -180, 180);
 if (($latitude === null) xor ($longitude === null)) {
     scaims_delete_report_image($uploadedImagePath);
     $conn->close();
@@ -228,7 +247,7 @@ if ($latitude === false || $longitude === false) {
 }
 
 if ($reportType === 'crop') {
-    $location = clean_report_value('location');
+    $location = $photo ? mb_substr($photo['location'], 0, 255) : clean_report_value('location');
     $commodity = clean_report_value('crop-commodity');
     $cropType = clean_report_value('crop-type');
     $cropVariety = clean_report_value('crop-variety');
@@ -276,7 +295,7 @@ if ($reportType === 'crop') {
         'longitude' => $longitude,
     ];
 
-    $imageResult = scaims_collect_report_image('report-image', $reportType);
+    $imageResult = $photo ? ($replacement ? scaims_finalize_pending_report_image($replacement['token'], $reportType) : ['ok' => true, 'path' => null]) : scaims_collect_report_image('report-image', $reportType);
     if (!$imageResult['ok']) {
         $conn->close();
         respond_report_update(false, $imageResult['message'] ?? 'The report image could not be uploaded. Please try again.', [], 400);
@@ -330,11 +349,11 @@ if ($reportType === 'crop') {
         $farmerId
     );
 } else {
-    $location = clean_report_value('location');
+    $location = $photo ? mb_substr($photo['location'], 0, 255) : clean_report_value('location');
     $commodity = clean_report_value('crop-commodity');
     $cropType = clean_report_value('crop-type');
     $cropVariety = clean_report_value('crop-variety');
-    $dateOccurrence = clean_report_value('date-occurrence');
+    $dateOccurrence = $photo ? $photo['date'] : clean_report_value('date-occurrence');
     $damageCause = clean_report_value('damage-cause');
     $percentDamage = clean_report_value('damage-percentage');
     $estimatedLoss = clean_report_value('estimated-loss');
@@ -378,7 +397,7 @@ if ($reportType === 'crop') {
         'longitude' => $longitude,
     ];
 
-    $imageResult = scaims_collect_report_image('report-image', $reportType);
+    $imageResult = $photo ? ($replacement ? scaims_finalize_pending_report_image($replacement['token'], $reportType) : ['ok' => true, 'path' => null]) : scaims_collect_report_image('report-image', $reportType);
     if (!$imageResult['ok']) {
         $conn->close();
         respond_report_update(false, $imageResult['message'] ?? 'The report image could not be uploaded. Please try again.', [], 400);
@@ -433,7 +452,7 @@ if ($reportType === 'crop') {
     );
 }
 
-if (!$stmt->execute()) {
+if (!scaims_execute_photo_report($conn, $stmt, $reportType, $photo, $reportId)) {
     $error = $stmt->error;
     $stmt->close();
     scaims_delete_report_image($uploadedImagePath);
@@ -450,6 +469,7 @@ if ($uploadedImagePath !== null && $oldImagePath !== null && $oldImagePath !== $
 }
 
 $updatedReport = fetch_updated_farmer_report($conn, $reportType, $reportId, $farmerId);
+if ($photo) { foreach (['location', 'latitude', 'longitude', 'date_occurrence'] as $key) unset($defaultsForUpdate[$key]); }
 if (!scaims_save_farmer_report_defaults($conn, $farmerId, $reportType, $defaultsForUpdate ?? [])) {
     $conn->close();
     respond_report_update(true, 'Report changes saved, but reusable report data could not be saved.', ['report' => $updatedReport]);

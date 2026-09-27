@@ -15,10 +15,15 @@ function confirmSubmission() {
         return;
     }
     
+    const photo = form.querySelector('[data-report-image-capture]');
+    if (!photo || !photo.scaimsReportImageCapture || !photo.scaimsReportImageCapture.hasImage()) {
+        alert(window.SCAIMSGPSPhoto.t('gps_photo_required'));
+        return;
+    }
+
     if (reportType === "crop") {
         // Check if all required fields are filled
         const requiredFields = [
-            "crop-location",
             "crop-commodity",
             "crop-type",
             "crop-variety",
@@ -71,11 +76,9 @@ function confirmSubmission() {
     } else if (reportType === "damage") {
         // Check if all required fields are filled
         const requiredFields = [
-            "damage-location",
             "damage-crop-commodity",
             "damage-crop-type",
             "damage-crop-variety",
-            "date-occurrence",
             "damage-cause",
             "damage-percentage",
             "estimated-loss",
@@ -89,16 +92,6 @@ function confirmSubmission() {
                 field.focus();
                 return;
             }
-        }
-
-        // Validate date of occurrence
-        const dateOccurrence = new Date(document.getElementById("date-occurrence").value);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        if (dateOccurrence > today) {
-            alert("Date of occurrence cannot be in the future.");
-            return;
         }
 
         // Validate numerical fields
@@ -125,9 +118,6 @@ function confirmSubmission() {
     // If all validations pass, show confirmation dialog
     const confirmation = confirm("Are you sure you want to submit this report? Please review your information before proceeding.");
     if (confirmation) {
-        if (!prepareCoordinateFieldsForSubmit(reportType)) {
-            return;
-        }
         setNewReportEditMode(reportType, true);
         setFarmerReportSubmitting(true);
         form.submit();
@@ -142,7 +132,7 @@ const NEW_REPORT_FIELD_MAP = {
     crop: {
         sectionId: 'crop-report-fields',
         fields: {
-            'crop-location': 'location',
+
             'crop-commodity': 'crop_commodity',
             'crop-type': 'crop_type',
             'crop-variety': 'crop_variety',
@@ -152,36 +142,36 @@ const NEW_REPORT_FIELD_MAP = {
             'crop-status': 'crop_status',
             'number-of-trees': 'number_of_trees',
             'farm-gate-price': 'farm_gate_price',
-            'crop-latitude': 'latitude',
-            'crop-longitude': 'longitude'
+
+
         },
-        coordinateMode: 'crop-coordinate-mode',
-        coordinateInput: 'crop-coordinate-input'
+
+
     },
     damage: {
         sectionId: 'damage-report-fields',
         fields: {
-            'damage-location': 'location',
+
             'damage-crop-commodity': 'crop_commodity',
             'damage-crop-type': 'crop_type',
             'damage-crop-variety': 'crop_variety',
-            'date-occurrence': 'date_occurrence',
+
             'damage-cause': 'damage_cause',
             'damage-percentage': 'percent_damage',
             'estimated-loss': 'estimated_loss',
             'damage-farm-gate-price': 'farm_gate_price',
             'damage-number-of-trees': 'number_of_trees',
-            'damage-latitude': 'latitude',
-            'damage-longitude': 'longitude'
+
+
         },
-        coordinateMode: 'damage-coordinate-mode',
-        coordinateInput: 'damage-coordinate-input'
+
+
     }
 };
 
 const newReportState = {
-    crop: { prefilled: false, snapshot: null, editing: false, saving: false },
-    damage: { prefilled: false, snapshot: null, editing: false, saving: false }
+    crop: { prefilled: false, snapshot: null, editing: true, saving: false },
+    damage: { prefilled: false, snapshot: null, editing: true, saving: false }
 };
 
 function normalizeCommodityKey(value) {
@@ -260,12 +250,6 @@ function getNewReportSnapshot(reportType) {
         }
     });
 
-    [config.coordinateMode, config.coordinateInput].forEach(function (fieldId) {
-        const field = document.getElementById(fieldId);
-        if (field) {
-            snapshot[fieldId] = field.value;
-        }
-    });
 
     return snapshot;
 }
@@ -278,51 +262,8 @@ function restoreNewReportSnapshot(reportType, snapshot) {
     Object.keys(snapshot).forEach(function (fieldId) {
         setFieldValue(fieldId, snapshot[fieldId]);
     });
-    syncNewReportCoordinateControl(reportType);
 }
 
-function syncNewReportCoordinateControl(reportType) {
-    const config = NEW_REPORT_FIELD_MAP[reportType];
-    if (!config) {
-        return;
-    }
-
-    const mode = document.getElementById(config.coordinateMode);
-    const coordinateInput = document.getElementById(config.coordinateInput);
-    const action = document.getElementById(reportType + '-coordinate-action');
-    const status = document.getElementById(reportType + '-coordinate-status');
-
-    if (!mode || !coordinateInput || !action) {
-        return;
-    }
-
-    if (mode.value === 'auto') {
-        action.style.display = 'block';
-        coordinateInput.disabled = true;
-        coordinateInput.readOnly = true;
-        if (status) {
-            status.textContent = 'Getting your current location...';
-        }
-        return;
-    }
-
-    if (mode.value === 'manual') {
-        action.style.display = 'none';
-        coordinateInput.disabled = false;
-        coordinateInput.readOnly = false;
-        if (status) {
-            status.textContent = 'Use the Google Maps or Waze format: 13°50\'11.2"N 121°16\'50.5"E';
-        }
-        return;
-    }
-
-    action.style.display = 'none';
-    coordinateInput.disabled = true;
-    coordinateInput.readOnly = true;
-    if (status) {
-        status.textContent = 'Allow location access to fill latitude and longitude automatically.';
-    }
-}
 
 function applyNewReportPrefill(reportType) {
     const config = NEW_REPORT_FIELD_MAP[reportType];
@@ -355,11 +296,6 @@ function applyNewReportPrefill(reportType) {
 
     setFieldValue(cropTypeFieldId, prefill.crop_type);
 
-    if (prefill.latitude && prefill.longitude) {
-        setFieldValue(config.coordinateMode, 'manual');
-        setFieldValue(config.coordinateInput, formatCoordinatePair(prefill.latitude, prefill.longitude));
-        syncNewReportCoordinateControl(reportType);
-    }
 
     state.prefilled = true;
     state.snapshot = getNewReportSnapshot(reportType);
@@ -463,9 +399,6 @@ function saveNewReportDefaults(reportType) {
         return;
     }
 
-    if (!prepareCoordinateFieldsForSubmit(reportType)) {
-        return;
-    }
 
     const formData = new FormData(form);
     formData.set('report-type', reportType);
@@ -551,291 +484,6 @@ function toggleCropReport() {
         cropReportFields.style.display = 'none';
         damageReportFields.style.display = 'block';
         activateNewReportType('damage');
-    }
-}
-
-function normalizeCoordinateNumber(value, min, max) {
-    if (value === '' || value === null || typeof value === 'undefined') {
-        return '';
-    }
-
-    const parsedValue = Number.parseFloat(value);
-    if (!Number.isFinite(parsedValue) || parsedValue < min || parsedValue > max) {
-        return null;
-    }
-
-    return parsedValue.toFixed(7);
-}
-
-function convertDmsToDecimal(degrees, minutes, seconds, direction) {
-    const absoluteValue = Number(degrees) + (Number(minutes) / 60) + (Number(seconds) / 3600);
-    const upperDirection = String(direction || '').toUpperCase();
-    const signedValue = (upperDirection === 'S' || upperDirection === 'W') ? -absoluteValue : absoluteValue;
-    return signedValue.toFixed(7);
-}
-
-function convertDecimalToDms(value, positiveDirection, negativeDirection) {
-    const numericValue = Number.parseFloat(value);
-    if (!Number.isFinite(numericValue)) {
-        return '';
-    }
-
-    const absoluteValue = Math.abs(numericValue);
-    const degrees = Math.floor(absoluteValue);
-    const minutesFloat = (absoluteValue - degrees) * 60;
-    const minutes = Math.floor(minutesFloat);
-    let seconds = (minutesFloat - minutes) * 60;
-    seconds = Math.round(seconds * 10) / 10;
-
-    let normalizedDegrees = degrees;
-    let normalizedMinutes = minutes;
-    let normalizedSeconds = seconds;
-
-    if (normalizedSeconds >= 60) {
-        normalizedSeconds = 0;
-        normalizedMinutes += 1;
-    }
-
-    if (normalizedMinutes >= 60) {
-        normalizedMinutes = 0;
-        normalizedDegrees += 1;
-    }
-
-    const direction = numericValue >= 0 ? positiveDirection : negativeDirection;
-    return `${normalizedDegrees}°${normalizedMinutes}'${normalizedSeconds.toFixed(1)}"${direction}`;
-}
-
-function parseCoordinatePair(value) {
-    const trimmedValue = String(value || '').trim();
-    if (trimmedValue === '') {
-        return { empty: true, valid: true, latitude: '', longitude: '' };
-    }
-
-    let match = trimmedValue.match(/(-?\d+(?:\.\d+)?)\s*[, ]\s*(-?\d+(?:\.\d+)?)/);
-    if (!match) {
-        match = trimmedValue.match(/(\d{1,3})\s*[°º]\s*(\d{1,2})\s*['′]\s*(\d{1,2}(?:\.\d+)?)\s*(?:"|″)?\s*([NS])[\s,]+(\d{1,3})\s*[°º]\s*(\d{1,2})\s*['′]\s*(\d{1,2}(?:\.\d+)?)\s*(?:"|″)?\s*([EW])/i);
-        if (!match) {
-            return { empty: false, valid: false, latitude: '', longitude: '' };
-        }
-
-        const latitudeFromDms = normalizeCoordinateNumber(convertDmsToDecimal(match[1], match[2], match[3], match[4]), -90, 90);
-        const longitudeFromDms = normalizeCoordinateNumber(convertDmsToDecimal(match[5], match[6], match[7], match[8]), -180, 180);
-
-        if (latitudeFromDms === null || longitudeFromDms === null) {
-            return { empty: false, valid: false, latitude: '', longitude: '' };
-        }
-
-        return { empty: false, valid: true, latitude: latitudeFromDms, longitude: longitudeFromDms };
-    }
-
-    const latitude = normalizeCoordinateNumber(match[1], -90, 90);
-    const longitude = normalizeCoordinateNumber(match[2], -180, 180);
-
-    if (latitude === null || longitude === null) {
-        return { empty: false, valid: false, latitude: '', longitude: '' };
-    }
-
-    return { empty: false, valid: true, latitude, longitude };
-}
-
-function formatCoordinatePair(latitude, longitude) {
-    if (!latitude || !longitude) {
-        return '';
-    }
-
-    return `${convertDecimalToDms(latitude, 'N', 'S')} ${convertDecimalToDms(longitude, 'E', 'W')}`;
-}
-
-function initCoordinateControls(prefix) {
-    const mode = document.getElementById(prefix + '-coordinate-mode');
-    const coordinateInput = document.getElementById(prefix + '-coordinate-input');
-    const latitude = document.getElementById(prefix + '-latitude');
-    const longitude = document.getElementById(prefix + '-longitude');
-    const gpsButton = document.getElementById(prefix + '-use-gps');
-    const action = document.getElementById(prefix + '-coordinate-action');
-    const status = document.getElementById(prefix + '-coordinate-status');
-
-    if (!mode || !coordinateInput || !latitude || !longitude || !action) {
-        return;
-    }
-
-    function clearValues() {
-        coordinateInput.value = '';
-        latitude.value = '';
-        longitude.value = '';
-    }
-
-    function setCoordinateValues(nextLatitude, nextLongitude) {
-        latitude.value = nextLatitude;
-        longitude.value = nextLongitude;
-        coordinateInput.value = formatCoordinatePair(nextLatitude, nextLongitude);
-    }
-
-    function updateManualCoordinates(showAlert) {
-        const parsedCoordinates = parseCoordinatePair(coordinateInput.value);
-
-        if (parsedCoordinates.empty) {
-            latitude.value = '';
-            longitude.value = '';
-            return true;
-        }
-
-        if (!parsedCoordinates.valid) {
-            latitude.value = '';
-            longitude.value = '';
-            if (showAlert) {
-                alert('Use the Google Maps or Waze format: 13°50\'11.2"N 121°16\'50.5"E');
-            }
-            return false;
-        }
-
-        setCoordinateValues(parsedCoordinates.latitude, parsedCoordinates.longitude);
-        return true;
-    }
-
-    function requestCurrentLocation() {
-        if (!navigator.geolocation) {
-            alert('Geolocation is not supported by this browser.');
-            return;
-        }
-
-        if (status) {
-            status.textContent = 'Getting your current location...';
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                setCoordinateValues(
-                    position.coords.latitude.toFixed(7),
-                    position.coords.longitude.toFixed(7)
-                );
-                if (status) {
-                    status.textContent = 'Current GPS location loaded.';
-                }
-            },
-            function (error) {
-                const message = error && error.message ? error.message : 'Unable to get your current location.';
-                if (status) {
-                    status.textContent = message;
-                }
-                alert(message);
-            },
-            {
-                enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 0
-            }
-        );
-    }
-
-    function updateMode() {
-        clearValues();
-
-        if (mode.value === 'auto') {
-            action.style.display = 'block';
-            coordinateInput.disabled = true;
-            coordinateInput.readOnly = true;
-            if (status) {
-                status.textContent = 'Getting your current location...';
-            }
-            requestCurrentLocation();
-        } else if (mode.value === 'manual') {
-            action.style.display = 'none';
-            coordinateInput.disabled = false;
-            coordinateInput.readOnly = false;
-            if (status) {
-                status.textContent = 'Use the Google Maps or Waze format: 13°50\'11.2"N 121°16\'50.5"E';
-            }
-        } else {
-            action.style.display = 'none';
-            clearValues();
-            coordinateInput.disabled = true;
-            coordinateInput.readOnly = true;
-            if (status) {
-                status.textContent = 'Allow location access to fill latitude and longitude automatically.';
-            }
-        }
-    }
-
-    mode.addEventListener('change', updateMode);
-    updateMode();
-
-    if (gpsButton) {
-        gpsButton.addEventListener('click', requestCurrentLocation);
-    }
-
-    coordinateInput.addEventListener('input', function () {
-        if (mode.value === 'manual') {
-            updateManualCoordinates(false);
-        }
-    });
-
-    coordinateInput.addEventListener('blur', function () {
-        if (mode.value === 'manual') {
-            updateManualCoordinates(false);
-        }
-    });
-}
-
-function prepareCoordinateFieldsForSubmit(prefix) {
-    const mode = document.getElementById(prefix + '-coordinate-mode');
-    const coordinateInput = document.getElementById(prefix + '-coordinate-input');
-    const latitude = document.getElementById(prefix + '-latitude');
-    const longitude = document.getElementById(prefix + '-longitude');
-
-    if (!mode || !coordinateInput || !latitude || !longitude) {
-        return true;
-    }
-
-    if (mode.value === '') {
-        clearCoordinateFields(prefix);
-        return true;
-    }
-
-    if (mode.value === 'auto') {
-        if (!latitude.value || !longitude.value) {
-            alert('Please allow GPS access or click "Use Current Location" before submitting the report.');
-            return false;
-        }
-        coordinateInput.value = formatCoordinatePair(latitude.value, longitude.value);
-        return true;
-    }
-
-    if (mode.value === 'manual') {
-        const parsedCoordinates = parseCoordinatePair(coordinateInput.value);
-        if (parsedCoordinates.empty) {
-            alert('Please enter the coordinates in Google Maps or Waze format: 13°50\'11.2"N 121°16\'50.5"E');
-            return false;
-        }
-
-        if (!parsedCoordinates.valid) {
-            alert('Coordinates are invalid. Use the format: 13°50\'11.2"N 121°16\'50.5"E');
-            return false;
-        }
-
-        latitude.value = parsedCoordinates.latitude;
-        longitude.value = parsedCoordinates.longitude;
-        coordinateInput.value = formatCoordinatePair(parsedCoordinates.latitude, parsedCoordinates.longitude);
-    }
-
-    return true;
-}
-
-function clearCoordinateFields(prefix) {
-    const coordinateInput = document.getElementById(prefix + '-coordinate-input');
-    const latitude = document.getElementById(prefix + '-latitude');
-    const longitude = document.getElementById(prefix + '-longitude');
-
-    if (coordinateInput) {
-        coordinateInput.value = '';
-    }
-
-    if (latitude) {
-        latitude.value = '';
-    }
-
-    if (longitude) {
-        longitude.value = '';
     }
 }
 
@@ -1056,8 +704,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    initCoordinateControls('crop');
-    initCoordinateControls('damage');
 
     applyReportLanguage();
     document.addEventListener('dashboard:language-changed', applyReportLanguage);
@@ -1088,6 +734,13 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleCropReport();
     }
 
+    const photoPanel = document.querySelector('#farmer-report-form [data-report-image-capture]');
+    function syncPhotoStep() {
+        if (reportTypeSelect && photoPanel) reportTypeSelect.disabled = photoPanel.dataset.hasImage !== 'true';
+    }
+    if (photoPanel) photoPanel.addEventListener('scaims:report-image-changed', syncPhotoStep);
+    syncPhotoStep();
+
     initFarmerReportDetails();
 }); 
 
@@ -1115,9 +768,6 @@ if (farmerReportForm) {
 
         // Confirm submission
         if (confirm('Are you sure you want to submit this report?')) {
-            if (!prepareCoordinateFieldsForSubmit(reportType)) {
-                return;
-            }
             setNewReportEditMode(reportType, true);
             setFarmerReportSubmitting(true);
             this.submit();
@@ -1132,6 +782,9 @@ function initFarmerReportDetails() {
     const title = document.getElementById('farmerReportModalTitle');
     const detailGrid = document.getElementById('farmerReportDetails');
     const image = document.getElementById('farmerReportDetailImage');
+    const gpsDetails = document.createElement('section');
+    image.closest('.report-image-detail').after(gpsDetails);
+    document.addEventListener('dashboard:language-changed', function () { if (activeReport) window.SCAIMSGPSPhoto.renderDetails(gpsDetails, activeReport.gps_photo); });
     const noImage = document.getElementById('farmerReportNoImage');
     const editForm = document.getElementById('farmerReportEditForm');
     const editFields = document.getElementById('farmerReportEditFields');
@@ -1141,6 +794,9 @@ function initFarmerReportDetails() {
     const editMessage = document.getElementById('farmerReportEditMessage');
     const editImageActions = document.getElementById('farmerReportEditImageActions');
     const imageInput = document.getElementById('edit-report-image');
+    const replacementToken = document.createElement('input'); replacementToken.type = 'hidden'; replacementToken.name = 'edit-pending-report-image-token'; editForm.append(replacementToken);
+    let extractingReplacement = false;
+    let extractionRevision = 0;
     const replaceImageButton = document.getElementById('edit-replace-report-image');
     const removeImageButton = document.getElementById('edit-remove-image-button');
     const removeImageInput = document.getElementById('edit-remove-report-image');
@@ -1199,9 +855,10 @@ function initFarmerReportDetails() {
         }
         setEditMessage('', false);
         setModalImage(report.image_url || '');
+        window.SCAIMSGPSPhoto.renderDetails(gpsDetails, report.gps_photo);
 
         addDetail('Uri ng Ulat', reportTypeLabel(report));
-        addDetail('Lokasyon', report.location);
+        if (!report.gps_photo) addDetail('Lokasyon', report.location);
         addDetail('Uri ng Pananim', report.crop_commodity);
         addDetail('Klase ng Pananim', report.crop_type);
         addDetail('Barayti ng Pananim', report.crop_variety);
@@ -1212,7 +869,7 @@ function initFarmerReportDetails() {
             addDetail('Tinatayang Ani (kg)', report.estimate_harvest);
             addDetail('Kalagayan ng Pananim', report.crop_status);
         } else {
-            addDetail('Petsa ng Pangyayari', report.date_occurrence);
+            if (!report.gps_photo) addDetail('Petsa ng Pangyayari', report.date_occurrence);
             addDetail('Sanhi ng Pinsala', report.damage_cause);
             addDetail('Porsyento ng Pinsala (%)', report.percent_damage);
             addDetail('Tinatayang Nawalang Ani (kg)', report.estimated_loss);
@@ -1220,8 +877,7 @@ function initFarmerReportDetails() {
 
         addDetail('Bilang ng Puno', report.number_of_trees);
         addDetail('Presyo sa Farm Gate', report.farm_gate_price);
-        addDetail('Latitude', report.latitude);
-        addDetail('Longitude', report.longitude);
+        if (!report.gps_photo) { addDetail('Latitude', report.latitude); addDetail('Longitude', report.longitude); }
         addDetail('Naipasa', report.reportDate);
 
         modal.style.display = 'block';
@@ -1279,7 +935,7 @@ function initFarmerReportDetails() {
         const commodity = report.crop_commodity || '';
 
         editFields.innerHTML = '';
-        createField('Lokasyon', 'location', report.location);
+        if (!report.gps_photo) createField('Lokasyon', 'location', report.location);
         createField('Uri ng Pananim', 'crop-commodity', commodity, 'text', commodityOptions);
         createField('Klase ng Pananim', 'crop-type', report.crop_type);
         createField('Barayti ng Pananim', 'crop-variety', report.crop_variety);
@@ -1290,7 +946,7 @@ function initFarmerReportDetails() {
             createField('Tinatayang Ani (kg)', 'estimate-harvest', report.estimate_harvest, 'number');
             createField('Kalagayan ng Pananim', 'crop-status', report.crop_status, 'text', cropStatusOptions);
         } else {
-            createField('Petsa ng Pangyayari', 'date-occurrence', report.date_occurrence, 'date');
+            if (!report.gps_photo) createField('Petsa ng Pangyayari', 'date-occurrence', report.date_occurrence, 'date');
             createField('Sanhi ng Pinsala', 'damage-cause', report.damage_cause);
             createField('Porsyento ng Pinsala (%)', 'damage-percentage', report.percent_damage, 'number');
             createField('Tinatayang Nawalang Ani (kg)', 'estimated-loss', report.estimated_loss, 'number');
@@ -1298,8 +954,7 @@ function initFarmerReportDetails() {
 
         createField('Bilang ng Puno', 'number-of-trees', report.number_of_trees, 'number');
         createField('Presyo sa Farm Gate', 'farm-gate-price', report.farm_gate_price, 'number');
-        createField('Latitude', 'latitude', report.latitude);
-        createField('Longitude', 'longitude', report.longitude);
+        if (!report.gps_photo) { createField('Latitude', 'latitude', report.latitude); createField('Longitude', 'longitude', report.longitude); }
     }
 
     function setEditMessage(message, isError) {
@@ -1325,6 +980,11 @@ function initFarmerReportDetails() {
             return;
         }
 
+        extractionRevision++; extractingReplacement = false;
+        setSaveState(false);
+        replacementToken.value = '';
+        imageInput.name = activeReport.gps_photo ? '' : 'report-image';
+        removeImageButton.hidden = Boolean(activeReport.gps_photo);
         renderEditFields(activeReport);
         editReportId.value = activeReport.id;
         editReportType.value = activeReport.report_type;
@@ -1342,6 +1002,7 @@ function initFarmerReportDetails() {
     }
 
     function cancelEditMode() {
+        extractionRevision++; extractingReplacement = false;
         if (!activeReport) {
             return;
         }
@@ -1422,9 +1083,13 @@ function initFarmerReportDetails() {
             imageInput.click();
         });
 
-        imageInput.addEventListener('change', function () {
+        imageInput.addEventListener('change', async function () {
+            const revision = ++extractionRevision;
             const file = imageInput.files && imageInput.files[0] ? imageInput.files[0] : null;
-            const error = validateEditImage(file);
+            if (!file) return;
+            let error = '';
+            try { await window.SCAIMSGPSPhoto.validateFile(file); } catch (e) { error = e.message; }
+            if (imageInput.files[0] !== file) return;
             if (error) {
                 imageInput.value = '';
                 setEditMessage(error, true);
@@ -1438,6 +1103,26 @@ function initFarmerReportDetails() {
                 }
                 editedImageUrl = URL.createObjectURL(file);
                 setModalImage(editedImageUrl);
+                if (activeReport.gps_photo) {
+                    extractingReplacement = true; replacementToken.value = '';
+                    setEditMessage(window.SCAIMSGPSPhoto.t('gps_ocr_reading'), false);
+                    editForm.querySelector('button[type="submit"]').disabled = true;
+                    const editedReport = activeReport;
+                    try {
+                        const result = await window.SCAIMSGPSPhoto.extractFile(file);
+                        if (revision !== extractionRevision || imageInput.files[0] !== file || activeReport !== editedReport || editForm.hidden) return;
+                        replacementToken.value = result.token;
+                        window.SCAIMSGPSPhoto.renderDetails(gpsDetails, result.photo);
+                        setEditMessage(window.SCAIMSGPSPhoto.t('gps_ocr_detected'), false);
+                    } catch (error) {
+                        if (revision === extractionRevision && activeReport === editedReport && !editForm.hidden) setEditMessage(error.message, true);
+                    } finally {
+                        if (revision !== extractionRevision) return;
+                        extractingReplacement = false;
+                        if (!editForm.hidden) editForm.querySelector('button[type="submit"]').disabled = !replacementToken.value;
+                    }
+                }
+
             }
         });
     }
@@ -1454,6 +1139,7 @@ function initFarmerReportDetails() {
     }
 
     editForm.addEventListener('submit', function (event) {
+        if (extractingReplacement || (activeReport.gps_photo && imageInput.files.length && !replacementToken.value)) { event.preventDefault(); return; }
         event.preventDefault();
         if (saving || activeReportIndex === null || !activeReport) {
             return;

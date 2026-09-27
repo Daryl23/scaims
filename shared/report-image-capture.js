@@ -1,350 +1,152 @@
 (function () {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    const maxBytes = 6 * 1024 * 1024;
+    const stageUrl = new URL('report_image_stage.php', document.currentScript.src).href;
+    const copy = {
+        gps_info_title: "GPS PHOTO INFORMATION",
+        gps_info_source: "Automatically extracted from the image. These values cannot be edited.",
+        gps_info_date: "Photo Date",
+        gps_info_time: "Photo Time",
+        gps_info_location: "GPS Photo Location",
+        gps_info_latitude: "Latitude",
+        gps_info_longitude: "Longitude",
+        gps_ocr_reading: "Reading GPS Camera information...",
+        gps_ocr_detected: "GPS Camera information detected",
+        gps_ocr_failed: "GPS information could not be read from this image. Please upload a clear photo taken using the approved GPS Camera app. Make sure the date, time, latitude, longitude, and location are visible.",
+        gps_ocr_unavailable: "GPS information could not be read right now. Please try uploading the photo again. Submission is unavailable until extraction succeeds.",
+        gps_choose_another: "Choose Another Photo",
 
-    function text(root, key, fallback) {
-        return root.dataset[key] || fallback;
+        gps_photo_title: 'GPS Camera Photo',
+        gps_photo_help: 'Upload a photo taken using a GPS Camera app. The date, time, latitude, longitude, and location/address should be visible on the photo. JPG, PNG, or WEBP up to 6 MB.',
+        gps_photo_upload: 'Upload GPS Camera Photo', gps_photo_replace: 'Replace Photo', gps_photo_remove: 'Remove Photo',
+        gps_photo_empty: 'No image available', gps_photo_selected: 'GPS Camera Photo Selected', gps_photo_uploaded: 'GPS Camera Photo Uploaded',
+        gps_photo_enlarge: 'Enlarge Photo', gps_photo_required: 'Please upload a GPS Camera photo before submitting.',
+        gps_photo_invalid: 'Choose a displayable JPG, PNG, or WEBP image up to 6 MB.', gps_photo_checking: 'Checking image...'
+    };
+    function t(key) {
+        const i18n = window.dashboardI18n || window.adminDashboardI18n;
+        const value = i18n && i18n.t(key);
+        return value && value !== key ? value : copy[key] || key;
     }
-
-    function fileName(prefix) {
-        return prefix + '-' + Date.now() + '.jpg';
+    async function validateFile(file) {
+        if (!file || !['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || !file.size || file.size > 6 * 1024 * 1024) throw new Error(t('gps_photo_invalid'));
+        const url = URL.createObjectURL(file);
+        try {
+            await new Promise(function (resolve, reject) { const img = new Image(); img.onload = resolve; img.onerror = reject; img.src = url; });
+        } catch (_) { throw new Error(t('gps_photo_invalid')); }
+        finally { URL.revokeObjectURL(url); }
     }
-
-    function setFileInputFile(input, file) {
-        if (typeof DataTransfer === 'undefined') {
-            return false;
-        }
-
-        const transfer = new DataTransfer();
-        transfer.items.add(file);
-        input.files = transfer.files;
-        return true;
+    function formatPhotoDate(value) {
+        const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
+        return match ? `${match[2]}/${match[3]}/${match[1]}` : '';
     }
-
-    function clearFileInput(input) {
-        input.value = '';
-        if (typeof DataTransfer !== 'undefined') {
-            input.files = new DataTransfer().files;
-        }
+    function formatPhotoTime(value) {
+        const match = /^(\d{2}):(\d{2})(?::(\d{2}))?$/.exec(value || '');
+        if (!match) return '';
+        const hour = Number(match[1]);
+        return `${String(hour % 12 || 12).padStart(2, '0')}:${match[2]}${match[3] === undefined ? '' : ':' + match[3]} ${hour >= 12 ? 'PM' : 'AM'}`;
     }
-
-    function validateClientFile(file) {
-        if (!file) {
-            return 'Please choose an image first.';
+    function renderDetails(container, photo) {
+        container.replaceChildren(); container.classList.add('gps-photo-details'); container.hidden = !photo;
+        if (!photo) return;
+        const title = document.createElement('h3'); title.textContent = t('gps_info_title');
+        const source = document.createElement('p'); source.textContent = t('gps_info_source');
+        const list = document.createElement('dl'); list.className = 'gps-photo-grid';
+        const values = { date: formatPhotoDate(photo.date), time: formatPhotoTime(photo.time), location: photo.location, latitude: String(Number(photo.latitude)), longitude: String(Number(photo.longitude)) };
+        for (const [key, value] of Object.entries(values)) {
+            const group = document.createElement('div'); group.className = 'gps-photo-value gps-photo-' + key;
+            const label = document.createElement('dt'); label.textContent = t('gps_info_' + key);
+            const output = document.createElement('dd'); output.textContent = value || ''; output.dataset.gpsValue = key;
+            group.append(label, output); list.append(group);
         }
-
-        if (allowedTypes.indexOf(file.type) === -1) {
-            return 'Unsupported image type. Please upload a JPG, PNG, or WEBP image.';
-        }
-
-        if (file.size > maxBytes) {
-            return 'The selected image is too large. Please choose an image up to 6 MB.';
-        }
-
-        return '';
+        container.append(title, source, list);
     }
-
-    function dispatchChange(root, input, hasImage) {
-        root.dispatchEvent(new CustomEvent('scaims:report-image-changed', {
-            bubbles: true,
-            detail: {
-                hasImage: hasImage,
-                file: input.files && input.files[0] ? input.files[0] : null
+    async function extractFile(file) {
+        await validateFile(file);
+        const body = new FormData(); body.append('report_image', file);
+        try {
+            const response = await fetch(stageUrl, { method: 'POST', body, credentials: 'same-origin', signal: AbortSignal.timeout(65000) });
+            const result = await response.json();
+            if (!response.ok || !result.success || !result.photo || !result.token) {
+                const code = response.status === 503 ? 'gps_ocr_unavailable' : 'gps_ocr_failed';
+                throw Object.assign(new Error(t(code)), { code });
             }
-        }));
+            return result;
+        } catch (error) {
+            if (error.name === 'TimeoutError' || error.name === 'TypeError') throw new Error(t('gps_ocr_unavailable'));
+            throw error;
+        }
     }
-
-    function initReportImageCapture(root) {
-        const inputName = text(root, 'inputName', 'report-image');
-        const pendingInputName = text(root, 'pendingInputName', 'pending_report_image_token');
-        const label = text(root, 'label', 'Larawan ng Pananim');
-        const help = text(root, 'help', 'JPG, PNG, or WEBP up to 6 MB.');
-        const captureLabel = text(root, 'captureLabel', 'Kumuha ng Larawan');
-        const uploadLabel = text(root, 'uploadLabel', 'Pumili mula sa Gallery');
-        const replaceLabel = text(root, 'replaceLabel', 'Palitan ang Larawan');
-        const removeLabel = text(root, 'removeLabel', 'Alisin ang Larawan');
-        const noImageLabel = text(root, 'noImageLabel', 'Walang larawan.');
-        const initialUrl = root.dataset.pendingImageUrl || '';
-        const initialToken = root.dataset.pendingImageToken || '';
-        let locked = root.dataset.locked === 'true';
-        let hasCurrentImage = Boolean(initialUrl);
-
+    function init(root) {
+        if (root.scaimsReportImageCapture) return;
         root.classList.add('report-image-uploader');
-        root.innerHTML = `
-            <div class="report-image-header">
-                <label class="report-image-title">${label}</label>
-                <small>${help}</small>
-            </div>
-            <div class="report-image-actions" data-initial-actions>
-                <button type="button" class="report-image-button" data-capture>${captureLabel}</button>
-                <button type="button" class="report-image-button report-image-button-secondary" data-upload>${uploadLabel}</button>
-            </div>
-            <input type="file" name="${inputName}" accept="image/jpeg,image/png,image/webp" hidden data-report-image-input>
-            <input type="hidden" name="${pendingInputName}" value="${initialToken}" data-pending-image-token>
-            <div class="report-image-feedback" role="alert" aria-live="polite"></div>
-            <div class="report-image-camera" hidden>
-                <video playsinline autoplay muted></video>
-                <div class="report-image-actions">
-                    <button type="button" class="report-image-button" data-use-camera-photo>Use Photo</button>
-                    <button type="button" class="report-image-button report-image-button-secondary" data-cancel-camera>Cancel</button>
-                </div>
-            </div>
-            <div class="report-image-preview-wrap" hidden>
-                <img alt="${label}">
-                <p class="report-image-empty">${noImageLabel}</p>
-                <div class="report-image-actions">
-                    <button type="button" class="report-image-button" data-replace>${replaceLabel}</button>
-                    <button type="button" class="report-image-button report-image-button-danger" data-remove>${removeLabel}</button>
-                </div>
-            </div>
-        `;
-
-        const input = root.querySelector('[data-report-image-input]');
-        const pendingInput = root.querySelector('[data-pending-image-token]');
-        const feedback = root.querySelector('.report-image-feedback');
-        const previewWrap = root.querySelector('.report-image-preview-wrap');
-        const previewImage = previewWrap.querySelector('img');
-        const emptyLabel = previewWrap.querySelector('.report-image-empty');
-        const cameraPanel = root.querySelector('.report-image-camera');
-        const video = cameraPanel.querySelector('video');
-        const initialActions = root.querySelector('[data-initial-actions]');
-        const previewActions = previewWrap.querySelector('.report-image-actions');
-        let stream = null;
-        let objectUrl = '';
-
-        function setFeedback(message, isError) {
-            feedback.textContent = message || '';
-            feedback.classList.toggle('is-error', Boolean(isError && message));
+        root.innerHTML = `<div class="report-image-header"><h3 class="report-image-title" data-photo-text="gps_photo_title"></h3><small data-photo-text="gps_photo_help"></small></div>
+            <div class="report-image-actions" data-initial-actions><button type="button" class="report-image-button" data-upload data-photo-text="gps_photo_upload"></button></div>
+            <input type="file" accept="image/jpeg,image/png,image/webp" hidden data-report-image-input><input type="hidden" data-pending-image-token>
+            <div class="report-image-feedback" role="status" aria-live="polite"></div>
+            <div class="report-image-preview-wrap" hidden><img alt="GPS Camera Photo"><a data-enlarge target="_blank" rel="noopener" data-photo-text="gps_photo_enlarge"></a>
+            <div class="report-image-actions"><button type="button" class="report-image-button" data-replace data-photo-text="gps_photo_replace"></button>
+            <button type="button" class="report-image-button report-image-button-danger" data-remove data-photo-text="gps_photo_remove"></button></div></div>`;
+        const input = root.querySelector('[data-report-image-input]'), token = root.querySelector('[data-pending-image-token]');
+        const preview = root.querySelector('.report-image-preview-wrap'), img = preview.querySelector('img'), feedback = root.querySelector('.report-image-feedback');
+        token.name = root.dataset.pendingInputName || 'pending-report-image-token';
+        const details = document.createElement('section'); root.append(details);
+        let photo = null;
+        let locked = root.dataset.locked === 'true', currentUrl = '', objectUrl = '', revision = 0, checking = false, error = '';
+        function render() {
+            root.querySelectorAll('[data-photo-text]').forEach(el => { el.textContent = t(el.dataset.photoText); });
+            preview.hidden = !currentUrl;
+            root.querySelector('[data-initial-actions]').hidden = locked || Boolean(currentUrl);
+            preview.querySelector('.report-image-actions').hidden = locked;
+            root.querySelectorAll('button').forEach(el => { el.disabled = locked || checking; });
+            feedback.textContent = (error ? t(error) : '') || (checking ? t('gps_ocr_reading') : photo ? t('gps_ocr_detected') : '');
+            feedback.classList.toggle('is-error', Boolean(error)); root.dataset.hasImage = currentUrl && photo && token.value && !checking ? 'true' : 'false';
+            root.setAttribute('aria-busy', String(checking));
+            feedback.classList.toggle('is-reading', checking);
+            renderDetails(details, photo);
+            if (error) { root.querySelector('[data-upload]').textContent = t('gps_choose_another'); root.querySelector('[data-replace]').textContent = t('gps_choose_another'); }
+            const form = root.closest('form');
+            if (form) form.querySelectorAll('.report-submit-action, .submit-report-button').forEach(button => { button.disabled = checking || !photo || !token.value; });
         }
-
-        function updateActionVisibility() {
-            root.classList.toggle('is-report-image-locked', locked);
-            root.querySelectorAll('button').forEach(function (button) {
-                button.disabled = locked;
-            });
-
-            if (locked) {
-                initialActions.hidden = true;
-                previewActions.hidden = true;
-                return;
-            }
-
-            initialActions.hidden = hasCurrentImage;
-            previewActions.hidden = !hasCurrentImage;
+        function change() { render(); root.dispatchEvent(new CustomEvent('scaims:report-image-changed', { bubbles: true, detail: { hasImage: Boolean(currentUrl && photo && token.value) && !checking, photo, token: token.value, file: input.files[0] || null } })); }
+        function show(url) {
+            currentUrl = url;
+            if (url) { img.src = url; root.querySelector('[data-enlarge]').href = url; }
+            else { img.removeAttribute('src'); root.querySelector('[data-enlarge]').removeAttribute('href'); }
+            change();
         }
-
-        function setLocked(nextLocked) {
-            locked = Boolean(nextLocked);
-            updateActionVisibility();
+        function clear() {
+            revision++; checking = false; photo = null; error = ''; input.value = ''; token.value = '';
+            if (objectUrl) URL.revokeObjectURL(objectUrl);
+            objectUrl = ''; show('');
         }
-
-        function stopCamera() {
-            if (stream) {
-                stream.getTracks().forEach(function (track) {
-                    track.stop();
-                });
-                stream = null;
-            }
-            video.srcObject = null;
-            cameraPanel.hidden = true;
-        }
-
-        function showPreview(src, hasImage) {
-            if (objectUrl) {
-                URL.revokeObjectURL(objectUrl);
-                objectUrl = '';
-            }
-
-            previewWrap.hidden = false;
-            previewImage.hidden = !hasImage;
-            emptyLabel.hidden = hasImage;
-            hasCurrentImage = hasImage;
-
-            if (hasImage) {
-                previewImage.src = src;
-            } else {
-                previewImage.removeAttribute('src');
-            }
-
-            updateActionVisibility();
-            dispatchChange(root, input, hasImage);
-        }
-
-        function resetToInitial() {
-            stopCamera();
-            clearFileInput(input);
-            pendingInput.value = initialToken;
-            setFeedback('', false);
-
-            if (initialUrl) {
-                showPreview(initialUrl, true);
-                return;
-            }
-
-            showPreview('', false);
-            previewWrap.hidden = true;
-            updateActionVisibility();
-        }
-
-        function useSelectedFile(file) {
-            if (locked) {
-                return;
-            }
-
-            const validationMessage = validateClientFile(file);
-            if (validationMessage) {
-                clearFileInput(input);
-                showPreview('', false);
-                setFeedback(validationMessage, true);
-                return;
-            }
-
-            pendingInput.value = '';
-            objectUrl = URL.createObjectURL(file);
-            showPreview(objectUrl, true);
-            setFeedback('', false);
-        }
-
-        function openFilePicker(useCapture) {
-            stopCamera();
-            if (useCapture) {
-                input.setAttribute('capture', 'environment');
-            } else {
-                input.removeAttribute('capture');
-            }
-            input.click();
-        }
-
-        function captureFallback() {
-            openFilePicker(true);
-        }
-
-        async function startCamera() {
-            if (locked) {
-                return;
-            }
-
-            setFeedback('', false);
-
-            if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
-                setFeedback('Camera capture is not available on this browser. You can choose an image from your device instead.', true);
-                captureFallback();
-                return;
-            }
-
+        function resetToInitial() { clear(); token.value = root.dataset.pendingImageToken || '';
+            try { photo = JSON.parse(root.dataset.pendingPhoto || 'null'); } catch (_) { photo = null; }
+            show(root.dataset.pendingImageUrl || ''); }
+        root.querySelector('[data-upload]').onclick = root.querySelector('[data-replace]').onclick = function () { if (!locked) input.click(); };
+        root.querySelector('[data-remove]').onclick = function () { if (!locked) clear(); };
+        input.addEventListener('change', async function () {
+            const file = input.files[0]; if (!file || locked) return;
+            const version = ++revision; checking = true; photo = null; token.value = ''; error = ''; change();
             try {
-                stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: { ideal: 'environment' } },
-                    audio: false
-                });
-                video.srcObject = stream;
-                cameraPanel.hidden = false;
-                previewWrap.hidden = true;
-                initialActions.hidden = true;
-            } catch (error) {
-                const denied = error && (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError');
-                const message = denied
-                    ? 'Camera permission was denied. Please choose an image from your device instead.'
-                    : 'Camera capture is unavailable on this device. Please choose an image from your device instead.';
-                setFeedback(message, true);
-                cameraPanel.hidden = true;
-                initialActions.hidden = false;
-            }
-        }
-
-        function takeCameraPhoto() {
-            if (locked) {
-                return;
-            }
-
-            if (!stream || !video.videoWidth || !video.videoHeight) {
-                setFeedback('The camera is still starting. Please try again in a moment.', true);
-                return;
-            }
-
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            canvas.toBlob(function (blob) {
-                if (!blob) {
-                    setFeedback('The photo could not be captured. Please try again or choose an image.', true);
-                    return;
-                }
-
-                const file = new File([blob], fileName('crop-report-image'), { type: 'image/jpeg' });
-                if (!setFileInputFile(input, file)) {
-                    setFeedback('This browser cannot attach the captured photo. Please choose an image from your device instead.', true);
-                    stopCamera();
-                    initialActions.hidden = false;
-                    return;
-                }
-
-                stopCamera();
-                useSelectedFile(file);
-            }, 'image/jpeg', 0.86);
-        }
-
-        root.querySelector('[data-capture]').addEventListener('click', startCamera);
-        root.querySelector('[data-upload]').addEventListener('click', function () {
-            if (locked) {
-                return;
-            }
-            openFilePicker(false);
+                await validateFile(file); if (version !== revision) return;
+                if (objectUrl) URL.revokeObjectURL(objectUrl);
+                objectUrl = URL.createObjectURL(file); show(objectUrl);
+                const result = await extractFile(file); if (version !== revision) return;
+                token.value = result.token; photo = result.photo; checking = false; change();
+            } catch (e) { if (version !== revision) return; photo = null; token.value = ''; checking = false; error = e.code || e.message; change(); }
         });
-        root.querySelector('[data-replace]').addEventListener('click', function () {
-            if (locked) {
-                return;
-            }
-            openFilePicker(false);
-        });
-        root.querySelector('[data-remove]').addEventListener('click', function () {
-            if (locked) {
-                return;
-            }
-            stopCamera();
-            clearFileInput(input);
-            pendingInput.value = '';
-            showPreview('', false);
-            previewWrap.hidden = true;
-            initialActions.hidden = false;
-            setFeedback('', false);
-            updateActionVisibility();
-        });
-        root.querySelector('[data-use-camera-photo]').addEventListener('click', takeCameraPhoto);
-        root.querySelector('[data-cancel-camera]').addEventListener('click', function () {
-            stopCamera();
-            previewWrap.hidden = !(input.files && input.files.length > 0) && !pendingInput.value;
-            initialActions.hidden = Boolean(input.files && input.files.length > 0) || Boolean(pendingInput.value);
-        });
-
-        input.addEventListener('change', function () {
-            const file = input.files && input.files[0] ? input.files[0] : null;
-            if (file) {
-                useSelectedFile(file);
-            }
-        });
-
-        if (initialUrl) {
-            previewImage.src = initialUrl;
-            previewImage.hidden = false;
-            emptyLabel.hidden = true;
-            previewWrap.hidden = false;
-            hasCurrentImage = true;
-            updateActionVisibility();
-            dispatchChange(root, input, true);
-        } else {
-            updateActionVisibility();
-        }
-
-        root.scaimsReportImageCapture = {
-            setLocked,
-            resetToInitial
-        };
+        img.addEventListener('error', function () { clear(); error = t('gps_photo_invalid'); render(); });
+        root.scaimsReportImageCapture = { setLocked(value) { locked = Boolean(value); render(); }, resetToInitial, hasImage() { return Boolean(currentUrl && photo && token.value) && !checking; } };
+        document.addEventListener('dashboard:language-changed', render); resetToInitial();
     }
-
+    window.SCAIMSGPSPhoto = { validateFile, extractFile, renderDetails, formatPhotoDate, formatPhotoTime, t, init };
     document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('[data-report-image-capture]').forEach(initReportImageCapture);
+        document.querySelectorAll('[data-report-image-capture]').forEach(init);
+        document.querySelectorAll('.report-image-detail img').forEach(function (img) {
+            const link = document.createElement('a'); link.target = '_blank'; link.rel = 'noopener'; img.after(link);
+            function update() { link.textContent = t('gps_photo_enlarge'); link.hidden = !img.getAttribute('src') || img.hidden; if (!link.hidden) link.href = img.src; }
+            img.addEventListener('error', function () { img.hidden = true; img.removeAttribute('src'); });
+            new MutationObserver(update).observe(img, { attributes: true, attributeFilter: ['src', 'hidden'] });
+            document.addEventListener('dashboard:language-changed', update); update();
+        });
     });
 })();

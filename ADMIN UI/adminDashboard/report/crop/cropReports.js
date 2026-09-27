@@ -433,7 +433,7 @@ $(document).ready(function() {
             type: 'POST',
             data: { id: reportId },
             success: function(data) {
-                const report = JSON.parse(data);
+                const report = (typeof data === 'string' ? JSON.parse(data) : data);
                 if (report.error) {
                     alert(report.error);
                     return;
@@ -456,6 +456,12 @@ $(document).ready(function() {
                 $('#cropLongitude').text(report.Longitude || 'N/A');
                 $('#dateReported').text(report.DateReported);
                 updateCropReportImage(report.ImageUrl || '');
+                let gpsPanel = document.getElementById('cropReportImagePanelGPS');
+                if (!gpsPanel) { gpsPanel = document.createElement('section'); gpsPanel.id = 'cropReportImagePanelGPS'; document.getElementById('cropReportImagePanel').after(gpsPanel); }
+                gpsPanel.gpsPhoto = report.gps_photo;
+                window.SCAIMSGPSPhoto.renderDetails(gpsPanel, report.gps_photo);
+                ["location", "cropLatitude", "cropLongitude"].forEach(id => { const field = document.getElementById(id); if (field) field.closest('p').hidden = Boolean(report.gps_photo); });
+
                 updateReportMapCard(report);
                 // Show the modal
                 $('#cropReportModal').show();
@@ -978,3 +984,5 @@ const resolveAppPath = typeof window.resolveAppPath === 'function'
       const basePath = (pathname === '/scaims' || pathname.indexOf('/scaims/') === 0) ? '/scaims' : '';
       return path.charAt(0) === '/' ? basePath + path : path;
     };
+
+document.addEventListener('dashboard:language-changed', function () { const panel = document.getElementById('cropReportImagePanelGPS'); if (panel) window.SCAIMSGPSPhoto.renderDetails(panel, panel.gpsPhoto); });

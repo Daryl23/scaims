@@ -1,15 +1,10 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['AdminID'])) {
-        header('Location: ../../adminLogin/adminLogin.html');
-        exit();
-    }
+    require_once dirname(__DIR__, 3) . '/shared/admin_auth.php';
+    scaims_require_admin('../../adminLogin/adminLogin.html');
 
     $activePage = 'reports';
     $statusMessage = $_SESSION['message'] ?? '';
     unset($_SESSION['message']);
-
-    require_once dirname(__DIR__, 3) . '/conn.php';
 
     try {
         $conn = scaims_db_mysqli();
@@ -88,6 +83,9 @@
     <?php $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../shared/report-image-capture.css') ?: time(); ?>
     <link rel="stylesheet" href="reportAnalytics.css?v=<?php echo $reportCssVersion; ?>">
     <link rel="stylesheet" href="../../../shared/report-image-capture.css?v=<?php echo $sharedImageCssVersion; ?>">
+    <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260909">
+    <script src="../../../shared/choice-cards.js?v=20260909" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -101,6 +99,10 @@
                     <?php echo htmlspecialchars($statusMessage); ?>
                 </div>
             <?php endif; ?>
+
+            <div class="reports-page-actions">
+                <a href="#admin-report-form" class="submit-for-farmer-action">Submit Report for Farmer</a>
+            </div>
 
             <div class="cards-container">
                 <div class="card card-1">
@@ -154,32 +156,37 @@
                             </select>
                             <small class="helper-text">Pick the farmer first before submitting the report.</small>
                         </div>
-                        <div class="form-group">
-                            <label for="report-type">Type of Report</label>
-                            <select id="report-type" name="report-type" required>
-                                <option value="" disabled selected>Select a type of report</option>
-                                <option value="crop">Crop Harvest Report</option>
-                                <option value="damage">Crop Damage Report</option>
+                        <div class="form-group form-group-wide" id="registered-crop-group" hidden>
+                            <label for="registered-crop">Registered Crop / Farm Info</label>
+                            <select id="registered-crop">
+                                <option value="">Use farmer default information</option>
                             </select>
+                            <small class="helper-text">Choose a registered crop when the farmer has more than one crop record.</small>
                         </div>
+                    </div>
+
+                    <div id="admin-farmer-prefill-status" class="admin-prefill-status" role="status" aria-live="polite"></div>
+
+                    <div id="admin-report-image-step" class="admin-report-step">
+                        <div
+                            data-report-image-capture
+                            data-input-name="admin-report-image"
+                            data-locked="true"
+                        ></div>
+                    </div>
+
+                    <div class="form-group report-type-card-field">
+                        <label for="report-type">Uri ng Ulat / Report Type</label>
+                        <select id="report-type" name="report-type" required data-choice-cards disabled>
+                            <option value="" disabled selected>Select a type of report</option>
+                            <option value="crop" data-icon="bi-basket2">Crop Harvest Report</option>
+                            <option value="damage" data-icon="bi-exclamation-triangle">Crop Damage Report</option>
+                        </select>
                     </div>
 
                     <div id="crop-report-fields" class="report-fields" hidden>
                         <h3>Crop Harvest Report</h3>
-                        <div
-                            data-report-image-capture
-                            data-input-name="crop-report-image"
-                            data-label="Larawan ng Inaning Pananim"
-                            data-capture-label="Kumuha ng Larawan"
-                            data-upload-label="Pumili mula sa Gallery"
-                            data-replace-label="Palitan ang Larawan"
-                            data-remove-label="Alisin ang Larawan"
-                        ></div>
                         <div class="form-grid">
-                            <div class="form-group">
-                                <label for="crop-location">Location</label>
-                                <input type="text" id="crop-location" name="crop-location" required>
-                            </div>
                             <div class="form-group">
                                 <label for="crop-commodity">Crop Commodity</label>
                                 <select id="crop-commodity" name="crop-commodity" required>
@@ -231,45 +238,18 @@
                                 <label for="farm-gate-price">Farm Gate Price (PHP/kg)</label>
                                 <input type="number" id="farm-gate-price" name="farm-gate-price" min="0.01" step="0.01" required>
                             </div>
-                            <div class="form-group">
-                                <label for="crop-coordinate-mode">Coordinates</label>
-                                <select id="crop-coordinate-mode" name="crop-coordinate-mode">
-                                    <option value="" selected>Do not include coordinates</option>
-                                    <option value="auto">Auto via GPS</option>
-                                    <option value="manual">Manual input</option>
-                                </select>
-                            </div>
-                            <div class="form-group coordinate-action" id="crop-coordinate-action" hidden>
-                                <label>GPS Access</label>
-                                <button type="button" class="gps-button" id="crop-use-gps">Use Current Location</button>
-                                <small class="helper-text" id="crop-coordinate-status">Allow location access to fill latitude and longitude automatically.</small>
-                            </div>
-                            <div class="form-group coordinate-field-group">
-                                <label for="crop-coordinate-input">Coordinates</label>
-                                <input type="text" id="crop-coordinate-input" placeholder="Paste from Google Maps or Waze: 13°50'11.2&quot;N 121°16'50.5&quot;E">
-                                <small class="helper-text">Use the Google Maps or Waze format: 13°50'11.2&quot;N 121°16'50.5&quot;E</small>
-                                <input type="hidden" id="crop-latitude" name="crop-latitude">
-                                <input type="hidden" id="crop-longitude" name="crop-longitude">
-                            </div>
                         </div>
+                        <div class="admin-report-edit-actions" data-admin-report-actions="crop">
+                            <button type="button" class="admin-report-edit-button" data-admin-report-edit="crop">Edit / I-edit</button>
+                            <button type="button" class="admin-report-apply-button" data-admin-report-apply="crop" hidden>Apply</button>
+                            <button type="button" class="admin-report-cancel-button" data-admin-report-cancel="crop" hidden>Cancel</button>
+                        </div>
+                        <div class="admin-report-edit-message" data-admin-report-message="crop" role="status" aria-live="polite"></div>
                     </div>
 
                     <div id="damage-report-fields" class="report-fields" hidden>
                         <h3>Crop Damage Report</h3>
-                        <div
-                            data-report-image-capture
-                            data-input-name="damage-report-image"
-                            data-label="Larawan ng Nasirang Pananim"
-                            data-capture-label="Kumuha ng Larawan"
-                            data-upload-label="Pumili mula sa Gallery"
-                            data-replace-label="Palitan ang Larawan"
-                            data-remove-label="Alisin ang Larawan"
-                        ></div>
                         <div class="form-grid">
-                            <div class="form-group">
-                                <label for="damage-location">Location</label>
-                                <input type="text" id="damage-location" name="damage-location" required>
-                            </div>
                             <div class="form-group">
                                 <label for="damage-crop-commodity">Crop Commodity</label>
                                 <select id="damage-crop-commodity" name="damage-crop-commodity" required>
@@ -293,10 +273,6 @@
                                 <input type="text" id="damage-crop-variety" name="damage-crop-variety" required>
                             </div>
                             <div class="form-group">
-                                <label for="date-occurrence">Date of Occurrence</label>
-                                <input type="date" id="date-occurrence" name="date-occurrence" required>
-                            </div>
-                            <div class="form-group">
                                 <label for="damage-cause">Cause of Damage</label>
                                 <input type="text" id="damage-cause" name="damage-cause" required>
                             </div>
@@ -316,27 +292,13 @@
                                 <label for="damage-farm-gate-price">Farm Gate Price (PHP/kg)</label>
                                 <input type="number" id="damage-farm-gate-price" name="damage-farm-gate-price" min="0.01" step="0.01" required>
                             </div>
-                            <div class="form-group">
-                                <label for="damage-coordinate-mode">Coordinates</label>
-                                <select id="damage-coordinate-mode" name="damage-coordinate-mode">
-                                    <option value="" selected>Do not include coordinates</option>
-                                    <option value="auto">Auto via GPS</option>
-                                    <option value="manual">Manual input</option>
-                                </select>
-                            </div>
-                            <div class="form-group coordinate-action" id="damage-coordinate-action" hidden>
-                                <label>GPS Access</label>
-                                <button type="button" class="gps-button" id="damage-use-gps">Use Current Location</button>
-                                <small class="helper-text" id="damage-coordinate-status">Allow location access to fill latitude and longitude automatically.</small>
-                            </div>
-                            <div class="form-group coordinate-field-group">
-                                <label for="damage-coordinate-input">Coordinates</label>
-                                <input type="text" id="damage-coordinate-input" placeholder="Paste from Google Maps or Waze: 13°50'11.2&quot;N 121°16'50.5&quot;E">
-                                <small class="helper-text">Use the Google Maps or Waze format: 13°50'11.2&quot;N 121°16'50.5&quot;E</small>
-                                <input type="hidden" id="damage-latitude" name="damage-latitude">
-                                <input type="hidden" id="damage-longitude" name="damage-longitude">
-                            </div>
                         </div>
+                        <div class="admin-report-edit-actions" data-admin-report-actions="damage">
+                            <button type="button" class="admin-report-edit-button" data-admin-report-edit="damage">Edit / I-edit</button>
+                            <button type="button" class="admin-report-apply-button" data-admin-report-apply="damage" hidden>Apply</button>
+                            <button type="button" class="admin-report-cancel-button" data-admin-report-cancel="damage" hidden>Cancel</button>
+                        </div>
+                        <div class="admin-report-edit-message" data-admin-report-message="damage" role="status" aria-live="polite"></div>
                     </div>
 
                     <div class="form-actions">

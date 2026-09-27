@@ -1,0 +1,1000 @@
+[Thu Sep 10 02:53:29 2026] PHP 8.2.12 Development Server (http://127.0.0.1:8157) started
+[Thu Sep 10 02:53:29 2026] 127.0.0.1:52134 Accepted
+[Thu Sep 10 02:53:29 2026] 127.0.0.1:52134 Closing
+[Thu Sep 10 02:53:29 2026] 127.0.0.1:55861 Accepted
+[Thu Sep 10 02:53:30 2026] 127.0.0.1:55861 Closing
+[Thu Sep 10 02:53:30 2026] 127.0.0.1:49252 Accepted
+[Thu Sep 10 02:53:30 2026] 127.0.0.1:49252 Closing
+[Thu Sep 10 02:53:30 2026] 127.0.0.1:64402 Accepted
+[Thu Sep 10 02:53:30 2026] 127.0.0.1:64402 Closing
+[Thu Sep 10 02:53:30 2026] 127.0.0.1:65396 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:65396 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:64427 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:64427 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.css
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:54409 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:54008 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:64427 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:54409 [200]: GET /FARMERS%20UI/farmersDashboard/report/reps.css?v=1788615748
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:57865 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:54008 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:64263 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:55232 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:57865 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:64263 [200]: GET /FARMERS%20UI/farmersDashboard/shared/farmer-mobile.css?v=1788878984
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:54409 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:63997 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:55232 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:54008 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:62727 Accepted
+[Thu Sep 10 02:53:31 2026] PHP Warning:  readfile(assets/default-profile.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\scaims\FARMERS UI\farmersDashboard\home\displayImage.php on line 25
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:63997 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:56833 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:62727 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/home.png
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:57865 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:64263 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:65257 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:56833 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/farm.png
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:55232 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:65446 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:65257 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-language.js
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:51275 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:65446 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/report.png
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:62727 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:58237 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:51275 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/settings.png
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:56833 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:64749 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:58237 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.js
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:65257 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:55087 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:64749 [200]: GET /shared/crop-catalog.js
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:65446 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:52855 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:55087 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:51275 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:57856 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:52855 [200]: GET /FARMERS%20UI/farmersDashboard/report/report.js?v=1788979792
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:58237 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:53980 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:57856 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:64749 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:53980 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/logout.png
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:55087 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:52855 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:57856 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:53980 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:58943 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:58943 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:58016 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:58016 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:58016 Closing
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:60255 Accepted
+[Thu Sep 10 02:53:31 2026] 127.0.0.1:60255 Closing
+[Thu Sep 10 02:53:32 2026] 127.0.0.1:54692 Accepted
+[Thu Sep 10 02:53:35 2026] 127.0.0.1:54692 Closing
+[Thu Sep 10 02:53:35 2026] 127.0.0.1:56444 Accepted
+[Thu Sep 10 02:53:38 2026] 127.0.0.1:56444 Closing
+[Thu Sep 10 02:53:38 2026] 127.0.0.1:61153 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:61153 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:65283 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:65283 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:52886 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:52886 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.css
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:63846 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:63846 [200]: GET /FARMERS%20UI/farmersDashboard/home/home.css?v=1788674248
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:55213 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:52886 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:50063 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49463 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:63846 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:52741 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:55213 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:50063 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49463 [200]: GET /FARMERS%20UI/farmersDashboard/shared/farmer-mobile.css?v=1788878984
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:62905 Accepted
+[Thu Sep 10 02:53:40 2026] PHP Warning:  readfile(assets/default-profile.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\scaims\FARMERS UI\farmersDashboard\home\displayImage.php on line 25
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:52741 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:60787 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:62905 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/home.png
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:55354 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:60787 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/farm.png
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:55213 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:50063 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49463 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:50895 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:55354 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/report.png
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49157 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:50895 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/settings.png
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:62905 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:56774 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49157 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-language.js
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:60787 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:61819 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:56774 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.js
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:55354 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:53358 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:50895 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49157 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:56774 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49419 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:61819 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:61819 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:53358 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/logout.png
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49419 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/location.png
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:53358 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49419 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:50533 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:50533 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:50533 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:64937 Accepted
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:64937 Closing
+[Thu Sep 10 02:53:40 2026] 127.0.0.1:49536 Accepted
+[Thu Sep 10 02:53:42 2026] 127.0.0.1:49536 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:64553 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:64553 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:56185 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:56185 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.css
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:58499 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53785 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:56185 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:58499 [200]: GET /FARMERS%20UI/farmersDashboard/report/reps.css?v=1788615748
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:57661 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53785 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:52522 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:57661 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:56920 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:52522 [200]: GET /FARMERS%20UI/farmersDashboard/shared/farmer-mobile.css?v=1788878984
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:58499 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:63989 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:56920 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53785 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:62670 Accepted
+[Thu Sep 10 02:53:43 2026] PHP Warning:  readfile(assets/default-profile.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\scaims\FARMERS UI\farmersDashboard\home\displayImage.php on line 25
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:63989 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:57661 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:57353 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:62670 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/home.png
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:52522 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:61575 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:57353 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/farm.png
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:56920 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:64569 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:61575 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/report.png
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:49157 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:64569 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-language.js
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:62670 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53620 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:57353 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:61575 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:64569 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:49157 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/settings.png
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:63108 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53620 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.js
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:49157 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53620 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:62854 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53403 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:61360 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:63108 [200]: GET /shared/crop-catalog.js
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:62854 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:63021 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53403 [200]: GET /FARMERS%20UI/farmersDashboard/report/report.js?v=1788979792
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:61360 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:63108 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:63021 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/logout.png
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:57782 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:62854 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:57782 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53403 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:61360 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:65223 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:63021 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:65223 [200]: GET /uploads/reports/pending/pending_20260909_205340_d6c6254545f8a7887825b70b.jpg
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:65223 Closing
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53252 Accepted
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53252 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:53:43 2026] 127.0.0.1:53252 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:61334 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:61334 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:52479 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:52479 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:55746 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:55746 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.css
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:51517 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:61042 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:51517 [200]: GET /FARMERS%20UI/farmersDashboard/report/reps.css?v=1788615748
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:55746 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:59251 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:61042 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:54666 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:59251 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:62007 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:54666 [200]: GET /FARMERS%20UI/farmersDashboard/shared/farmer-mobile.css?v=1788878984
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:51517 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:58147 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:62007 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:61042 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:59913 Accepted
+[Thu Sep 10 02:53:44 2026] PHP Warning:  readfile(assets/default-profile.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\scaims\FARMERS UI\farmersDashboard\home\displayImage.php on line 25
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:58147 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:59251 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:51230 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:59913 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-language.js
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:54666 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:64386 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:51230 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/home.png
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:62007 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:55260 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:64386 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/farm.png
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:64754 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:55260 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/report.png
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:59913 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:59617 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:64754 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/settings.png
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:51230 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:54621 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:59617 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.js
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:64386 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:49470 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:54621 [200]: GET /shared/crop-catalog.js
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:55260 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:55558 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:49470 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:64754 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:63696 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:55558 [200]: GET /FARMERS%20UI/farmersDashboard/report/report.js?v=1788979792
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:59617 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:61250 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:63696 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:54621 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:56518 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:49470 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:55558 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:63696 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:61250 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/logout.png
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:56518 [200]: GET /uploads/reports/harvest/harvest_20260909_205344_7f25f58039992800748ec682.jpg
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:61250 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:56518 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:54323 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:54323 Closing
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:65063 Accepted
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:65063 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:53:44 2026] 127.0.0.1:65063 Closing
+[Thu Sep 10 02:53:45 2026] 127.0.0.1:65066 Accepted
+[Thu Sep 10 02:53:45 2026] 127.0.0.1:65066 Closing
+[Thu Sep 10 02:53:45 2026] 127.0.0.1:65067 Accepted
+[Thu Sep 10 02:53:45 2026] 127.0.0.1:65067 Closing
+[Thu Sep 10 02:53:45 2026] 127.0.0.1:65070 Accepted
+[Thu Sep 10 02:53:45 2026] 127.0.0.1:65070 Closing
+[Thu Sep 10 02:53:45 2026] 127.0.0.1:65073 Accepted
+[Thu Sep 10 02:53:45 2026] 127.0.0.1:65073 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:63279 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:63279 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:60979 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:64601 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:60979 [200]: GET /ADMIN%20UI/adminDashboard/report/reportAnalytics.css?v=1788959787
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:60979 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:53767 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:64390 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:64601 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:53767 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:64390 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:63841 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:61057 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:63841 [200]: GET /ADMIN%20UI/shared/admin-mobile.css?v=1788878985
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:64601 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:60853 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:61057 [200]: GET /ADMIN%20UI/assets/logo.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:53767 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:64390 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:61534 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:60853 [200]: GET /ADMIN%20UI/assets/admin.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:57476 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:63841 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:59988 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:61534 [200]: GET /ADMIN%20UI/assets/home.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:61057 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:60853 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:62920 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:57476 [200]: GET /ADMIN%20UI/assets/users.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:59988 [200]: GET /ADMIN%20UI/assets/parcel.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:57796 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:62920 [200]: GET /ADMIN%20UI/shared/admin-dashboard-language.js?v=1788979025
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:55003 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:57796 [200]: GET /ADMIN%20UI/shared/admin-dashboard-shell.js?v=1775088491
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:61534 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:55003 [200]: GET /shared/crop-catalog.js?v=1783299548
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:57476 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:59988 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:62920 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:64258 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:57796 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:55003 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:53711 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:53743 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:64258 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:62224 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:62503 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:64258 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:59082 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:53711 [200]: GET /ADMIN%20UI/adminDashboard/report/admin-report-form.js?v=1788979792
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:53743 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:62224 [200]: GET /ADMIN%20UI/assets/reports.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:62503 [200]: GET /ADMIN%20UI/assets/post.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:59082 [200]: GET /ADMIN%20UI/assets/suggestions.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:51184 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:51184 [200]: GET /ADMIN%20UI/assets/out.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:53711 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:53743 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:62224 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:62503 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:59082 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:51184 Closing
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:54325 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:54325 [200]: GET /ADMIN%20UI/assets/crop.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:56878 Accepted
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:56878 [200]: GET /ADMIN%20UI/assets/damage.png
+[Thu Sep 10 02:53:46 2026] 127.0.0.1:61607 Accepted
+[Thu Sep 10 02:53:47 2026] 127.0.0.1:61607 Closing
+[Thu Sep 10 02:53:47 2026] 127.0.0.1:49205 Accepted
+[Thu Sep 10 02:53:47 2026] 127.0.0.1:49205 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:53:47 2026] 127.0.0.1:49205 Closing
+[Thu Sep 10 02:53:47 2026] 127.0.0.1:56878 Closing
+[Thu Sep 10 02:53:47 2026] 127.0.0.1:54325 Closing
+[Thu Sep 10 02:53:48 2026] 127.0.0.1:52752 Accepted
+[Thu Sep 10 02:53:48 2026] 127.0.0.1:52752 Closing
+[Thu Sep 10 02:53:48 2026] 127.0.0.1:56495 Accepted
+[Thu Sep 10 02:53:51 2026] 127.0.0.1:56495 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:51846 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:51846 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:59361 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:59361 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:57033 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:55153 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:57033 [200]: GET /ADMIN%20UI/adminDashboard/report/reportAnalytics.css?v=1788959787
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:49960 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:55153 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:58306 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:49960 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:51352 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:58306 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:57033 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:64585 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:51352 [200]: GET /ADMIN%20UI/shared/admin-mobile.css?v=1788878985
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:55153 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:51121 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:64585 [200]: GET /ADMIN%20UI/assets/logo.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:49960 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:61932 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:51121 [200]: GET /ADMIN%20UI/assets/admin.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:58306 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:53250 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:61932 [200]: GET /ADMIN%20UI/assets/home.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:51352 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:60604 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:53250 [200]: GET /ADMIN%20UI/assets/users.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:59148 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:60604 [200]: GET /ADMIN%20UI/assets/parcel.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:64585 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:51121 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:64182 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:59148 [200]: GET /ADMIN%20UI/shared/admin-dashboard-language.js?v=1788979025
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:61932 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:53413 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:64182 [200]: GET /ADMIN%20UI/shared/admin-dashboard-shell.js?v=1775088491
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:53250 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:56793 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:53413 [200]: GET /shared/crop-catalog.js?v=1783299548
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:60604 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:55412 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:56793 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:59148 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:50963 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:55412 [200]: GET /ADMIN%20UI/adminDashboard/report/admin-report-form.js?v=1788979792
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:64182 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:58021 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:50963 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:53413 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:60564 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:58021 [200]: GET /ADMIN%20UI/assets/reports.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:56793 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:53369 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:60564 [200]: GET /ADMIN%20UI/assets/post.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:55412 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:60651 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:53369 [200]: GET /ADMIN%20UI/assets/out.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:50963 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:60651 [200]: GET /ADMIN%20UI/assets/suggestions.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:58021 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:60564 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:53369 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:60651 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:61643 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:61643 [200]: GET /ADMIN%20UI/assets/crop.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:59402 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:59402 [200]: GET /ADMIN%20UI/assets/damage.png
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:56693 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:56693 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:62070 Accepted
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:62070 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:62070 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:59402 Closing
+[Thu Sep 10 02:53:52 2026] 127.0.0.1:61643 Closing
+[Thu Sep 10 02:53:53 2026] 127.0.0.1:62072 Accepted
+[Thu Sep 10 02:53:56 2026] 127.0.0.1:62072 Closing
+[Thu Sep 10 02:53:56 2026] 127.0.0.1:62074 Accepted
+[Thu Sep 10 02:53:56 2026] 127.0.0.1:62074 Closing
+[Thu Sep 10 02:53:56 2026] 127.0.0.1:62076 Accepted
+[Thu Sep 10 02:53:56 2026] 127.0.0.1:62076 Closing
+[Thu Sep 10 02:53:56 2026] 127.0.0.1:62080 Accepted
+[Thu Sep 10 02:53:56 2026] Crop Harvest Report Details: {"id":2,"Name":"GPS Fixture","Barangay":"Garcia - Rosario - San Juan - Candelaria Road, Rosario Calabarzon","CropCommodity":"Fruits","Crop":"Mango","CropVariety":"Carabao","DatePlanted":"2026-01-01","HarvestDate":"2026-09-01","EstimatedHarvest":"75","CropStatus":"Bearing","FarmGatePrice":"60.00","NumberOfTrees":"10","Latitude":"13.8417680","Longitude":"121.2782000","photo_capture_date":"2026-09-09","photo_capture_time":"20:52","photo_location":"Garcia - Rosario - San Juan - Candelaria Road, Rosario Calabarzon","photo_latitude":"13.841768000","photo_longitude":"121.278200000","photo_timezone":"GMT+8","photo_ocr_version":"tesseract7-mdY-v1","DateReported":"2026-09-10","ReportedBy":"GPS Test Personnel","ReporterType":"Admin","gps_photo":{"date":"2026-09-09","time":"20:52","location":"Garcia - Rosario - San Juan - Candelaria Road, Rosario Calabarzon","latitude":"13.841768000","longitude":"121.278200000","timezone":"GMT+8","version":"tesseract7-mdY-v1"},"ImageUrl":"..\/..\/..\/..\/uploads\/reports\/harvest\/harvest_20260909_205356_c6de0b34523f348b4b30d4d5.jpg"}
+[Thu Sep 10 02:53:56 2026] 127.0.0.1:62080 Closing
+[Thu Sep 10 02:53:56 2026] 127.0.0.1:62183 Accepted
+[Thu Sep 10 02:53:56 2026] 127.0.0.1:62183 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62060 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:54938 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62060 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.css
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62333 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:54938 [200]: GET /FARMERS%20UI/farmersDashboard/report/reps.css?v=1788615748
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64375 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62333 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:54812 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64375 [200]: GET /FARMERS%20UI/farmersDashboard/shared/farmer-mobile.css?v=1788878984
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62060 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57248 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:54812 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:54938 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55215 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57248 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62333 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51030 Accepted
+[Thu Sep 10 02:53:57 2026] PHP Warning:  readfile(assets/default-profile.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\scaims\FARMERS UI\farmersDashboard\home\displayImage.php on line 25
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55215 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64375 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64835 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51030 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/home.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:54812 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:60519 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64835 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-language.js
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57248 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:60519 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/farm.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:61220 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51030 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:61352 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:61220 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/report.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64835 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62335 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:61352 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/settings.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:60519 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53096 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62335 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.js
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:61638 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53096 [200]: GET /shared/crop-catalog.js
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:61220 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50233 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:61638 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:61352 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59429 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50233 [200]: GET /FARMERS%20UI/farmersDashboard/report/report.js?v=1788979792
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62335 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:58953 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59429 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53096 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55656 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:58953 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/logout.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:61638 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53504 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55656 [200]: GET /uploads/reports/harvest/harvest_20260909_205356_c6de0b34523f348b4b30d4d5.jpg
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50233 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53633 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53504 [200]: GET /uploads/reports/damage/damage_20260909_205352_cb0c5f12c5585e1a5970c14b.webp
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59429 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:56407 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53633 [200]: GET /uploads/reports/harvest/harvest_20260909_205344_7f25f58039992800748ec682.jpg
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:58953 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:56407 [200]: GET /uploads/reports/damage/damage_20260909_205345_ac15b766d101ebdfb08466a3.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55656 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53504 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53633 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:56407 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:56361 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:56361 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59434 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59434 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59434 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59435 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59435 [200]: GET /uploads/reports/harvest/harvest_20260909_205356_c6de0b34523f348b4b30d4d5.jpg
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59435 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59437 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59437 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51145 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51145 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55949 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55949 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.css
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:65190 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:65190 [200]: GET /FARMERS%20UI/farmersDashboard/report/reps.css?v=1788615748
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55066 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55949 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:65190 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55066 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51452 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55066 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51452 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:56956 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51452 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55317 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:63475 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:56956 [200]: GET /FARMERS%20UI/farmersDashboard/shared/farmer-mobile.css?v=1788878984
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62274 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55317 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:53:57 2026] PHP Warning:  readfile(assets/default-profile.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\scaims\FARMERS UI\farmersDashboard\home\displayImage.php on line 25
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:63475 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57603 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62274 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/home.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:52717 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57603 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/farm.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:56956 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57905 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:52717 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/report.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:55317 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64826 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57905 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-language.js
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62274 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:60416 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64826 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/settings.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57603 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57191 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:60416 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.js
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:52717 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50962 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57191 [200]: GET /shared/crop-catalog.js
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57905 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50500 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50962 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64826 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:58921 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:60416 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50500 [200]: GET /FARMERS%20UI/farmersDashboard/report/report.js?v=1788979792
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57191 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57511 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50962 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50500 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:58921 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57632 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:58921 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:49282 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57511 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/logout.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57927 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57511 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57632 [200]: GET /uploads/reports/harvest/harvest_20260909_205356_c6de0b34523f348b4b30d4d5.jpg
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57632 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59642 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:49282 [200]: GET /uploads/reports/damage/damage_20260909_205352_cb0c5f12c5585e1a5970c14b.webp
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57927 [200]: GET /uploads/reports/harvest/harvest_20260909_205344_7f25f58039992800748ec682.jpg
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59642 [200]: GET /uploads/reports/damage/damage_20260909_205345_ac15b766d101ebdfb08466a3.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:49282 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57927 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59642 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57853 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57853 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50755 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50755 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50755 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50756 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50756 [200]: GET /uploads/reports/damage/damage_20260909_205352_cb0c5f12c5585e1a5970c14b.webp
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:50756 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57269 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:57269 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:49641 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:49641 [200]: GET /ADMIN%20UI/adminDashboard/report/crop/crop.css?v=1775097099
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51331 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51331 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:49641 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51331 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64843 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:58971 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:63353 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64843 [200]: GET /shared/app-path.js
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:58971 [200]: GET /shared/leaflet-crop-icons.js?v=1783298672
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:63353 [200]: GET /shared/crop-catalog.js?v=1783299548
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53744 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:65003 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53744 [200]: GET /ADMIN%20UI/shared/admin-mobile.css?v=1788878985
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:64843 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59717 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:65003 [200]: GET /ADMIN%20UI/assets/logo.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:58971 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:63353 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59717 [200]: GET /ADMIN%20UI/assets/admin.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:53744 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:65003 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:59717 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62625 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62625 [200]: GET /ADMIN%20UI/assets/home.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:62625 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:60877 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:60877 [200]: GET /ADMIN%20UI/assets/users.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51529 Accepted
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51529 [200]: GET /ADMIN%20UI/assets/parcel.png
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:60877 Closing
+[Thu Sep 10 02:53:57 2026] 127.0.0.1:51529 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:61544 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:61544 [200]: GET /ADMIN%20UI/shared/admin-dashboard-language.js?v=1788979025
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:62271 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:62271 [200]: GET /ADMIN%20UI/shared/admin-dashboard-shell.js?v=1775088491
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:61544 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:62271 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:62752 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:62752 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:62752 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:61407 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:61407 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:51006 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:51006 [200]: GET /ADMIN%20UI/adminDashboard/report/crop/cropReports.js?v=1788979792
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:51006 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:60757 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:60757 [200]: GET /ADMIN%20UI/assets/reports.png
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:60646 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:60646 [200]: GET /ADMIN%20UI/assets/post.png
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:60757 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:60646 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:65438 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:51130 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:51130 [200]: GET /ADMIN%20UI/assets/suggestions.png
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:65438 [200]: GET /ADMIN%20UI/assets/out.png
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:51130 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:65438 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:53144 Accepted
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:53144 Closing
+[Thu Sep 10 02:53:58 2026] 127.0.0.1:62394 Accepted
+[Thu Sep 10 02:53:59 2026] Crop Harvest Report Details: {"id":2,"Name":"GPS Fixture","Barangay":"Garcia - Rosario - San Juan - Candelaria Road, Rosario Calabarzon","CropCommodity":"Fruits","Crop":"Mango","CropVariety":"Carabao","DatePlanted":"2026-01-01","HarvestDate":"2026-09-01","EstimatedHarvest":"75","CropStatus":"Bearing","FarmGatePrice":"60.00","NumberOfTrees":"10","Latitude":"13.8417680","Longitude":"121.2782000","photo_capture_date":"2026-09-09","photo_capture_time":"20:52","photo_location":"Garcia - Rosario - San Juan - Candelaria Road, Rosario Calabarzon","photo_latitude":"13.841768000","photo_longitude":"121.278200000","photo_timezone":"GMT+8","photo_ocr_version":"tesseract7-mdY-v1","DateReported":"2026-09-10","ReportedBy":"GPS Test Personnel","ReporterType":"Admin","gps_photo":{"date":"2026-09-09","time":"20:52","location":"Garcia - Rosario - San Juan - Candelaria Road, Rosario Calabarzon","latitude":"13.841768000","longitude":"121.278200000","timezone":"GMT+8","version":"tesseract7-mdY-v1"},"ImageUrl":"..\/..\/..\/..\/uploads\/reports\/harvest\/harvest_20260909_205356_c6de0b34523f348b4b30d4d5.jpg"}
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:62394 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:49166 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:49166 [200]: GET /uploads/reports/harvest/harvest_20260909_205356_c6de0b34523f348b4b30d4d5.jpg
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:49166 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:62232 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:62232 [200]: GET /assets/icons/Mango.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:62232 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:49794 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:49794 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:52643 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:52643 [200]: GET /ADMIN%20UI/adminDashboard/report/damage/damages.css?v=1775098955
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:55246 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:55246 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:59257 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:52643 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:57925 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:59257 [200]: GET /shared/app-path.js
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:58696 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:57925 [200]: GET /shared/crop-catalog.js?v=1783299548
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:55246 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:56416 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:58696 [200]: GET /shared/leaflet-crop-icons.js?v=1783298672
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:59758 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:56416 [200]: GET /ADMIN%20UI/shared/admin-mobile.css?v=1788878985
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:59257 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:52836 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:59758 [200]: GET /ADMIN%20UI/assets/logo.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:57925 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:52836 [200]: GET /ADMIN%20UI/assets/admin.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:58696 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:56416 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:59758 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:52836 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:59653 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:59653 [200]: GET /ADMIN%20UI/assets/home.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:55261 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:55261 [200]: GET /ADMIN%20UI/assets/users.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:59653 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:53303 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:55261 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:53303 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:50281 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:56989 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:50281 [200]: GET /ADMIN%20UI/assets/parcel.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:56989 [200]: GET /ADMIN%20UI/shared/admin-dashboard-language.js?v=1788979025
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:50281 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:56989 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:64379 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:64379 [200]: GET /ADMIN%20UI/shared/admin-dashboard-shell.js?v=1775088491
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:61568 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:61568 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:64379 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:61568 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:58595 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:58595 [200]: GET /ADMIN%20UI/adminDashboard/report/damage/cropDamage.js?v=1788979792
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:58595 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:54359 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:54359 [200]: GET /ADMIN%20UI/assets/reports.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:54359 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:54565 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:54565 [200]: GET /ADMIN%20UI/assets/post.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:54565 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:63051 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:63051 [200]: GET /ADMIN%20UI/assets/suggestions.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:63051 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:50885 Accepted
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:50885 [200]: GET /ADMIN%20UI/assets/out.png
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:50885 Closing
+[Thu Sep 10 02:53:59 2026] 127.0.0.1:63094 Accepted
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:63094 Closing
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:55351 Accepted
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:55351 Closing
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:59341 Accepted
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:59341 [200]: GET /assets/icons/Mango.png
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:59341 Closing
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:61113 Accepted
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:61113 [200]: GET /uploads/reports/damage/damage_20260909_205352_cb0c5f12c5585e1a5970c14b.webp
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:61113 Closing
+[Thu Sep 10 02:54:00 2026] 127.0.0.1:61120 Accepted
+[Thu Sep 10 02:54:02 2026] 127.0.0.1:61120 Closing
+[Thu Sep 10 02:54:02 2026] 127.0.0.1:61121 Accepted
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61121 Closing
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61127 Accepted
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61127 Closing
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61130 Accepted
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61130 Closing
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61132 Accepted
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61132 Closing
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61134 Accepted
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61134 Closing
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61136 Accepted
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61136 Closing
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61138 Accepted
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61138 Closing
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61140 Accepted
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61140 Closing
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61142 Accepted
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61142 Closing
+[Thu Sep 10 02:54:03 2026] 127.0.0.1:61143 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:61143 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:61145 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:61145 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:52173 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:52173 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:54974 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:54974 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.css
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:60843 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:60843 [200]: GET /FARMERS%20UI/farmersDashboard/report/reps.css?v=1788615748
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:54974 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:60843 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:51264 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:52004 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:57272 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:51264 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:64032 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:52004 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:57272 [200]: GET /FARMERS%20UI/farmersDashboard/shared/farmer-mobile.css?v=1788878984
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59238 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:64032 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:60401 Accepted
+[Thu Sep 10 02:54:04 2026] PHP Warning:  readfile(assets/default-profile.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\scaims\FARMERS UI\farmersDashboard\home\displayImage.php on line 25
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59238 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:51264 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:57072 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:60401 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/home.png
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:52004 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:57272 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:57072 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-language.js
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:64032 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:49756 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:60401 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:57072 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:51792 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:54586 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:61517 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:49756 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/farm.png
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:51792 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/report.png
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:54586 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/settings.png
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59831 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:61517 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.js
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:56931 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59831 [200]: GET /shared/crop-catalog.js
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:49756 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:62263 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:56931 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:51792 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:54586 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:63345 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:62263 [200]: GET /FARMERS%20UI/farmersDashboard/report/report.js?v=1788979792
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:61517 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59201 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:63345 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59831 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:53737 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59201 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/logout.png
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:56931 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59559 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:53737 [200]: GET /uploads/reports/harvest/harvest_20260909_205356_c6de0b34523f348b4b30d4d5.jpg
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:62263 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:62328 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59559 [200]: GET /uploads/reports/damage/damage_20260909_205352_cb0c5f12c5585e1a5970c14b.webp
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:63345 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59201 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:53737 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:59559 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:53453 Accepted
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:62328 [200]: GET /uploads/reports/harvest/harvest_20260909_205344_7f25f58039992800748ec682.jpg
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:62328 Closing
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:53453 [200]: GET /uploads/reports/damage/damage_20260909_205345_ac15b766d101ebdfb08466a3.png
+[Thu Sep 10 02:54:04 2026] 127.0.0.1:53453 Closing
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:56069 Accepted
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:56069 Closing
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:60344 Accepted
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:60344 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:60344 Closing
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:53599 Accepted
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:53599 Closing
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:49432 Accepted
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:49432 Closing
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:64001 Accepted
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:64001 Closing
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:53692 Accepted
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:53692 [200]: GET /uploads/reports/harvest/harvest_20260909_205405_53a6f4314ddd8c0582a6f821.webp
+[Thu Sep 10 02:54:05 2026] 127.0.0.1:53692 Closing
+[Thu Sep 10 02:54:06 2026] 127.0.0.1:53695 Accepted
+[Thu Sep 10 02:54:06 2026] 127.0.0.1:53695 Closing
+[Thu Sep 10 02:54:06 2026] 127.0.0.1:53696 Accepted
+[Thu Sep 10 02:54:06 2026] 127.0.0.1:53696 Closing
+[Thu Sep 10 02:54:06 2026] 127.0.0.1:56404 Accepted
+[Thu Sep 10 02:54:06 2026] 127.0.0.1:56404 Closing
+[Thu Sep 10 02:54:06 2026] 127.0.0.1:56406 Accepted
+[Thu Sep 10 02:54:09 2026] 127.0.0.1:56406 Closing
+[Thu Sep 10 02:54:09 2026] 127.0.0.1:56407 Accepted
+[Thu Sep 10 02:54:09 2026] 127.0.0.1:56407 Closing
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:56414 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:56414 Closing
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:56418 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:56418 Closing
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:54313 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:54313 Closing
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:62920 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:62920 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.css
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:62658 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:62920 Closing
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:62658 [200]: GET /FARMERS%20UI/farmersDashboard/report/reps.css?v=1788615748
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:58416 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:61318 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:58416 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:58620 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:61318 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:62658 Closing
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:59330 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:58620 [200]: GET /FARMERS%20UI/farmersDashboard/shared/farmer-mobile.css?v=1788878984
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:59482 Accepted
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:59330 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:58416 Closing
+[Thu Sep 10 02:54:10 2026] 127.0.0.1:50572 Accepted
+[Thu Sep 10 02:54:11 2026] PHP Warning:  readfile(assets/default-profile.jpg): Failed to open stream: No such file or directory in C:\xampp\htdocs\scaims\FARMERS UI\farmersDashboard\home\displayImage.php on line 25
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:59482 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:61318 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:64921 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:50572 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-language.js
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:58620 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:64783 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:64921 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/home.png
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:59330 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:60611 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:64783 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/farm.png
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:64033 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:50572 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:53863 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:64921 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:64783 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:60611 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/report.png
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:64033 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/settings.png
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:53863 [200]: GET /FARMERS%20UI/farmersDashboard/shared/dashboard-shell.js
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:52168 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:60366 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:52168 [200]: GET /shared/crop-catalog.js
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:60611 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:49273 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:60366 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:64033 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:53863 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:53673 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:49273 [200]: GET /FARMERS%20UI/farmersDashboard/report/report.js?v=1788979792
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:63025 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:53673 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:52168 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:51994 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:63025 [200]: GET /FARMERS%20UI/farmersDashboard/home/assets/nav-icons/logout.png
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:60366 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:61553 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:51994 [200]: GET /uploads/reports/harvest/harvest_20260909_205356_c6de0b34523f348b4b30d4d5.jpg
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:49273 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:65083 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:61553 [200]: GET /uploads/reports/damage/damage_20260909_205352_cb0c5f12c5585e1a5970c14b.webp
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:53673 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:58092 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:65083 [200]: GET /uploads/reports/harvest/harvest_20260909_205409_ac82582c76822480ab54e551.webp
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:63025 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:58092 [200]: GET /uploads/reports/damage/damage_20260909_205345_ac15b766d101ebdfb08466a3.png
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:51994 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:61553 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:65083 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:58092 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:53281 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:53281 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:65472 Accepted
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:65472 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:65472 Closing
+[Thu Sep 10 02:54:11 2026] 127.0.0.1:56048 Accepted
+[Thu Sep 10 02:54:13 2026] 127.0.0.1:56048 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:63925 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:63925 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:56325 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:60232 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:61603 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:56325 [200]: GET /ADMIN%20UI/adminDashboard/report/reportAnalytics.css?v=1788959787
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:53747 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:60232 [200]: GET /shared/report-image-capture.css?v=1788979025
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:62832 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:61603 [200]: GET /assets/vendor/bootstrap-icons/bootstrap-icons.min.css
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49728 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:53747 [200]: GET /shared/choice-cards.css?v=20260909
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:62832 [200]: GET /ADMIN%20UI/shared/admin-mobile.css?v=1788878985
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:56325 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:60039 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49728 [200]: GET /ADMIN%20UI/assets/logo.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:60232 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:64177 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:60039 [200]: GET /ADMIN%20UI/assets/admin.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:61603 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:64177 [200]: GET /ADMIN%20UI/assets/home.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:53747 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:62832 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:53366 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49728 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:60039 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49808 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:64177 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49549 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:53366 [200]: GET /ADMIN%20UI/assets/users.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:53366 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49808 [200]: GET /ADMIN%20UI/assets/parcel.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:50589 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49549 [200]: GET /ADMIN%20UI/shared/admin-dashboard-language.js?v=1788979025
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:54057 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49808 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49549 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:55970 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:50589 [200]: GET /ADMIN%20UI/shared/admin-dashboard-shell.js?v=1775088491
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:54346 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:54057 [200]: GET /shared/crop-catalog.js?v=1783299548
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:55970 [200]: GET /shared/report-image-capture.js?v=1788979025
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:59926 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:50589 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49399 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:54346 [200]: GET /ADMIN%20UI/adminDashboard/report/admin-report-form.js?v=1788979792
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:54057 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:55970 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:54346 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:65361 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:59926 [200]: GET /shared/choice-cards.js?v=20260909
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49399 [200]: GET /ADMIN%20UI/assets/reports.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:65361 [200]: GET /ADMIN%20UI/assets/post.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:50625 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:59926 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:62280 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:49399 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:65361 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:50625 [200]: GET /ADMIN%20UI/assets/suggestions.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:62280 [200]: GET /ADMIN%20UI/assets/out.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:50625 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:62280 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:64533 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:64533 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:63723 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:50685 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:63723 [200]: GET /ADMIN%20UI/assets/crop.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:50685 [200]: GET /ADMIN%20UI/assets/damage.png
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:64424 Accepted
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:64424 [200]: GET /assets/vendor/bootstrap-icons/fonts/bootstrap-icons.woff2?dd67030699838ea613ee6dbda90effa6
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:64424 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:50685 Closing
+[Thu Sep 10 02:54:15 2026] 127.0.0.1:63723 Closing
+[Thu Sep 10 02:54:16 2026] 127.0.0.1:59768 Accepted
+[Thu Sep 10 02:54:16 2026] 127.0.0.1:59768 Closing
+[Thu Sep 10 02:54:16 2026] 127.0.0.1:49918 Accepted
+[Thu Sep 10 02:54:16 2026] 127.0.0.1:49918 Closing

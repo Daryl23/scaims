@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . '/../../../../shared/admin_auth.php';
 scaims_require_admin('../../../adminLogin/adminLogin.html');
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['AdminID'])) {
@@ -12,6 +14,7 @@ if (!isset($_SESSION['AdminID'])) {
 
 require_once 'db_connection.php';
 require_once dirname(__DIR__, 4) . '/shared/report_image_storage.php';
+require_once dirname(__DIR__, 4) . '/shared/gps_photo.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -19,6 +22,7 @@ error_reporting(E_ALL);
 
 try {
     scaims_ensure_report_image_columns($conn);
+    scaims_ensure_gps_photo_columns($conn);
 } catch (RuntimeException $e) {
     http_response_code(500);
     echo json_encode(["error" => "Report image information is unavailable right now. Please try again later."]);
@@ -43,6 +47,7 @@ if (is_numeric($id)) {
                    cr.latitude AS Latitude,
                    cr.longitude AS Longitude,
                    cr.image_path AS ImagePath,
+                   cr.photo_capture_date, cr.photo_capture_time, cr.photo_location, cr.photo_latitude, cr.photo_longitude, cr.photo_timezone, cr.photo_ocr_version,
                    cr.reportDate AS DateReported,
                    COALESCE(ca.AdminName, CONCAT(cf.FirstName, ' ', cf.Surname), cr.created_by) AS ReportedBy,
                    CASE WHEN ca.AdminName IS NOT NULL THEN 'Admin' ELSE 'Farmer' END AS ReporterType
@@ -60,6 +65,7 @@ if (is_numeric($id)) {
 
     if ($result->num_rows > 0) {
         $cropReportDetails = $result->fetch_assoc();
+        $cropReportDetails['gps_photo'] = scaims_photo_from_row($cropReportDetails);
         $imageUrl = scaims_report_image_url($cropReportDetails['ImagePath'] ?? null, '../../../../');
         
         // Apply ucwords to relevant fields

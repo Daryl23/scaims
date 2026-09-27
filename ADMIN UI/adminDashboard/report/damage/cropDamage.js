@@ -270,7 +270,7 @@ $(document).ready(function() {
             },
             success: function(response) {
                 try {
-                    const data = JSON.parse(response);
+                    const data = (typeof response === 'string' ? JSON.parse(response) : response);
                     if (data.error) {
                         console.error('Server error:', data.error);
                         return;
@@ -425,7 +425,7 @@ $(document).ready(function() {
             },
             success: function(response) {
                 try {
-                    const data = JSON.parse(response);
+                    const data = (typeof response === 'string' ? JSON.parse(response) : response);
                     if (!data.success) {
                         console.error('Server error:', data.error);
                         alert('Error loading graph data');
@@ -841,7 +841,7 @@ $(document).on('click', '.action-button', function() {
         success: function(response) {
             console.log('Response from server:', response);
             try {
-                const data = JSON.parse(response);
+                const data = (typeof response === 'string' ? JSON.parse(response) : response);
 
                 if (data.error) {
                     alert(data.error);
@@ -870,6 +870,12 @@ $(document).on('click', '.action-button', function() {
                 $('#dmgReportDate').text(data.ReportDate || 'N/A');
                 $('#numberOfTrees').text(data.NumberOfTrees || 'N/A');
                 updateDamageReportImage(data.ImageUrl || '');
+                let gpsPanel = document.getElementById('damageReportImagePanelGPS');
+                if (!gpsPanel) { gpsPanel = document.createElement('section'); gpsPanel.id = 'damageReportImagePanelGPS'; document.getElementById('damageReportImagePanel').after(gpsPanel); }
+                gpsPanel.gpsPhoto = data.gps_photo;
+                window.SCAIMSGPSPhoto.renderDetails(gpsPanel, data.gps_photo);
+                ["dmgLocation", "damageLatitude", "damageLongitude", "dateOccurrence"].forEach(id => { const field = document.getElementById(id); if (field) field.closest('p').hidden = Boolean(data.gps_photo); });
+
                 if (typeof window.updateDamageMapCard === 'function') {
                     window.updateDamageMapCard(data);
                 }
@@ -951,3 +957,5 @@ const resolveAppPath = typeof window.resolveAppPath === 'function'
       const basePath = (pathname === '/scaims' || pathname.indexOf('/scaims/') === 0) ? '/scaims' : '';
       return path.charAt(0) === '/' ? basePath + path : path;
     };
+
+document.addEventListener('dashboard:language-changed', function () { const panel = document.getElementById('damageReportImagePanelGPS'); if (panel) window.SCAIMSGPSPhoto.renderDetails(panel, panel.gpsPhoto); });

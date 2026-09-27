@@ -8,10 +8,11 @@
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="registration.css">
     <link rel="stylesheet" href="regs.css">
+    <link rel="stylesheet" href="registration-steps.css?v=20260909">
     <script src="../../shared/app-path.js"></script>
     <script src="../../shared/public-nav-config.js"></script>
-    <script src="../../shared/public-nav.js" defer></script>
-    <link rel="stylesheet" href="../../shared/public-nav.css">
+    <script src="../../shared/public-nav.js?v=20260908-2" defer></script>
+    <link rel="stylesheet" href="../../shared/public-nav.css?v=20260908-2">
     <link rel="stylesheet" href="../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../../shared/choice-cards.css?v=20260909">
     <script src="../../shared/choice-cards.js?v=20260909" defer></script>
@@ -24,10 +25,17 @@
     ></div>
 
     <div class="container">
-        <form id="registrationForm" action="submit_registration.php" method="POST" enctype="multipart/form-data">
+        <form id="registrationForm" action="complete_registration.php" method="POST" enctype="multipart/form-data" novalidate>
             <h2>REGISTRATION FORM</h2>
+            <ol class="registration-progress" aria-label="Registration progress">
+                <li id="personalProgress" aria-current="step"><span class="step-number">1</span><span>Personal Information</span></li>
+                <li id="accountProgress"><span class="step-number">2</span><span>Account Creation</span></li>
+            </ol>
+            <p class="required-note"><span class="required" aria-hidden="true">*</span> Required fields</p>
+            <p id="registrationError" class="registration-error" role="alert" hidden></p>
             <hr>
-            <h3>PART 1: Personal Information</h3>
+            <fieldset id="personalStep" class="registration-step">
+            <legend tabindex="-1">PART 1: Personal Information</legend>
             <div class="flex-container-1">
                 <div>
                     <label for="surname">Surname:</label>
@@ -167,10 +175,32 @@
                     </label><br>
                 </div>
 
-                <div class="button-container">
-                    <input type="submit" value="Submit" class="submit-button">
-                    <button type="button" onclick="clearFormAndRedirect();">Cancel</button>         
+            </div>
+            </fieldset>
+            <fieldset id="accountStep" class="registration-step" hidden disabled>
+                <legend tabindex="-1">PART 2: Account Creation</legend>
+                <p class="step-help">You can go back to review or edit your personal information. Your entries will be kept.</p>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" required>
+                <label for="password">Password:</label>
+                <div class="registration-password">
+                    <input type="password" id="password" name="password" placeholder="Enter a strong password" autocomplete="new-password" minlength="8" aria-describedby="passwordHelp" required>
+                    <button type="button" class="password-toggle" data-password="password" aria-label="Show password" aria-pressed="false">Show</button>
                 </div>
+                <p id="passwordHelp" class="step-help">Use at least 8 characters with an uppercase letter, a lowercase letter, a number, and a special character.</p>
+                <label for="confirmPassword">Confirm Password:</label>
+                <div class="registration-password">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" required>
+                    <button type="button" class="password-toggle" data-password="confirmPassword" aria-label="Show confirm password" aria-pressed="false">Show</button>
+                </div>
+                <label for="profileImage">Profile Image:</label>
+                <input type="file" id="profileImage" name="profileImage" accept="image/*" required>
+            </fieldset>
+            <div class="registration-actions">
+                <button type="button" id="backButton" hidden>Back to Part 1</button>
+                <button type="submit" id="nextButton" class="submit-button">Next: Account Creation</button>
+                <button type="submit" id="createAccountButton" class="submit-button" hidden>Create Account</button>
+                <button type="button" id="cancelButton">Cancel</button>
             </div>
         </form>
     </div>
@@ -271,7 +301,7 @@
         </div>
     </div>
     
-    <script src="registration.js"></script>
+    <script src="registration-wizard.js?v=20260909"></script>
     
     <footer class="footer">
         <div class="footer-left">
@@ -312,8 +342,6 @@ document.addEventListener('DOMContentLoaded', function() {
             privacyModal.style.display = "none";
         });
     }
-    
-    document.querySelector('.submit-button').value = "Submit";
     
     window.addEventListener('click', function (event) {
         if (event.target == termsModal) {

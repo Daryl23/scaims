@@ -164,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
     <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../../../shared/choice-cards.css?v=20260909">
+    <link rel="stylesheet" href="../shared/farmer-mobile.css?v=<?php echo @filemtime(__DIR__ . '/../shared/farmer-mobile.css') ?: time(); ?>">
     <script src="../../../shared/choice-cards.js?v=20260909" defer></script>
 </head>
 <body>
