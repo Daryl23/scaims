@@ -1,9 +1,6 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 require_once __DIR__ . '/../../shared/admin_auth.php';
+scaims_session_start();
 
 $activePage = $activePage ?? '';
 $assetPath = $assetPath ?? '../../assets/';
@@ -12,7 +9,7 @@ $sharedPath = $sharedPath ?? '../../shared/';
 $pagePrefix = strpos(str_replace('\\', '/', $assetPath), '../../../assets/') !== false ? '../../../' : '../../';
 $currentScript = str_replace('\\', '/', $_SERVER['PHP_SELF'] ?? '');
 $languageScriptVersion = @filemtime(__DIR__ . '/admin-dashboard-language.js') ?: time();
-$shellScriptVersion = @filemtime(__DIR__ . '/admin-dashboard-shell.js') ?: time();
+$shellScriptVersion = @filemtime(dirname(__DIR__, 2) . '/shared/dashboard-shell.js') ?: time();
 
 if ($activePage === '') {
     if (strpos($currentScript, '/adminDashboard/home/') !== false) {
@@ -541,7 +538,7 @@ $navItems = array_merge($navItems, [
             <?php endforeach; ?>
 
             <li>
-                <a href="<?php echo htmlspecialchars($loginPath); ?>" class="menu-item">
+                <a href="<?php echo htmlspecialchars($pagePrefix . 'adminLogin/logout.php'); ?>" class="menu-item">
                     <span class="icon-wrap">
                         <img src="<?php echo htmlspecialchars($assetPath . 'out.png'); ?>" class="icon" alt="">
                     </span>
@@ -561,4 +558,4 @@ $navItems = array_merge($navItems, [
 </aside>
 
 <script src="<?php echo htmlspecialchars($sharedPath); ?>admin-dashboard-language.js?v=<?php echo $languageScriptVersion; ?>"></script>
-<script src="<?php echo htmlspecialchars($sharedPath); ?>admin-dashboard-shell.js?v=<?php echo $shellScriptVersion; ?>"></script>
+<script src="<?php echo htmlspecialchars($pagePrefix); ?>../shared/dashboard-shell.js?v=<?php echo $shellScriptVersion; ?>"></script>

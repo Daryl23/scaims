@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once dirname(__DIR__) . '/farmersDashboard/shared/farmer-auth.php';
+scaims_farmer_session_start();
 
 require_once dirname(__DIR__, 2) . '/conn.php';
 
@@ -32,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         if (password_verify($pass, $row['UPass'])) {
+            session_regenerate_id(true);
             // Set session variables
             $_SESSION['UserID'] = $row['UserID'];
             $_SESSION['UName'] = $row['UName'];

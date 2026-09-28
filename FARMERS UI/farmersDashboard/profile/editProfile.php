@@ -1,9 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['UName'])) {
-    header("Location: ../../farmerLogin/farmerlogin.html");
-    exit();
-}
+require_once dirname(__DIR__) . '/shared/farmer-auth.php';
+scaims_require_farmer_page('../../farmerLogin/farmerlogin.html');
 
 require_once dirname(__DIR__, 3) . '/conn.php';
 
@@ -173,7 +170,7 @@ $dashboardCurrentPage = 'profile';
         </div>
     </div>
     <script src="../shared/dashboard-language.js"></script>
-    <script src="../shared/dashboard-shell.js"></script>
+    <script src="../../../shared/dashboard-shell.js"></script>
     <script src="editProfile.js"></script>
 </body>
 </html>

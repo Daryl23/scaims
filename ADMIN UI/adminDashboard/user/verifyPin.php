@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../../../shared/admin_auth.php';
 scaims_require_admin('../../adminLogin/adminLogin.html');
-session_start();
 require_once 'db_connection.php';
 
 $pin = $_POST['pin'] ?? '';

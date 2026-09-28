@@ -1,9 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['UName'])) {
-    header("Location: ../farmerLogin/farmerlogin.html");
-    exit();
-}
+require_once dirname(__DIR__) . '/shared/farmer-auth.php';
+scaims_require_farmer_page('../farmerLogin/farmerlogin.html');
 
 if (isset($_SESSION['message'])) {
     echo "<div class='alert alert-success'>{$_SESSION['message']}</div>";

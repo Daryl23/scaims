@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../conn.php';
+require_once __DIR__ . '/session.php';
 
 if (!function_exists('scaims_ensure_admin_role_column')) {
     function scaims_ensure_admin_role_column(mysqli $conn): void
@@ -20,7 +21,7 @@ if (!function_exists('scaims_ensure_admin_role_column')) {
         $stmt->close();
 
         if ((int) ($row['total'] ?? 0) === 0) {
-            $conn->query("ALTER TABLE admin ADD COLUMN AdminRole VARCHAR(32) NOT NULL DEFAULT 'admin' AFTER AdminPass");
+            throw new RuntimeException('Database schema is not up to date. Run the SCAIMS migrations.');
         }
     }
 }
@@ -36,9 +37,7 @@ if (!function_exists('scaims_normalize_admin_role')) {
 if (!function_exists('scaims_is_super_admin')) {
     function scaims_is_super_admin(): bool
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        scaims_session_start();
 
         return scaims_normalize_admin_role($_SESSION['AdminRole'] ?? '') === 'super_admin'
             || !empty($_SESSION['IsSuperAdmin']);
@@ -55,9 +54,7 @@ if (!function_exists('scaims_require_admin')) {
      */
     function scaims_require_admin(string $loginPath = '../../adminLogin/adminLogin.html'): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        scaims_session_start();
 
         if (!empty($_SESSION['AdminID'])) {
             return;
@@ -81,9 +78,7 @@ if (!function_exists('scaims_require_admin')) {
 if (!function_exists('scaims_require_super_admin')) {
     function scaims_require_super_admin(string $fallbackPath = '../home/home.php'): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        scaims_session_start();
 
         if (empty($_SESSION['AdminID'])) {
             header('Location: ../../adminLogin/adminLogin.html');

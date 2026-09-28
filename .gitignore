@@ -1,2 +1,7 @@
 # Local-only reCAPTCHA bypass marker — never commit
 .dev-bypass
+
+# Local environment configuration and secrets
+.env
+.env.local
+.env.*.local

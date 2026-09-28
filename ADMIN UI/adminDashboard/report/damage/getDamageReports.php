@@ -1,9 +1,6 @@
 <?php
 require_once __DIR__ . '/../../../../shared/admin_auth.php';
 scaims_require_admin('../../../adminLogin/adminLogin.html');
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['AdminID'])) {

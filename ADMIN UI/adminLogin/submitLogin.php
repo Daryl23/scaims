@@ -1,8 +1,8 @@
 <?php
-session_start();
 
 require_once dirname(__DIR__, 2) . '/conn.php';
 require_once dirname(__DIR__, 2) . '/shared/admin_auth.php';
+scaims_session_start();
 
 try {
     $conn = scaims_db_mysqli();
@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
         if (password_verify($pass, $row['AdminPass'])) {
+            session_regenerate_id(true);
             $adminRole = scaims_normalize_admin_role($row['AdminRole'] ?? 'admin');
             $_SESSION['AdminID'] = $row['AdminID'];
             $_SESSION['AdminName'] = $row['AdminName'];

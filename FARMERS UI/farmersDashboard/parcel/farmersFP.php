@@ -4,14 +4,12 @@ ini_set('display_errors', 1);
 ini_set('error_log', 'error.log');
 error_log("Script started");
 
-session_start();
+require_once dirname(__DIR__) . '/shared/farmer-auth.php';
+scaims_farmer_session_start();
 error_log("Session started");
 error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
 
-    if (!isset($_SESSION['UName'])) {
-        header("Location: ../../farmerLogin/farmerlogin.html");
-        exit();
-    }
+    scaims_require_farmer_page('../../farmerLogin/farmerlogin.html');
 
     include 'db_connection.php'; 
     $user_name = $_SESSION['UName']; 
@@ -691,6 +689,6 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
     }
     </script>
     <script src="../shared/dashboard-language.js"></script>
-    <script src="../shared/dashboard-shell.js"></script>
+    <script src="../../../shared/dashboard-shell.js"></script>
 </body>
 </html>

@@ -1,12 +1,7 @@
 <?php
-session_start();
+require_once dirname(__DIR__) . '/shared/farmer-auth.php';
 header('Content-Type: application/json');
-
-if (!isset($_SESSION['UName'])) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'message' => 'Please log in before saving report data.']);
-    exit();
-}
+scaims_require_farmer_json('Please log in before saving report data.');
 
 require_once dirname(__DIR__, 3) . '/conn.php';
 require_once dirname(__DIR__, 3) . '/shared/farmer_report_defaults.php';

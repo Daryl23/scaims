@@ -1,10 +1,6 @@
 <?php
-session_start(); 
-
-if (!isset($_SESSION['UName'])) {
-    header("Location: ../../farmerLogin/farmerlogin.html");
-    exit();
-}
+require_once dirname(__DIR__) . '/shared/farmer-auth.php';
+scaims_require_farmer_page('../../farmerLogin/farmerlogin.html');
 
 require_once dirname(__DIR__, 3) . '/conn.php';
 require_once dirname(__DIR__, 3) . '/shared/report_image_storage.php';

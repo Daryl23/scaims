@@ -1,8 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['UName'])) {
-    die('Unauthorized access');
-}
+require_once dirname(__DIR__) . '/shared/farmer-auth.php';
+scaims_require_farmer_text();
 
 require_once dirname(__DIR__, 3) . '/conn.php';
 

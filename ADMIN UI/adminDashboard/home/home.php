@@ -1,9 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['AdminID'])) {
-    header('Location: ../../adminLogin/adminLogin.html');
-    exit();
-}
+require_once dirname(__DIR__, 3) . '/shared/admin_auth.php';
+scaims_require_admin('../../adminLogin/adminLogin.html');
 
 $activePage = 'home';
 

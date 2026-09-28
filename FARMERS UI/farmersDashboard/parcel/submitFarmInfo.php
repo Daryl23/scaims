@@ -1,5 +1,6 @@
 <?php
-session_start();
+require_once dirname(__DIR__) . '/shared/farmer-auth.php';
+scaims_farmer_session_start();
 header('Content-Type: application/json');
 
 error_reporting(E_ALL);

@@ -1,9 +1,2 @@
 <?php
-require_once dirname(__DIR__, 3) . '/conn.php';
-
-try {
-    $conn = scaims_db_mysqli();
-} catch (RuntimeException $e) {
-    die($e->getMessage());
-}
-?>
+require_once dirname(__DIR__, 3) . '/shared/db_connection_compat.php';
