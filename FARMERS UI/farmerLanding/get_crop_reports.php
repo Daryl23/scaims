@@ -486,22 +486,20 @@ if (!empty($_GET['value_category'])) {
     }
 }
 
-$havingClauses = [];
 if (isset($_GET['damage_min']) && $_GET['damage_min'] !== '') {
-    $havingClauses[] = 'max_damage >= :damage_min';
+    $conditions[] = 'COALESCE(damage_summary.max_damage, 0) >= :damage_min';
     $params[':damage_min'] = (float) $_GET['damage_min'];
 }
 if (!empty($_GET['has_damage'])) {
     if ($_GET['has_damage'] === 'yes') {
-        $havingClauses[] = 'has_damage_report = 1';
+        $conditions[] = 'damage_summary.has_damage_report = 1';
     }
     if ($_GET['has_damage'] === 'no') {
-        $havingClauses[] = 'has_damage_report = 0';
+        $conditions[] = 'COALESCE(damage_summary.has_damage_report, 0) = 0';
     }
 }
 
 $where = implode(' AND ', $conditions);
-$having = $havingClauses ? 'HAVING ' . implode(' AND ', $havingClauses) : '';
 
 $sql = "
     SELECT
@@ -523,22 +521,24 @@ $sql = "
         cr.longitude,
         CONCAT(COALESCE(f.FirstName, ''), ' ', COALESCE(f.Surname, '')) AS farmer_name,
         f.Barangay AS farmer_barangay,
-        COALESCE(MAX(dr.percent_damage), 0) AS max_damage,
-        IF(MAX(dr.id) IS NOT NULL, 1, 0) AS has_damage_report,
-        COALESCE(SUM(dr.estimated_loss), 0) AS total_loss
+        COALESCE(damage_summary.max_damage, 0) AS max_damage,
+        COALESCE(damage_summary.has_damage_report, 0) AS has_damage_report,
+        COALESCE(damage_summary.total_loss, 0) AS total_loss
     FROM crop_reports cr
     LEFT JOIN farmer f
         ON f.FarmerID = cr.FarmerID
-    LEFT JOIN damage_reports dr
-        ON dr.FarmerID = cr.FarmerID
-        AND LOWER(dr.dmgCropType) = LOWER(cr.crop_type)
+    LEFT JOIN (
+        SELECT FarmerID,
+               dmgCropType,
+               MAX(percent_damage) AS max_damage,
+               1 AS has_damage_report,
+               SUM(estimated_loss) AS total_loss
+        FROM damage_reports
+        GROUP BY FarmerID, dmgCropType
+    ) damage_summary
+        ON damage_summary.FarmerID = cr.FarmerID
+        AND damage_summary.dmgCropType = cr.crop_type
     WHERE $where
-    GROUP BY
-        cr.id, cr.location, cr.crop_commodity, cr.crop_type, cr.crop_variety,
-        cr.date_planted, cr.harvest_date, cr.estimate_harvest, cr.FarmerID,
-        cr.reportDate, cr.created_by, cr.farm_gate_price, cr.crop_status,
-        cr.number_of_trees, cr.latitude, cr.longitude, farmer_name, farmer_barangay
-    $having
     ORDER BY cr.reportDate DESC, cr.id DESC
 ";
 

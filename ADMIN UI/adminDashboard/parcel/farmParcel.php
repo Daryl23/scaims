@@ -153,6 +153,7 @@ scaims_require_admin('../../adminLogin/adminLogin.html');
         </div>
     </div>
 
+    <script src="../../../shared/app-path.js"></script>
     <script src="../../../shared/crop-catalog.js"></script>
     <script src="scripts.js"></script>
 </body>

@@ -1,88 +1,10 @@
+@import url("shared/design-tokens.css");
+
 /* ============================================
    APGORRS DESIGN SYSTEM
    Agricultural Profile Gateway - Lipa City
    Aligned with Tailwind Config
    ============================================ */
-
-/* -------------------------------------------
-   1. CSS CUSTOM PROPERTIES (Design Tokens)
-   ------------------------------------------- */
-:root {
-  /* Primary Palette - Aligned with Tailwind */
-  --color-olive: #3b4918;
-  --color-olive-light: #576f1b;
-  --color-olive-dark: #2a3311;
-  --color-harvest: #f7931e;
-  --color-harvest-dark: #d97b0d;
-  --color-cream: #fffcef;
-  --color-cream-dark: #f5f5f0;
-  --color-gold: #c8bd44;
-  --color-gold-light: #ccc14f;
-  
-  /* Neutral Scale */
-  --color-white: #ffffff;
-  --color-gray-100: #f8f9fa;
-  --color-gray-200: #e9ecef;
-  --color-gray-300: #dee2e6;
-  --color-gray-600: #6c757d;
-  --color-gray-800: #343a40;
-  --color-black: #1a1a1a;
-  
-  /* Semantic Colors */
-  --color-text-primary: var(--color-olive);
-  --color-text-secondary: #5a6b3a;
-  --color-text-muted: #7a8a5a;
-  --color-bg-primary: var(--color-cream);
-  --color-bg-secondary: var(--color-white);
-  --color-accent: var(--color-harvest);
-  
-  /* Typography Scale */
-  --font-family-primary: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-family-accent: 'Playfair Display', Georgia, serif;
-  
-  /* Spacing Scale (8px base) */
-  --space-1: 0.25rem;   /* 4px */
-  --space-2: 0.5rem;    /* 8px */
-  --space-3: 0.75rem;   /* 12px */
-  --space-4: 1rem;      /* 16px */
-  --space-5: 1.5rem;    /* 24px */
-  --space-6: 2rem;      /* 32px */
-  --space-8: 3rem;      /* 48px */
-  --space-10: 4rem;     /* 64px */
-  --space-12: 6rem;     /* 96px */
-  --space-16: 8rem;     /* 128px */
-  
-  /* Layout */
-  --container-max: 1280px;
-  --container-padding: clamp(var(--space-4), 5vw, var(--space-8));
-  --header-height: 80px;
-  
-  /* Borders */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-full: 9999px;
-  
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-glow: 0 0 20px rgba(247, 147, 30, 0.3);
-  
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-base: 300ms ease;
-  --transition-slow: 500ms ease;
-  --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-  
-  /* Z-index Scale */
-  --z-dropdown: 100;
-  --z-sticky: 200;
-  --z-modal: 300;
-  --z-tooltip: 400;
-}
 
 /* -------------------------------------------
    2. RESET & BASE STYLES

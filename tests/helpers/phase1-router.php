@@ -65,10 +65,15 @@ if ($path === '/__phase1/create-expired-token') {
     $absolute = $directory . '/' . $filename;
     file_put_contents($absolute, base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j4ZkAAAAASUVORK5CYII='));
     $relative = 'uploads/reports/pending/' . $filename;
+    $unrelatedFilename = 'phase1-' . SCAIMS_DB_NAME . '-unrelated.png';
+    $unrelatedAbsolute = $directory . '/' . $unrelatedFilename;
+    file_put_contents($unrelatedAbsolute, base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+j4ZkAAAAASUVORK5CYII='));
+    $unrelatedRelative = 'uploads/reports/pending/' . $unrelatedFilename;
     $_SESSION['pending_report_images'][$token] = ['path' => $relative, 'created_at' => 0];
     $_SESSION['phase1_created_files'][] = $relative;
+    $_SESSION['phase1_created_files'][] = $unrelatedRelative;
     header('Content-Type: application/json');
-    echo json_encode(['token' => $token, 'path' => $relative]);
+    echo json_encode(['token' => $token, 'path' => $relative, 'unrelated_path' => $unrelatedRelative]);
     return;
 }
 

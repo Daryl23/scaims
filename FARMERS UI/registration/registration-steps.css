@@ -1,3 +1,5 @@
+@import url("../../shared/design-tokens.css");
+
 #registrationForm [hidden] { display: none !important; }
 #registrationForm { scroll-margin-top: calc(var(--public-nav-height, 80px) + 20px); }
 .registration-progress {
@@ -18,13 +20,13 @@
     font-size: 14px;
 }
 .registration-progress li[aria-current="step"] {
-    border-color: #576f1b;
+    border-color: var(--color-olive-light);
     background: #eaf0dc;
-    color: #3b4918;
+    color: var(--color-olive);
     font-weight: 600;
     border-radius: 8px 8px 0 0;
 }
-.registration-progress li.is-complete { border-color: #859e44; color: #576f1b; }
+.registration-progress li.is-complete { border-color: #859e44; color: var(--color-olive-light); }
 .step-number {
     display: inline-flex;
     align-items: center;
@@ -35,7 +37,7 @@
     background: #dfe4d3;
     font-weight: 600;
 }
-[aria-current="step"] .step-number { background: #576f1b; color: white; }
+[aria-current="step"] .step-number { background: var(--color-olive-light); color: var(--color-white); }
 .required-note, .step-help { font-size: 13px; margin: 0 0 18px; }
 #registrationForm .required { color: #b42318; font-weight: bold; }
 .registration-step { border: 0; padding: 0; margin: 0; min-width: 0; }
@@ -43,17 +45,17 @@
 .registration-step legend:focus { outline: none; }
 .registration-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 24px; }
 #registrationForm .registration-actions button { width: auto; margin: 0; padding: 12px 18px; border: 0; border-radius: 10px; font: 600 14px 'Poppins', sans-serif; cursor: pointer; }
-#registrationForm .registration-actions .submit-button { background: #f7931e; color: white; }
+#registrationForm .registration-actions .submit-button { background: var(--color-harvest); color: var(--color-white); }
 #registrationForm .registration-actions .submit-button:hover { background: #df7c0b; }
-#registrationForm #backButton { margin-right: auto; background: white; color: #576f1b; border: 1px solid #859e44; }
+#registrationForm #backButton { margin-right: auto; background: var(--color-white); color: var(--color-olive-light); border: 1px solid #859e44; }
 #registrationForm button:disabled { opacity: .6; cursor: wait; }
-#registrationForm button:focus-visible { outline: 3px solid #576f1b; outline-offset: 3px; }
+#registrationForm button:focus-visible { outline: 3px solid var(--color-olive-light); outline-offset: 3px; }
 .registration-password { position: relative; }
-#registrationForm .registration-password input { width: 100%; padding: 10px 80px 10px 10px; margin-bottom: 15px; border: 1px solid #674636; border-radius: 8px; font: inherit; }
-#registrationForm .password-toggle { position: absolute; top: 4px; right: 4px; width: auto; margin: 0; padding: 6px 10px; background: transparent; color: #576f1b; font-size: 13px; }
+#registrationForm .registration-password input { width: 100%; padding: 10px 80px 10px 10px; margin-bottom: 15px; border: 1px solid var(--color-brown); border-radius: 8px; font: inherit; }
+#registrationForm .password-toggle { position: absolute; top: 4px; right: 4px; width: auto; margin: 0; padding: 6px 10px; background: transparent; color: var(--color-olive-light); font-size: 13px; }
 .registration-error { padding: 12px; border: 1px solid #b42318; background: #fff1f0; color: #912018; border-radius: 8px; }
 /* Show validation feedback after interaction, rather than on an empty form. */
-#registrationForm input:invalid, #registrationForm select:invalid { border: 1px solid #674636; }
+#registrationForm input:invalid, #registrationForm select:invalid { border: 1px solid var(--color-brown); }
 #registrationForm .was-validated input:invalid, #registrationForm .was-validated select:invalid { border: 2px solid #b42318; }
 @media (max-width: 540px) {
     html, body { overflow-x: clip; }

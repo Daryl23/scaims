@@ -12,6 +12,9 @@ $cropJsVersion = @filemtime(__DIR__ . '/cropReports.js') ?: time();
 $leafletCropIconsVersion = @filemtime(__DIR__ . '/../../../../shared/leaflet-crop-icons.js') ?: time();
 $cropCatalogVersion = @filemtime(__DIR__ . '/../../../../shared/crop-catalog.js') ?: time();
 $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-capture.css') ?: time();
+$sharedReportViewCssVersion = @filemtime(__DIR__ . '/../../../../shared/admin-report-view/report-view.css') ?: time();
+$sharedReportViewCoreVersion = @filemtime(__DIR__ . '/../../../../shared/admin-report-view/report-view-core.js') ?: time();
+$sharedReportMapVersion = @filemtime(__DIR__ . '/../../../../shared/admin-report-view/report-map.js') ?: time();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +24,7 @@ $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-
     <title>Crop Harvest Reports</title>
     <link rel="stylesheet" href="crop.css?v=<?php echo $cropCssVersion; ?>">
     <link rel="stylesheet" href="<?php echo htmlspecialchars($rootSharedPath); ?>report-image-capture.css?v=<?php echo $sharedImageCssVersion; ?>">
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($rootSharedPath); ?>admin-report-view/report-view.css?v=<?php echo $sharedReportViewCssVersion; ?>">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -28,23 +32,12 @@ $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-
     <script src="<?php echo htmlspecialchars($rootSharedPath); ?>app-path.js"></script>
     <script src="<?php echo htmlspecialchars($rootSharedPath); ?>crop-catalog.js?v=<?php echo $cropCatalogVersion; ?>"></script>
     <script src="<?php echo htmlspecialchars($rootSharedPath); ?>leaflet-crop-icons.js?v=<?php echo $leafletCropIconsVersion; ?>"></script>
+    <script src="<?php echo htmlspecialchars($rootSharedPath); ?>admin-report-view/report-view-core.js?v=<?php echo $sharedReportViewCoreVersion; ?>"></script>
+    <script src="<?php echo htmlspecialchars($rootSharedPath); ?>admin-report-view/report-map.js?v=<?php echo $sharedReportMapVersion; ?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="cropReports.js?v=<?php echo $cropJsVersion; ?>" defer></script>
     
-    <style>
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        .content {
-            flex: 1;
-            padding: 20px;
-            min-height: 100vh;
-            overflow-y: auto;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -228,7 +221,7 @@ $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-
             </div>
 
             <!-- Previous Reports Section -->
-            <h3 class="section-title">PREVIOUS CROP HARVEST REPORTS</h3>
+            <h3 id="previous-reports-section" class="section-title">PREVIOUS CROP HARVEST REPORTS</h3>
             <div class="table-scroll">
             <table class="cropreport-table">
                 <thead>
@@ -338,7 +331,7 @@ $sharedImageCssVersion = @filemtime(__DIR__ . '/../../../../shared/report-image-
                         <div id="crop-report-map-message" class="report-map-message">
                             No latitude and longitude available for this crop report.
                         </div>
-                        <div id="crop-report-map"></div>
+                            <div id="crop-report-map" class="admin-report-map"></div>
                     </div>
                 </div>
             </div>

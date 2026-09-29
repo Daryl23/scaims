@@ -13,7 +13,7 @@ try {
     $barangay = $_POST['barangay'] ?? '';
     $search = $_POST['search'] ?? '';
     $reporterType = $_POST['reporterType'] ?? '';
-    $page = isset($_POST['page']) ? (int) $_POST['page'] : 1;
+    $page = max(1, isset($_POST['page']) ? (int) $_POST['page'] : 1);
     $limit = 10;
     $filterDate = $_POST['filterDate'] ?? '';
     $predefinedCrops = $_POST['predefinedCrops'] ?? scaims_get_active_crop_names($conn);
@@ -21,7 +21,7 @@ try {
         $predefinedCrops = scaims_get_active_crop_names($conn);
     }
 
-    $sql = "SELECT dr.id,
+    $select = "SELECT dr.id,
                    COALESCE(CONCAT(rf.FirstName, ' ', rf.Surname), CONCAT(cf.FirstName, ' ', cf.Surname), dr.created_by) AS Name,
                    dr.dmgLocation AS Barangay,
                    dr.dmgCropType AS CropType,
@@ -35,7 +35,8 @@ try {
                        WHEN dr.reportDate >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY) THEN 'new'
                        ELSE 'previous'
                    END AS report_age
-            FROM damage_reports dr
+            ";
+    $fromWhere = "FROM damage_reports dr
             LEFT JOIN farmer rf ON dr.FarmerID = rf.FarmerID
             LEFT JOIN user cu ON dr.created_by = cu.UName
             LEFT JOIN farmer cf ON cu.UserID = cf.UserID
@@ -47,33 +48,33 @@ try {
 
     if ($filter === 'Other' && is_array($predefinedCrops) && !empty($predefinedCrops)) {
         $placeholders = implode(',', array_fill(0, count($predefinedCrops), '?'));
-        $sql .= " AND LOWER(dr.dmgCropType) NOT IN ($placeholders)";
+        $fromWhere .= " AND LOWER(dr.dmgCropType) NOT IN ($placeholders)";
         foreach ($predefinedCrops as $cropName) {
             $params[] = strtolower($cropName);
             $types .= 's';
         }
     } elseif ($filter && $filter !== 'Other') {
-        $sql .= " AND " . scaims_crop_match_condition('dr.dmgCropType');
+        $fromWhere .= " AND " . scaims_crop_match_condition('dr.dmgCropType');
         $params[] = $filter;
         $params[] = scaims_crop_filter_slug($filter);
         $types .= 'ss';
     }
 
     if ($barangay) {
-        $sql .= " AND LOWER(dr.dmgLocation) = LOWER(?)";
+        $fromWhere .= " AND LOWER(dr.dmgLocation) = LOWER(?)";
         $params[] = $barangay;
         $types .= 's';
     }
 
     if ($reporterType === 'admin') {
-        $sql .= " AND ca.AdminName IS NOT NULL";
+        $fromWhere .= " AND ca.AdminName IS NOT NULL";
     } elseif ($reporterType === 'farmer') {
-        $sql .= " AND ca.AdminName IS NULL";
+        $fromWhere .= " AND ca.AdminName IS NULL";
     }
 
     if ($search) {
         $searchTerm = '%' . $search . '%';
-        $sql .= " AND (
+        $fromWhere .= " AND (
             LOWER(COALESCE(CONCAT(rf.FirstName, ' ', rf.Surname), CONCAT(cf.FirstName, ' ', cf.Surname), '')) LIKE LOWER(?)
             OR LOWER(COALESCE(ca.AdminName, CONCAT(cf.FirstName, ' ', cf.Surname), dr.created_by)) LIKE LOWER(?)
             OR LOWER(dr.dmgLocation) LIKE LOWER(?)
@@ -89,40 +90,60 @@ try {
     }
 
     if ($filterDate) {
-        $sql .= " AND DATE_FORMAT(dr.date_occurrence, '%Y-%m') = ?";
-        $params[] = $filterDate;
-        $types .= 's';
+        if (preg_match('/^\d{4}-(0[1-9]|1[0-2])$/', $filterDate)) {
+            $startDate = $filterDate . '-01';
+            $endDate = date('Y-m-d', strtotime($startDate . ' +1 month'));
+            $fromWhere .= " AND dr.date_occurrence >= ? AND dr.date_occurrence < ?";
+            $params[] = $startDate;
+            $params[] = $endDate;
+            $types .= 'ss';
+        } else {
+            $fromWhere .= " AND DATE_FORMAT(dr.date_occurrence, '%Y-%m') = ?";
+            $params[] = $filterDate;
+            $types .= 's';
+        }
     }
 
-    $sql .= " ORDER BY dr.reportDate DESC, dr.id DESC";
+    $runQuery = static function (string $sql, string $queryTypes, array $queryParams) use ($conn): mysqli_result {
+        $statement = $conn->prepare($sql);
+        if (!$statement) {
+            throw new Exception('Failed to prepare report query.');
+        }
+        if ($queryParams) {
+            $statement->bind_param($queryTypes, ...$queryParams);
+        }
+        $statement->execute();
+        $queryResult = $statement->get_result();
+        $statement->close();
+        return $queryResult;
+    };
 
-    $stmt = $conn->prepare($sql);
-    if (!$stmt) {
-        throw new Exception('Failed to prepare report query: ' . $conn->error);
-    }
-
-    if (!empty($params)) {
-        $stmt->bind_param($types, ...$params);
-    }
-
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    $groupedRows = [
-        'new' => [],
-        'previous' => []
-    ];
-
-    while ($row = $result->fetch_assoc()) {
-        $groupedRows[$row['report_age']][] = $row;
-    }
-
-    $newCount = count($groupedRows['new']);
-    $previousCount = count($groupedRows['previous']);
+    $ageNew = 'dr.reportDate >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)';
+    $agePrevious = '(dr.reportDate < DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY) OR dr.reportDate IS NULL)';
+    $countSql = "SELECT COUNT(*) AS total,
+                        COALESCE(SUM($ageNew), 0) AS new_count,
+                        COALESCE(SUM($agePrevious), 0) AS previous_count
+                 $fromWhere";
+    $countRow = $runQuery($countSql, $types, $params)->fetch_assoc();
+    $newCount = (int) ($countRow['new_count'] ?? 0);
+    $previousCount = (int) ($countRow['previous_count'] ?? 0);
     $totalReports = $newCount + $previousCount;
 
+    $newRows = $runQuery(
+        "$select $fromWhere AND $ageNew ORDER BY dr.reportDate DESC, dr.id DESC",
+        $types,
+        $params
+    )->fetch_all(MYSQLI_ASSOC);
+
+    $offset = ($page - 1) * $limit;
+    $previousRows = $runQuery(
+        "$select $fromWhere AND $agePrevious ORDER BY dr.reportDate DESC, dr.id DESC LIMIT ? OFFSET ?",
+        $types . 'ii',
+        array_merge($params, [$limit, $offset])
+    )->fetch_all(MYSQLI_ASSOC);
+
     $newOutput = '';
-    foreach ($groupedRows['new'] as $row) {
+    foreach ($newRows as $row) {
         $newOutput .= "<tr data-id='" . (int) $row['id'] . "'>
             <td>" . htmlspecialchars($row['Name'], ENT_QUOTES, 'UTF-8') . "</td>
             <td>" . htmlspecialchars(ucwords(strtolower($row['Barangay'])), ENT_QUOTES, 'UTF-8') . "</td>
@@ -132,17 +153,14 @@ try {
             <td>" . htmlspecialchars($row['ReportedBy'], ENT_QUOTES, 'UTF-8') . "</td>
             <td>" . htmlspecialchars($row['ReporterType'], ENT_QUOTES, 'UTF-8') . "</td>
             <td>" . htmlspecialchars($row['DateOccurrence'], ENT_QUOTES, 'UTF-8') . "</td>
-            <td>" . htmlspecialchars($row['DateReported'], ENT_QUOTES, 'UTF-8') . "</td>
+            <td>" . htmlspecialchars((string) $row['DateReported'], ENT_QUOTES, 'UTF-8') . "</td>
             <td><button class='action-button'>View</button></td>
         </tr>";
     }
 
     $previousOutput = '';
     if ($previousCount > 0) {
-        $start = ($page - 1) * $limit;
-        $paginatedPrevious = array_slice($groupedRows['previous'], $start, $limit);
-
-        foreach ($paginatedPrevious as $row) {
+        foreach ($previousRows as $row) {
             $previousOutput .= "<tr data-id='" . (int) $row['id'] . "'>
                 <td>" . htmlspecialchars($row['Name'], ENT_QUOTES, 'UTF-8') . "</td>
                 <td>" . htmlspecialchars(ucwords(strtolower($row['Barangay'])), ENT_QUOTES, 'UTF-8') . "</td>
@@ -152,7 +170,7 @@ try {
                 <td>" . htmlspecialchars($row['ReportedBy'], ENT_QUOTES, 'UTF-8') . "</td>
                 <td>" . htmlspecialchars($row['ReporterType'], ENT_QUOTES, 'UTF-8') . "</td>
                 <td>" . htmlspecialchars($row['DateOccurrence'], ENT_QUOTES, 'UTF-8') . "</td>
-                <td>" . htmlspecialchars($row['DateReported'], ENT_QUOTES, 'UTF-8') . "</td>
+                <td>" . htmlspecialchars((string) $row['DateReported'], ENT_QUOTES, 'UTF-8') . "</td>
                 <td><button class='action-button'>View</button></td>
             </tr>";
         }
@@ -175,8 +193,6 @@ try {
         'currentPage' => $page,
         'totalPages' => (int) ceil($previousCount / $limit)
     ]);
-
-    $stmt->close();
 } catch (Exception $e) {
     error_log('Error in fetchDamageReports.php: ' . $e->getMessage());
     echo json_encode([

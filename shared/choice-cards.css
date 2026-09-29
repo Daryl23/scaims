@@ -1,3 +1,5 @@
+@import url("./design-tokens.css");
+
 /* ============================================================
    APGORRS — Choice cards
    ------------------------------------------------------------
@@ -34,10 +36,10 @@
     -webkit-appearance: none;
     appearance: none;
     align-items: center;
-    background: #ffffff;
-    border: 1.5px solid #d9c7ad;
+    background: var(--color-white);
+    border: 1.5px solid var(--color-border-warm);
     border-radius: 12px;
-    color: #674636;
+    color: var(--color-brown);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -56,7 +58,7 @@
 }
 
 .cc-group .cc-card:hover {
-    background: #f7f2e8;
+    background: var(--color-cream-warm);
     border-color: #b8a58a;
 }
 
@@ -70,7 +72,7 @@
 
 /* Small tick in the corner, shown only on the chosen card. */
 .cc-group .cc-card .cc-mark {
-    color: #576f1b;
+    color: var(--color-olive-light);
     font-size: 0.95rem;
     line-height: 1;
     opacity: 0;
@@ -82,9 +84,9 @@
 
 .cc-group .cc-card[aria-checked="true"] {
     background: #f0f4e8;
-    border-color: #576f1b;
+    border-color: var(--color-olive-light);
     border-width: 2px;
-    color: #576f1b;
+    color: var(--color-olive-light);
     font-weight: 600;
     padding: 11px 9px; /* keep the box the same size as the thicker border */
 }
@@ -94,7 +96,7 @@
 }
 
 .cc-group .cc-card[aria-checked="true"] .cc-glyph {
-    color: #576f1b;
+    color: var(--color-olive-light);
 }
 
 .cc-group.cc-locked .cc-card .cc-glyph {
@@ -102,7 +104,7 @@
 }
 
 .cc-group .cc-card:focus-visible {
-    outline: 3px solid #576f1b;
+    outline: 3px solid var(--color-olive-light);
     outline-offset: 2px;
 }
 

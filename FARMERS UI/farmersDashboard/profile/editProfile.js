@@ -250,7 +250,6 @@ function checkRSBSAUniqueness(rsbsaNumber, callback) {
     
     xhr.onload = function() {
         if (xhr.status === 200) {
-            console.log('RSBSA check response:', xhr.responseText); // Debug log
             const response = xhr.responseText.trim();
             if (response === 'unique') {
                 callback(true);

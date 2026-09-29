@@ -1,7 +1,19 @@
-# Local-only reCAPTCHA bypass marker — never commit
+# Legacy local bypass marker — never commit
 .dev-bypass
 
 # Local environment configuration and secrets
 .env
 .env.local
 .env.*.local
+
+# Runtime logs and temporary debug output
+*.log
+**/export_log.txt
+test-temp.txt
+
+# Generated test and load-test output (fixtures and source tests remain tracked)
+stress-tests/results/*
+!stress-tests/results/.gitkeep
+tests/gps-photo-results/*
+!tests/gps-photo-results/.gitkeep
+tests/phase1-results/

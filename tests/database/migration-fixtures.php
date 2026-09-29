@@ -32,10 +32,22 @@ if ($action === 'setup') {
     foreach (['crop_reports', 'damage_reports'] as $table) {
         $conn->query("CREATE TABLE `$table` (
             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            FarmerID INT NULL,
+            reportDate DATE NULL,
+            date_occurrence DATE NULL,
+            dmgCropType VARCHAR(255) NULL,
             latitude DECIMAL(10,7) NULL,
             longitude DECIMAL(10,7) NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     }
+    $conn->query("CREATE TABLE `user` (
+        UserID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        UName VARCHAR(255) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    $conn->query("CREATE TABLE farm_parcels (
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        created_by VARCHAR(28) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     echo 'ready';
     exit;
 }
@@ -67,7 +79,15 @@ if ($action === 'state') {
     }
 
     $migrations = $conn->query('SELECT migration_id FROM schema_migrations ORDER BY migration_id')->fetch_all(MYSQLI_ASSOC);
-    echo json_encode(['tables' => $tables, 'columns' => $columns, 'migrations' => $migrations]);
+    $indexes = [];
+    foreach (['admin', 'user', 'farm_parcels', 'crop_reports', 'damage_reports'] as $table) {
+        $indexes[$table] = [];
+        $result = $conn->query("SHOW INDEX FROM `$table`");
+        while ($row = $result->fetch_assoc()) {
+            $indexes[$table][$row['Key_name']][] = $row['Column_name'];
+        }
+    }
+    echo json_encode(['tables' => $tables, 'columns' => $columns, 'migrations' => $migrations, 'indexes' => $indexes]);
     exit;
 }
 

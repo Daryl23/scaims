@@ -1,4 +1,4 @@
--- SCAIMS structure-only schema baseline, generated 2026-09-28.
+-- SCAIMS structure-only schema baseline, updated 2026-09-29.
 -- Contains no application records, credentials, password hashes, or uploads.
 -- Import into an empty database, then run: php database/migrate.php --apply
 
@@ -12,7 +12,8 @@ CREATE TABLE `admin` (
   `AdminPass` varchar(225) NOT NULL,
   `AdminRole` varchar(32) NOT NULL DEFAULT 'admin',
   `is_active` tinyint(1) DEFAULT 1,
-  PRIMARY KEY (`AdminID`)
+  PRIMARY KEY (`AdminID`),
+  KEY `idx_admin_name` (`AdminName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -74,7 +75,8 @@ CREATE TABLE `crop_reports` (
   `photo_timezone` varchar(16) DEFAULT NULL,
   `photo_ocr_version` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_farmer` (`FarmerID`)
+  KEY `fk_farmer` (`FarmerID`),
+  KEY `idx_crop_reports_report_date` (`reportDate`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -105,7 +107,10 @@ CREATE TABLE `damage_reports` (
   `photo_timezone` varchar(16) DEFAULT NULL,
   `photo_ocr_version` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_farmer` (`FarmerID`)
+  KEY `fk_farmer` (`FarmerID`),
+  KEY `idx_damage_reports_report_date` (`reportDate`,`id`),
+  KEY `idx_damage_reports_occurrence_date` (`date_occurrence`,`id`),
+  KEY `idx_damage_farmer_crop` (`FarmerID`,`dmgCropType`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -119,7 +124,8 @@ CREATE TABLE `farm_parcels` (
   `organic` varchar(15) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_by` varchar(28) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_farm_parcels_created_by` (`created_by`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -218,7 +224,8 @@ CREATE TABLE `user` (
   `creationDate` timestamp NOT NULL DEFAULT current_timestamp(),
   `ProfileImage` longblob DEFAULT NULL,
   `plain_password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`UserID`)
+  PRIMARY KEY (`UserID`),
+  KEY `idx_user_username` (`UName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 SET FOREIGN_KEY_CHECKS=1;

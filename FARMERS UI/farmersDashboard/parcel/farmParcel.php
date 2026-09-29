@@ -17,7 +17,7 @@ if (!isset($_SESSION['UName'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farm Parcel Information</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="farmStyles.css">
     <style>
         .button-container button,
@@ -266,6 +266,7 @@ if (!isset($_SESSION['UName'])) {
         </form>
     </div>
 
+    <script src="../../../shared/app-path.js"></script>
     <script src="../../../shared/crop-catalog.js"></script>
     <script src="farmForm.js"></script>
     
@@ -277,7 +278,7 @@ if (!isset($_SESSION['UName'])) {
         }
     </script>
     
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const menuToggle = document.querySelector('.menu-toggle');

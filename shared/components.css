@@ -1,0 +1,158 @@
+/* Shared, opt-in SCAIMS component foundations. Bootstrap remains untouched. */
+
+:where(.scaims-button, .report-image-button, .map-action-button) {
+    align-items: center;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--font-family-ui);
+    font-weight: 600;
+    justify-content: center;
+}
+
+:where(.scaims-button, .report-image-button, .map-action-button):focus-visible {
+    outline: 3px solid var(--color-olive-light);
+    outline-offset: 2px;
+}
+
+:where(.scaims-button, .report-image-button, .map-action-button):disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.scaims-button {
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-md);
+    color: var(--color-white);
+    padding: 10px 14px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.scaims-button:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}
+
+.scaims-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-border-warm);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--space-4);
+}
+
+.scaims-field {
+    background: var(--color-white);
+    border: 1px solid var(--color-border-warm);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font: inherit;
+    min-height: 44px;
+    padding: 10px 12px;
+}
+
+.scaims-field:focus-visible {
+    border-color: var(--color-olive-light);
+    outline: 3px solid rgb(87 111 27 / 0.2);
+    outline-offset: 1px;
+}
+
+:where(.scaims-table-wrap, .table-scroll) {
+    -webkit-overflow-scrolling: touch;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+:where(.scaims-table, .cropreport-table, .damagereport-table) {
+    border-collapse: collapse;
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    table-layout: fixed;
+    text-align: left;
+    width: 100%;
+}
+
+:where(.cropreport-table, .damagereport-table) th {
+    background-color: #2aaa532d;
+    color: var(--color-primary);
+    font-size: 14px;
+}
+
+:where(.cropreport-table, .damagereport-table) td {
+    font-size: 12px;
+}
+
+:where(.cropreport-table, .damagereport-table) th,
+:where(.cropreport-table, .damagereport-table) td {
+    padding: 12px 15px;
+}
+
+:where(.cropreport-table, .damagereport-table) tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+:where(.cropreport-table, .damagereport-table) tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+:where(.cropreport-table, .damagereport-table) tr:last-of-type {
+    border-bottom: 2px solid var(--color-primary);
+}
+
+.pagination {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+.pagination-container {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.pagination button {
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: 5px;
+    color: var(--color-white);
+    cursor: pointer;
+    font-family: var(--font-family-ui);
+    margin-left: 5px;
+    margin-right: 10px;
+    padding: 8px 12px;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: var(--color-primary-deep);
+}
+
+.action-button {
+    align-items: center;
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: var(--color-white);
+    cursor: pointer;
+    display: inline-flex;
+    font-family: var(--font-family-ui);
+    font-size: 14px;
+    justify-content: center;
+    padding: 6px 12px;
+    transition: all 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: var(--color-primary-deep);
+}
+
+@media screen and (max-width: 768px) {
+    :where(.cropreport-table, .damagereport-table) {
+        display: block;
+        overflow-x: auto;
+    }
+}

@@ -1,6 +1,9 @@
 <?php
 require_once __DIR__ . '/../../../shared/admin_auth.php';
-scaims_require_admin('../../adminLogin/adminLogin.html');
+$suggestionsLoginPath = defined('SCAIMS_SUGGESTIONS_LOGIN_PATH')
+    ? SCAIMS_SUGGESTIONS_LOGIN_PATH
+    : '../../adminLogin/adminLogin.html';
+scaims_require_admin($suggestionsLoginPath);
 require_once dirname(__DIR__, 3) . '/conn.php';
 
 try {

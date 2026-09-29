@@ -59,9 +59,19 @@ const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR
     assert.equal(state.suggestions[0].status, 'new');
     const suggestionId = state.suggestions[0].id;
 
+    const legacyPage = await admin.get('/suggestions/suggestions.php', { maxRedirects: 0 });
+    assert.equal(legacyPage.status(), 302);
+    assert.match(legacyPage.headers().location, /ADMIN%20UI\/adminDashboard\/suggestions\/suggestions\.php$/);
+
+    const unauthenticatedLegacyList = await publicContext.get('/suggestions/get_suggestions.php?type=new', { maxRedirects: 0 });
+    assert.equal(unauthenticatedLegacyList.status(), 302);
+    assert.match(unauthenticatedLegacyList.headers().location, /ADMIN%20UI\/adminLogin\/adminLogin\.html$/);
+
     const newList = await admin.get('/ADMIN%20UI/adminDashboard/suggestions/get_suggestions.php?type=new');
     const newRows = await newList.json();
     assert.equal(newRows.some(row => Number(row.id) === Number(suggestionId)), true);
+    const legacyRows = await (await admin.get('/suggestions/get_suggestions.php?type=new')).json();
+    assert.equal(legacyRows.some(row => Number(row.id) === Number(suggestionId)), true);
 
     const markRead = await admin.post('/ADMIN%20UI/adminDashboard/suggestions/update_suggestion.php', {
       headers: { 'Content-Type': 'application/json' },
@@ -79,7 +89,7 @@ const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR
     assert.equal((await deleteSuggestion.json()).success, true);
     assert.equal(harness.state().suggestions.length, 0);
 
-    console.log('PASS: Admin post create/list/edit/delete and canonical public/Admin suggestion lifecycle.');
+    console.log('PASS: Admin post create/list/edit/delete, canonical suggestion lifecycle, and legacy Suggestions routes.');
   } finally {
     const cleanup = await harness.stop();
     console.log(`CLEANUP: ${cleanup}`);

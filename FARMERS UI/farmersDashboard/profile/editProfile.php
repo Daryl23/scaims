@@ -169,6 +169,7 @@ $dashboardCurrentPage = 'profile';
             </div>
         </div>
     </div>
+    <script src="../../../shared/i18n.js"></script>
     <script src="../shared/dashboard-language.js"></script>
     <script src="../../../shared/dashboard-shell.js"></script>
     <script src="editProfile.js"></script>

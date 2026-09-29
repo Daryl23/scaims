@@ -322,6 +322,7 @@
     $cropCatalogScriptVersion = @filemtime(__DIR__ . '/../../../shared/crop-catalog.js') ?: time();
     $sharedImageScriptVersion = @filemtime(__DIR__ . '/../../../shared/report-image-capture.js') ?: time();
     ?>
+    <script src="../../../shared/app-path.js"></script>
     <script src="../../../shared/crop-catalog.js?v=<?php echo $cropCatalogScriptVersion; ?>"></script>
     <script src="../../../shared/report-image-capture.js?v=<?php echo $sharedImageScriptVersion; ?>"></script>
     <script src="admin-report-form.js?v=<?php echo $reportScriptVersion; ?>"></script>

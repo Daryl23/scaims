@@ -5,6 +5,7 @@ scaims_require_farmer_json('Please log in before saving report data.');
 
 require_once dirname(__DIR__, 3) . '/conn.php';
 require_once dirname(__DIR__, 3) . '/shared/farmer_report_defaults.php';
+require_once dirname(__DIR__, 3) . '/shared/reporting/report-repository.php';
 
 function respond_report_defaults(bool $success, string $message, array $extra = [], int $statusCode = 200): void
 {
@@ -80,25 +81,6 @@ function optional_coordinate(string $key, float $min, float $max)
     return number_format($number, 7, '.', '');
 }
 
-function get_farmer_id_for_defaults(mysqli $conn): int
-{
-    $stmt = $conn->prepare("SELECT f.FarmerID FROM farmer f JOIN user u ON f.UserID = u.UserID WHERE u.UName = ? LIMIT 1");
-    if (!$stmt) {
-        respond_report_defaults(false, 'Unable to verify your farmer profile.', [], 500);
-    }
-
-    $stmt->bind_param('s', $_SESSION['UName']);
-    $stmt->execute();
-    $row = $stmt->get_result()->fetch_assoc();
-    $stmt->close();
-
-    if (!$row) {
-        respond_report_defaults(false, 'Unable to find your farmer profile. Please sign in again.', [], 403);
-    }
-
-    return (int) $row['FarmerID'];
-}
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond_report_defaults(false, 'Invalid request method.', [], 405);
 }
@@ -115,7 +97,12 @@ try {
     respond_report_defaults(false, 'The report database is unavailable right now. Please try again later.', [], 500);
 }
 
-$farmerId = get_farmer_id_for_defaults($conn);
+$owner = scaims_reporting_find_farmer_by_username($conn, (string) ($_SESSION['UName'] ?? ''));
+if (!$owner) {
+    $conn->close();
+    respond_report_defaults(false, 'Unable to find your farmer profile. Please sign in again.', [], 403);
+}
+$farmerId = (int) $owner['FarmerID'];
 $latitude = optional_coordinate($reportType === 'crop' ? 'crop-latitude' : 'damage-latitude', -90, 90);
 $longitude = optional_coordinate($reportType === 'crop' ? 'crop-longitude' : 'damage-longitude', -180, 180);
 

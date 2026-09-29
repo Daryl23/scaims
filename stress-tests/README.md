@@ -13,13 +13,12 @@ Authentication notes:
 
 - Login uses PHP sessions and the `PHPSESSID` cookie.
 - No CSRF token was found in the inspected login/report AJAX callers.
-- Farmer/admin login POSTs verify Google reCAPTCHA unless local dev bypass is enabled. For XAMPP smoke/load testing, create a project-root `.dev-bypass` marker; it is already gitignored and only works from loopback.
+- The current Farmer/Admin login handlers accept the seeded fixture credentials directly; no application-side development bypass is required.
 
 Setup:
 
 ```powershell
 Set-Location C:\xampp\htdocs\scaims
-New-Item -ItemType File .dev-bypass -Force
 & "C:\xampp\php\php.exe" .\stress-tests\seed-test-accounts.php
 ```
 

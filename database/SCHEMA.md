@@ -1,6 +1,6 @@
 # SCAIMS Database Schema and Migration Ledger
 
-This is the schema ledger for the current PHP/MySQL application. [`schema.sql`](schema.sql) is a structure-only baseline generated from the development schema on 2026-09-28. It contains no rows, credentials, password hashes, Farmer records, posts, suggestions, or uploads.
+This is the schema ledger for the current PHP/MySQL application. [`schema.sql`](schema.sql) is a structure-only baseline updated on 2026-09-29. It contains no rows, credentials, password hashes, Farmer records, posts, suggestions, or uploads.
 
 ## Supported database
 
@@ -63,6 +63,23 @@ The runner records SHA-256 checksums. A changed already-applied file is reported
 | 4 | `2026_09_10_add_gps_photo_information.sql` | Seven GPS/OCR columns on both report tables | Yes | Yes | Report tables must exist |
 | 5 | `2026_09_11_add_admin_role.sql` | `admin.AdminRole` | Yes | Yes | Replaces login-time `ALTER TABLE` |
 | 6 | `2026_09_12_create_crop_catalog.sql` | Creates crop catalog/indexes | Yes | Yes | Existing helper still seeds defaults only when empty |
+| 7 | `2026_09_29_add_query_performance_indexes.sql` | Report dates, Damage owner/crop, parcel/user/Admin lookup indexes | Yes | Yes | Additive indexes supporting Phase 10 query paths |
+
+## Performance indexes
+
+Phase 10 adds only indexes supported by active query patterns:
+
+| Index | Query path |
+|---|---|
+| `crop_reports(reportDate, id)` | Admin Harvest age partition, ordering, and SQL pagination |
+| `damage_reports(reportDate, id)` | Admin Damage age partition, ordering, and SQL pagination |
+| `damage_reports(date_occurrence, id)` | Admin Damage month-range filter |
+| `damage_reports(FarmerID, dmgCropType)` | Public Crop Map damage summary by report owner and crop |
+| `farm_parcels(created_by)` | Farmer-to-parcel joins and parcel export aggregation |
+| `user(UName)` | Username ownership/creator joins |
+| `admin(AdminName)` | Admin creator classification joins |
+
+Low-cardinality standalone indexes were intentionally not added. Existing primary and relationship indexes remain unchanged.
 
 `database/migrate_gps_photo.php` remains as the older GPS-specific verifier. It snapshots report rows, invokes the retained GPS assurance helper, and checks that non-GPS report data did not change.
 

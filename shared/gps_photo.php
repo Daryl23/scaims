@@ -43,30 +43,105 @@ function scaims_valid_photo_data($photo): bool
     return strlen($photo['location']) >= 5 && strlen($photo['location']) <= 8000 && $photo['version'] === 'tesseract7-mdY-v1';
 }
 
+function scaims_log_gps_ocr_failure(string $category, float $startedAt, ?int $exitCode = null): void
+{
+    $elapsedMs = (int) round((microtime(true) - $startedAt) * 1000);
+    $exitLabel = $exitCode === null ? 'unknown' : (string) $exitCode;
+    error_log("SCAIMS GPS OCR failure category={$category} elapsed_ms={$elapsedMs} exit_code={$exitLabel}");
+}
+
 function scaims_extract_gps_photo(string $path): array
 {
+    $startedAt = microtime(true);
     $absolute = scaims_report_image_absolute_path($path);
-    if (!$absolute || !is_file($absolute) || !function_exists('proc_open')) return ['ok' => false, 'reason' => 'ocr_unavailable'];
+    if (!$absolute || !is_file($absolute) || !function_exists('proc_open')) {
+        scaims_log_gps_ocr_failure('unavailable', $startedAt);
+        return ['ok' => false, 'reason' => 'ocr_unavailable'];
+    }
+
     $node = getenv('SCAIMS_NODE_BINARY') ?: (PHP_OS_FAMILY === 'Windows' ? 'C:/Program Files/nodejs/node.exe' : '/usr/bin/node');
     $process = @proc_open([$node, __DIR__ . '/gps-ocr/extract.cjs', $absolute], [0 => ['pipe', 'r'], 1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes, __DIR__ . '/gps-ocr', null, ['bypass_shell' => true]);
-    if (!is_resource($process)) return ['ok' => false, 'reason' => 'ocr_unavailable'];
+    if (!is_resource($process)) {
+        scaims_log_gps_ocr_failure('process_start', $startedAt);
+        return ['ok' => false, 'reason' => 'ocr_unavailable'];
+    }
+
     fclose($pipes[0]);
     stream_set_blocking($pipes[1], false);
     stream_set_blocking($pipes[2], false);
-    $output = ''; $start = microtime(true);
+
+    $output = '';
+    $timedOut = false;
+    $outputLimitExceeded = false;
+    $exitCode = null;
     do {
         $output .= stream_get_contents($pipes[1]);
         stream_get_contents($pipes[2]); // Do not expose internal process paths/errors to the browser.
         $status = proc_get_status($process);
-        if (!$status['running']) break;
-        if (microtime(true) - $start > 58 || strlen($output) > 16000) { proc_terminate($process); break; }
+        if (!$status['running']) {
+            if ((int) ($status['exitcode'] ?? -1) >= 0) {
+                $exitCode = (int) $status['exitcode'];
+            }
+            break;
+        }
+        if (microtime(true) - $startedAt > 58) {
+            $timedOut = true;
+            proc_terminate($process);
+            break;
+        }
+        if (strlen($output) > 16000) {
+            $outputLimitExceeded = true;
+            proc_terminate($process);
+            break;
+        }
         usleep(50000);
     } while (true);
+
+    if ($timedOut || $outputLimitExceeded) {
+        $terminationDeadline = microtime(true) + 1.0;
+        do {
+            usleep(50000);
+            $status = proc_get_status($process);
+            if (!$status['running']) {
+                if ((int) ($status['exitcode'] ?? -1) >= 0) {
+                    $exitCode = (int) $status['exitcode'];
+                }
+                break;
+            }
+        } while (microtime(true) < $terminationDeadline);
+        if ($status['running'] ?? false) {
+            proc_terminate($process, 9);
+        }
+    }
+
     $output .= stream_get_contents($pipes[1]);
-    fclose($pipes[1]); fclose($pipes[2]); proc_close($process);
+    stream_get_contents($pipes[2]);
+    fclose($pipes[1]);
+    fclose($pipes[2]);
+    $closedExitCode = proc_close($process);
+    if ($exitCode === null && $closedExitCode >= 0) {
+        $exitCode = $closedExitCode;
+    }
+
+    if ($timedOut) {
+        scaims_log_gps_ocr_failure('timeout', $startedAt, $exitCode);
+        return ['ok' => false, 'reason' => 'timeout'];
+    }
+    if ($outputLimitExceeded) {
+        scaims_log_gps_ocr_failure('output_limit', $startedAt, $exitCode);
+        return ['ok' => false, 'reason' => 'unreadable'];
+    }
+
     $result = json_decode($output, true);
+    if ($exitCode !== null && $exitCode !== 0 && (!is_array($result) || !empty($result['ok']))) {
+        scaims_log_gps_ocr_failure('process_exit', $startedAt, $exitCode);
+        return ['ok' => false, 'reason' => 'unreadable'];
+    }
     if (!is_array($result) || empty($result['ok']) || !scaims_valid_photo_data($result['photo'] ?? null)) {
-        return ['ok' => false, 'reason' => in_array($result['reason'] ?? '', ['ocr_unavailable', 'timeout'], true) ? $result['reason'] : 'unreadable'];
+        $reason = in_array($result['reason'] ?? '', ['ocr_unavailable', 'timeout'], true) ? $result['reason'] : 'unreadable';
+        $category = !is_array($result) ? 'malformed_output' : ($result['reason'] ?? 'invalid_result');
+        scaims_log_gps_ocr_failure((string) $category, $startedAt, $exitCode);
+        return ['ok' => false, 'reason' => $reason];
     }
     return $result;
 }

@@ -77,20 +77,10 @@
       .replace(/^-+|-+$/g, "");
   }
 
-  function resolveAppPath(path) {
-    if (typeof window.resolveAppPath === "function") {
-      return window.resolveAppPath(path);
-    }
-
-    const pathname = window.location && window.location.pathname ? window.location.pathname : "";
-    const basePath = pathname === "/scaims" || pathname.indexOf("/scaims/") === 0 ? "/scaims" : "";
-    return path.charAt(0) === "/" ? basePath + path : path;
-  }
-
   function load() {
     if (loadingPromise) return loadingPromise;
 
-    loadingPromise = fetch(resolveAppPath("/shared/crop_catalog_api.php"), {
+    loadingPromise = fetch(window.SCAIMSAppPath.resolve("/shared/crop_catalog_api.php"), {
       headers: { Accept: "application/json" },
       credentials: "same-origin"
     })

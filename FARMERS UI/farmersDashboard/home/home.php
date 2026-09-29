@@ -85,6 +85,7 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../../../shared/i18n.js"></script>
     <script src="../shared/dashboard-language.js"></script>
     <script src="../../../shared/dashboard-shell.js"></script>
     <script src="../../../shared/report-image-capture.js?v=<?php echo $sharedImageJsVersion; ?>"></script>
@@ -130,7 +131,6 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
                 },
                 error: function(xhr, status, error) {
                     console.error("Error fetching posts:", error);
-                    console.log(xhr.responseText);
                 }
             });
         }

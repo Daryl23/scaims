@@ -41,3 +41,10 @@ $pdo = scaims_db_pdo();
 ```
 
 Legacy `db_connection.php`/`db_conn.php` include paths remain compatible. Phase 1 tests override the database with constants; Phase 2 tests use environment variables and disposable databases. See [`docs/PHASE_2_CONFIGURATION_DATABASE.md`](docs/PHASE_2_CONFIGURATION_DATABASE.md).
+
+## Canonical routes and generated output
+
+- Farmer registration uses `FARMERS UI/registration/rsbsa_check.html` and `registration_form.html`. The older `FARMERS UI/accountCreation/` URLs are compatibility redirects only.
+- Admin Suggestions is implemented under `ADMIN UI/adminDashboard/suggestions/`. Root `suggestions/` PHP URLs are compatibility adapters.
+- First-party pages load the canonical bundled third-party assets from `assets/vendor/`; feature-local vendor copies are not required.
+- Browser/OCR results under `tests/gps-photo-results/` and k6 output under `stress-tests/results/` are generated locally and ignored except for their `.gitkeep` markers.

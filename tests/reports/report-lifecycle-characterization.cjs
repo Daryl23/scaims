@@ -108,14 +108,15 @@ function damageFields(token) {
 
     const expired = await harness.createExpiredToken(farmer);
     assert.equal(fs.existsSync(absoluteUpload(expired.path)), true);
+    assert.equal(fs.existsSync(absoluteUpload(expired.unrelated_path)), true);
     await farmer.post('/FARMERS%20UI/farmersDashboard/report/report_submit.php', {
       multipart: harvestFields(expired.token),
       maxRedirects: 0,
     });
     assert.equal(harness.state().crop_reports.length, initial.crop_reports.length + 1);
     assert.equal(Object.hasOwn((await harness.session(farmer)).pending, expired.token), false);
-    assert.equal(fs.existsSync(absoluteUpload(expired.path)), true);
-    console.log('KNOWN ISSUE (confirmed): expiry invalidates a pending image token but does not delete its pending file.');
+    assert.equal(fs.existsSync(absoluteUpload(expired.path)), false);
+    assert.equal(fs.existsSync(absoluteUpload(expired.unrelated_path)), true);
 
     const legacyRelative = harness.fixture('legacy-image', 'damage', '7001', ocrFixture);
     const legacyAbsolute = absoluteUpload(legacyRelative);

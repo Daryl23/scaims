@@ -16,9 +16,6 @@ try {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Log the incoming POST data
-    error_log(print_r($_POST, true));
-
     // Validate required fields
     if (empty($_POST['farmType'])) {
         echo json_encode(['success' => false, 'message' => "Farm Type is required."]);

@@ -1,6 +1,6 @@
 'use strict';
 
-// Approved templates use MONTH/DAY/YEAR. Never infer date order from farm/profile data.
+// Date order is resolved only from the stamp itself; never infer it from farm/profile data.
 const pad = n => String(n).padStart(2, '0');
 function time12(value) {
     const match = /^(\d{2}):(\d{2})(?::(\d{2}))?$/.exec(value || '');
@@ -12,11 +12,29 @@ function time12(value) {
 function parseStamp(text, confidenceLines = []) {
     const lines = String(text || '').replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean);
     const fail = reason => ({ ok: false, reason });
+    // The client's GPS Camera layout is identifiable by all three markers. For
+    // ambiguous dates (both values <= 12), that layout is DD/MM; all other
+    // ambiguous layouts retain the historical MM/DD behavior.
+    const gpsCameraDmyLayout = lines.some(line => /\b(?:GMT|UTC)\s*[+-]\s*\d{1,2}(?::\d{2})?\b/i.test(line))
+        && lines.some(line => /\bLat(?:itude)?\s*[:=]/i.test(line))
+        && lines.some(line => /\b(?:Long(?:itude)?|Lon)\s*[:=]/i.test(line));
     const datePattern = /\b(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?(?:\s*((?:GMT|UTC)\s*[+-]\s*\d{1,2}(?::\d{2})?))?\b/ig;
     const dates = [];
     lines.forEach((line, index) => {
         for (const m of line.matchAll(datePattern)) {
-            let [month, day, year, hour, minute] = m.slice(1, 6).map(Number);
+            let [first, dateSecond, year, hour, minute] = m.slice(1, 6).map(Number);
+            let month;
+            let day;
+            if (first > 12 && dateSecond <= 12) {
+                day = first; month = dateSecond;
+            } else if (dateSecond > 12 && first <= 12) {
+                month = first; day = dateSecond;
+            } else if (first <= 12 && dateSecond <= 12) {
+                if (gpsCameraDmyLayout) { day = first; month = dateSecond; }
+                else { month = first; day = dateSecond; }
+            } else {
+                dates.push({ invalid: true }); continue;
+            }
             const second = m[6] === undefined ? null : Number(m[6]);
             const ampm = m[7] && m[7].toUpperCase();
             const date = new Date(Date.UTC(year, month - 1, day));

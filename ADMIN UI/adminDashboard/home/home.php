@@ -17,32 +17,17 @@ $totalParcels = 0;
 $totalDamageReports = 0;
 $totalCropReports = 0;
 
-$queryFarmers = "SELECT COUNT(*) AS total FROM farmer";
-$resultFarmers = $conn->query($queryFarmers);
-if ($resultFarmers) {
-    $row = $resultFarmers->fetch_assoc();
-    $totalRegistrations = (int) $row['total'];
-}
-
-$queryParcels = "SELECT COUNT(DISTINCT parcel_detail_id) AS total FROM crop_details";
-$resultParcels = $conn->query($queryParcels);
-if ($resultParcels) {
-    $row = $resultParcels->fetch_assoc();
-    $totalParcels = (int) $row['total'];
-}
-
-$queryDamageReports = "SELECT COUNT(*) AS total FROM damage_reports";
-$resultDamageReports = $conn->query($queryDamageReports);
-if ($resultDamageReports) {
-    $row = $resultDamageReports->fetch_assoc();
-    $totalDamageReports = (int) $row['total'];
-}
-
-$queryCropReports = "SELECT COUNT(*) AS total FROM crop_reports";
-$resultCropReports = $conn->query($queryCropReports);
-if ($resultCropReports) {
-    $row = $resultCropReports->fetch_assoc();
-    $totalCropReports = (int) $row['total'];
+$summaryResult = $conn->query("SELECT
+    (SELECT COUNT(*) FROM farmer) AS total_registrations,
+    (SELECT COUNT(DISTINCT parcel_detail_id) FROM crop_details) AS total_parcels,
+    (SELECT COUNT(*) FROM damage_reports) AS total_damage_reports,
+    (SELECT COUNT(*) FROM crop_reports) AS total_crop_reports");
+if ($summaryResult) {
+    $row = $summaryResult->fetch_assoc();
+    $totalRegistrations = (int) $row['total_registrations'];
+    $totalParcels = (int) $row['total_parcels'];
+    $totalDamageReports = (int) $row['total_damage_reports'];
+    $totalCropReports = (int) $row['total_crop_reports'];
 }
 
 $totalReports = $totalDamageReports + $totalCropReports;

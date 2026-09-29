@@ -10,6 +10,7 @@ require_once dirname(__DIR__, 3) . '/shared/report_image_storage.php';
 require_once dirname(__DIR__, 3) . '/shared/gps_photo.php';
 require_once dirname(__DIR__, 3) . '/shared/crop_catalog.php';
 require_once dirname(__DIR__, 3) . '/shared/farmer_report_defaults.php';
+require_once dirname(__DIR__, 3) . '/shared/reporting/report-repository.php';
 
 $dashboardCurrentPage = 'report';
 $reportCssVersion = @filemtime(__DIR__ . '/reps.css') ?: time();
@@ -42,18 +43,11 @@ try {
     scaims_ensure_gps_photo_columns($conn);
     scaims_ensure_farmer_report_defaults_table($conn);
 
-    $farmerLookup = $conn->prepare("SELECT f.FarmerID, f.Barangay FROM farmer f JOIN user u ON f.UserID = u.UserID WHERE u.UName = ? LIMIT 1");
     $farmerId = null;
-    if ($farmerLookup) {
-        $farmerLookup->bind_param("s", $_SESSION['UName']);
-        $farmerLookup->execute();
-        $farmerLookupResult = $farmerLookup->get_result();
-        if ($farmerLookupResult && $farmerLookupResult->num_rows > 0) {
-            $farmerRow = $farmerLookupResult->fetch_assoc();
-            $farmerId = (int) $farmerRow['FarmerID'];
-            $newReportPrefill['location'] = trim((string) ($farmerRow['Barangay'] ?? ''));
-        }
-        $farmerLookup->close();
+    $farmerRow = scaims_reporting_find_farmer_by_username($conn, (string) $_SESSION['UName']);
+    if ($farmerRow) {
+        $farmerId = (int) $farmerRow['FarmerID'];
+        $newReportPrefill['location'] = trim((string) ($farmerRow['Barangay'] ?? ''));
     }
 
     if ($farmerId !== null) {
@@ -498,8 +492,10 @@ try {
         </div>
     </div>
 
+    <script src="../../../shared/i18n.js"></script>
     <script src="../shared/dashboard-language.js"></script>
     <script src="../../../shared/dashboard-shell.js"></script>
+    <script src="../../../shared/app-path.js"></script>
     <script src="../../../shared/crop-catalog.js"></script>
     <script>
         window.farmerReportPrefillByType = <?php echo json_encode($newReportPrefillByType, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;

@@ -155,9 +155,6 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
     $current_parcel = null;
 
     while ($row = $result->fetch_assoc()) {
-        // Debug: print out raw row data
-        error_log('Raw Row Data: ' . print_r($row, true));
-        
         // Check if Barangay is set
         if (!isset($row['Barangay'])) {
             error_log('Barangay is not set for UserID: ' . $row['UserID']);
@@ -196,7 +193,6 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
         // Add crops if they exist
         if ($row['crops'] !== null) {
             $crops = json_decode('[' . $row['crops'] . ']', true);
-            error_log('Decoded Crops: ' . print_r($crops, true));
             if (is_array($crops)) {
                 $current_parcel['crops'] = array_merge($current_parcel['crops'], $crops);
             }
@@ -207,9 +203,6 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
     if ($current_parcel !== null) {
         $parcels[] = $current_parcel;
     }
-
-    // Debug: print out final parcels array
-    error_log('Final Parcels: ' . print_r($parcels, true));
 
     // Get selected parcel if any
     $selected_parcel = isset($_POST['parcel_id']) ? $_POST['parcel_id'] : (isset($_GET['parcel']) ? $_GET['parcel'] : (isset($parcels[0]) ? $parcels[0]['parcel_detail_id'] : null));
@@ -688,6 +681,7 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
         window.location.href = `editParcel.php?parcel_id=${selectedParcelId}`;
     }
     </script>
+    <script src="../../../shared/i18n.js"></script>
     <script src="../shared/dashboard-language.js"></script>
     <script src="../../../shared/dashboard-shell.js"></script>
 </body>

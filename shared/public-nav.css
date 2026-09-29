@@ -1,11 +1,13 @@
+@import url("./design-tokens.css");
+
 :root {
   --public-nav-height: 80px;
-  --public-nav-olive: #3b4918;
-  --public-nav-olive-light: #576f1b;
-  --public-nav-harvest: #f7931e;
-  --public-nav-harvest-dark: #d97b0d;
-  --public-nav-cream: #fffcef;
-  --public-nav-gold: #c8bd44;
+  --public-nav-olive: var(--color-olive);
+  --public-nav-olive-light: var(--color-olive-light);
+  --public-nav-harvest: var(--color-harvest);
+  --public-nav-harvest-dark: var(--color-harvest-dark);
+  --public-nav-cream: var(--color-cream);
+  --public-nav-gold: var(--color-gold);
 }
 
 .public-nav {

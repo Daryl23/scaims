@@ -29,10 +29,10 @@ function capitalizeFirstLetter($string) {
 }
 
 // Get filter parameters
-$barangay = isset($_POST['barangay']) ? $conn->real_escape_string($_POST['barangay']) : '';
-$search = isset($_POST['search']) ? $conn->real_escape_string($_POST['search']) : '';
-$commodity = isset($_POST['commodity']) ? $conn->real_escape_string($_POST['commodity']) : '';
-$cropType = isset($_POST['cropType']) ? $conn->real_escape_string($_POST['cropType']) : '';
+$barangay = trim((string) ($_POST['barangay'] ?? ''));
+$search = trim((string) ($_POST['search'] ?? ''));
+$commodity = trim((string) ($_POST['commodity'] ?? ''));
+$cropType = trim((string) ($_POST['cropType'] ?? ''));
 
 // Updated query to include all necessary fields and proper summations
 $query = "SELECT DISTINCT
@@ -50,11 +50,21 @@ $query = "SELECT DISTINCT
     cd.crop_type AS CropType,
     cd.crop_variety AS CropVariety,
     cd.num_trees AS NumberOfTrees,
-    cd.tree_status AS TreeStatus
+    cd.tree_status AS TreeStatus,
+    COALESCE(ft.total_area, 0) AS TotalFarmArea,
+    COALESCE(ft.total_parcels, 0) AS TotalParcels
 FROM 
     farmer f
 LEFT JOIN 
     user u ON f.UserID = u.UserID
+LEFT JOIN (
+    SELECT fp_totals.created_by,
+           SUM(CAST(pd_totals.total_area AS DECIMAL(12,4))) AS total_area,
+           COUNT(DISTINCT pd_totals.id) AS total_parcels
+    FROM farm_parcels fp_totals
+    JOIN parcel_details pd_totals ON pd_totals.farm_parcel_id = fp_totals.id
+    GROUP BY fp_totals.created_by
+) ft ON ft.created_by = u.UName
 LEFT JOIN 
     farm_parcels fp ON fp.created_by = u.UName
 LEFT JOIN 
@@ -63,22 +73,42 @@ LEFT JOIN
     crop_details cd ON cd.parcel_detail_id = pd.id
 WHERE 1=1";
 
+$params = [];
+$types = '';
+
 if (!empty($search)) {
-    $query .= " AND CONCAT(f.FirstName, ' ', f.Surname) LIKE '%$search%'";
+    $query .= " AND CONCAT(f.FirstName, ' ', f.Surname) LIKE ?";
+    $params[] = '%' . $search . '%';
+    $types .= 's';
 }
 if (!empty($barangay)) {
-    $query .= " AND f.Barangay LIKE '%$barangay%'";
+    $query .= " AND f.Barangay LIKE ?";
+    $params[] = '%' . $barangay . '%';
+    $types .= 's';
 }
 if (!empty($commodity)) {
-    $query .= " AND cd.crop_commodity LIKE '%$commodity%'";
+    $query .= " AND cd.crop_commodity LIKE ?";
+    $params[] = '%' . $commodity . '%';
+    $types .= 's';
 }
 if (!empty($cropType)) {
-    $query .= " AND cd.crop_type LIKE '%$cropType%'";
+    $query .= " AND cd.crop_type LIKE ?";
+    $params[] = '%' . $cropType . '%';
+    $types .= 's';
 }
 
 $query .= " ORDER BY f.FarmerID";
 
-$result = $conn->query($query);
+$stmt = $conn->prepare($query);
+if (!$stmt) {
+    http_response_code(500);
+    exit('Unable to prepare the parcel export.');
+}
+if ($params) {
+    $stmt->bind_param($types, ...$params);
+}
+$stmt->execute();
+$result = $stmt->get_result();
 
 // Start HTML output
 echo '
@@ -107,25 +137,12 @@ $farmData = [];
 while ($row = $result->fetch_assoc()) {
     $farmerId = $row['FarmerID'];
     if (!isset($farmData[$farmerId])) {
-        // Get total farm area and number of parcels for this farmer
-        $totalAreaQuery = "SELECT 
-            SUM(pd.total_area) as total_area,
-            COUNT(DISTINCT pd.id) as total_parcels
-        FROM farmer f
-        JOIN user u ON f.UserID = u.UserID
-        JOIN farm_parcels fp ON fp.created_by = u.UName
-        JOIN parcel_details pd ON pd.farm_parcel_id = fp.id
-        WHERE f.FarmerID = '$farmerId'";
-        
-        $totalsResult = $conn->query($totalAreaQuery);
-        $totals = $totalsResult->fetch_assoc();
-        
         $farmData[$farmerId] = [
             'farmerInfo' => [
                 'name' => $row['FarmerName'],
                 'farmLocation' => $row['FarmLocation'],
-                'farmArea' => $totals['total_area'],
-                'numberOfParcels' => $totals['total_parcels'],
+                'farmArea' => $row['TotalFarmArea'],
+                'numberOfParcels' => $row['TotalParcels'],
                 'farmType' => $row['FarmType'],
                 'organic' => $row['OrganicPractitioner']
             ],
@@ -215,6 +232,7 @@ foreach ($farmData as $farmerData) {
 
 echo '</body></html>';
 
+$stmt->close();
 $conn->close();
 
 exit;

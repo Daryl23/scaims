@@ -40,4 +40,10 @@ return [
         'automatic' => true,
         'idempotent' => true,
     ],
+    [
+        'id' => '2026_09_29_add_query_performance_indexes',
+        'file' => '2026_09_29_add_query_performance_indexes.sql',
+        'automatic' => true,
+        'idempotent' => true,
+    ],
 ];

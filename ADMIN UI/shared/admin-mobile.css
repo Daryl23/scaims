@@ -3,8 +3,8 @@
    ------------------------------------------------------------
    Linked from admin-sidebar.php, so every admin page picks it up
    without editing each page's <head>. It loads after the page's
-   own stylesheet and before the shell's inline <style>, which
-   keeps the sidebar rules authoritative.
+   own stylesheet and before admin-sidebar.css, which keeps the
+   sidebar rules authoritative.
 
    The admin shell already handles the drawer and the sidebar.
    What was missing was inside the pages: wide tables that could

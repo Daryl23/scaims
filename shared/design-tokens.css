@@ -1,0 +1,94 @@
+/*
+ * SCAIMS shared design tokens.
+ *
+ * Values in this file are lifted from the existing first-party stylesheets.
+ * They intentionally preserve the current palette, spacing and motion rather
+ * than introducing a new visual theme.
+ */
+:root {
+    /* Brand palette */
+    --color-olive: #3b4918;
+    --color-olive-light: #576f1b;
+    --color-olive-dark: #2a3311;
+    --color-brown: #674636;
+    --color-harvest: #f7931e;
+    --color-harvest-dark: #d97b0d;
+    --color-gold: #c8bd44;
+    --color-gold-light: #ccc14f;
+    --color-accent-gold: #f6b73c;
+
+    /* Surfaces and neutrals */
+    --color-white: #ffffff;
+    --color-cream: #fffcef;
+    --color-cream-warm: #f7f2e8;
+    --color-cream-dark: #f5f5f0;
+    --color-gray-100: #f8f9fa;
+    --color-gray-200: #e9ecef;
+    --color-gray-300: #dee2e6;
+    --color-gray-600: #6c757d;
+    --color-gray-800: #343a40;
+    --color-black: #1a1a1a;
+
+    /* Semantic colors */
+    --color-primary: #198754;
+    --color-primary-hover: #146c43;
+    --color-primary-deep: #066338;
+    --color-danger: #b42318;
+    --color-text-primary: var(--color-olive);
+    --color-text-secondary: #5a6b3a;
+    --color-text-muted: #7a8a5a;
+    --color-bg-primary: var(--color-cream);
+    --color-bg-secondary: var(--color-white);
+    --color-accent: var(--color-harvest);
+    --color-border-warm: #d9c7ad;
+    --color-border-green: #dde8df;
+
+    /* Typography */
+    --font-family-primary: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-family-ui: 'Poppins', sans-serif;
+    --font-family-accent: 'Playfair Display', Georgia, serif;
+    --text-base: 1rem;
+
+    /* Spacing (existing 4/8px scale) */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-8: 3rem;
+    --space-10: 4rem;
+    --space-12: 6rem;
+    --space-16: 8rem;
+
+    /* Layout */
+    --container-max: 1280px;
+    --container-padding: clamp(var(--space-4), 5vw, var(--space-8));
+    --header-height: 80px;
+
+    /* Shape */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+
+    /* Elevation */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-glow: 0 0 20px rgba(247, 147, 30, 0.3);
+
+    /* Motion */
+    --transition-fast: 150ms ease;
+    --transition-base: 300ms ease;
+    --transition-slow: 500ms ease;
+    --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Layering */
+    --z-dropdown: 100;
+    --z-sticky: 200;
+    --z-modal: 300;
+    --z-tooltip: 400;
+}

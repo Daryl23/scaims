@@ -1,3 +1,5 @@
+@import url("../../../shared/design-tokens.css");
+
 /* ============================================================
    APGORRS — Farmer mobile layer
    ------------------------------------------------------------
@@ -15,12 +17,12 @@
    ============================================================ */
 
 :root {
-    --fm-olive:       #576f1b;
+    --fm-olive:       var(--color-olive-light);
     --fm-olive-dark:  #465a15;
     --fm-olive-tint:  #f0f4e8;
-    --fm-brown:       #674636;
-    --fm-cream:       #f7f2e8;
-    --fm-border:      #d9c7ad;
+    --fm-brown:       var(--color-brown);
+    --fm-cream:       var(--color-cream-warm);
+    --fm-border:      var(--color-border-warm);
     --fm-border-soft: #e6dcc9;
 
     /* A comfortable thumb target. */

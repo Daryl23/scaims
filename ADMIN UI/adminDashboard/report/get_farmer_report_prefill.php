@@ -6,6 +6,7 @@ header('Content-Type: application/json');
 
 require_once dirname(__DIR__, 3) . '/shared/crop_catalog.php';
 require_once dirname(__DIR__, 3) . '/shared/farmer_report_defaults.php';
+require_once dirname(__DIR__, 3) . '/shared/reporting/report-repository.php';
 
 function respond_admin_farmer_prefill(bool $success, string $message, array $extra = [], int $statusCode = 200): void
 {
@@ -26,23 +27,7 @@ try {
     respond_admin_farmer_prefill(false, 'The report database is unavailable right now. Please try again later.', [], 500);
 }
 
-$stmt = $conn->prepare(
-    "SELECT f.FarmerID, CONCAT_WS(' ', f.FirstName, f.MiddleName, f.Surname, f.Suffix) AS FarmerName, f.Barangay, u.UName
-     FROM farmer f
-     LEFT JOIN user u ON f.UserID = u.UserID
-     WHERE f.FarmerID = ? AND (f.is_active = 1 OR f.is_active IS NULL)
-     LIMIT 1"
-);
-
-if (!$stmt) {
-    $conn->close();
-    respond_admin_farmer_prefill(false, 'Unable to load farmer information.', [], 500);
-}
-
-$stmt->bind_param('i', $farmerId);
-$stmt->execute();
-$farmer = $stmt->get_result()->fetch_assoc();
-$stmt->close();
+$farmer = scaims_reporting_find_active_farmer($conn, $farmerId);
 
 if (!$farmer) {
     $conn->close();

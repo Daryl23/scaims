@@ -66,10 +66,16 @@ if (!function_exists('scaims_normalize_report_image_path')) {
             return null;
         }
 
+        if (strpos($path, "\0") !== false) {
+            return null;
+        }
+
         $path = str_replace('\\', '/', $path);
         $path = ltrim($path, '/');
 
-        if (strpos($path, '..') !== false || strpos($path, 'uploads/reports/') !== 0) {
+        // Report images are flat files in one of the three managed lifecycle folders.
+        if (strpos($path, '..') !== false
+            || !preg_match('#^uploads/reports/(?:pending|harvest|damage)/[^/]+$#D', $path)) {
             return null;
         }
 
@@ -87,6 +93,21 @@ if (!function_exists('scaims_report_image_absolute_path')) {
 
         $relative = substr($normalizedPath, strlen('uploads/reports/'));
         $absolute = scaims_report_image_base_dir() . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $relative);
+
+        $base = realpath(scaims_report_image_base_dir());
+        $resolved = realpath($absolute);
+        $pathToCheck = $resolved !== false ? $resolved : $absolute;
+        if ($base === false) {
+            return null;
+        }
+
+        $prefix = rtrim($base, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        $inside = PHP_OS_FAMILY === 'Windows'
+            ? strncasecmp($pathToCheck, $prefix, strlen($prefix)) === 0
+            : strncmp($pathToCheck, $prefix, strlen($prefix)) === 0;
+        if (!$inside) {
+            return null;
+        }
 
         return $absolute;
     }
@@ -256,12 +277,15 @@ if (!function_exists('scaims_get_pending_report_image')) {
         }
 
         $pending = $_SESSION['pending_report_images'][$token];
+        $path = scaims_normalize_report_image_path($pending['path'] ?? null);
         if ((time() - (int) ($pending['created_at'] ?? 0)) > 3600) {
+            if ($path !== null && strpos($path, 'uploads/reports/pending/') === 0) {
+                scaims_delete_pending_report_image($path);
+            }
             unset($_SESSION['pending_report_images'][$token]);
             return null;
         }
 
-        $path = scaims_normalize_report_image_path($pending['path'] ?? null);
         if ($path === null || strpos($path, 'uploads/reports/pending/') !== 0 || !scaims_report_image_exists($path)) {
             unset($_SESSION['pending_report_images'][$token]);
             return null;
@@ -278,6 +302,18 @@ if (!function_exists('scaims_delete_report_image')) {
         if ($absolute !== null && is_file($absolute)) {
             @unlink($absolute);
         }
+    }
+}
+
+if (!function_exists('scaims_delete_pending_report_image')) {
+    function scaims_delete_pending_report_image(?string $path): void
+    {
+        $normalizedPath = scaims_normalize_report_image_path($path);
+        if ($normalizedPath === null || strpos($normalizedPath, 'uploads/reports/pending/') !== 0) {
+            return;
+        }
+
+        scaims_delete_report_image($normalizedPath);
     }
 }
 

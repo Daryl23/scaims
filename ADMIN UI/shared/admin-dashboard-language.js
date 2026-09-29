@@ -130,66 +130,11 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     };
 
-    function getLanguage() {
-        return localStorage.getItem(storageKey) || fallbackLanguage;
-    }
-
-    function setActiveButton(language) {
-        document.querySelectorAll('.language-toggle-button').forEach(function (button) {
-            button.classList.toggle('active', button.dataset.language === language);
-        });
-    }
-
-    function applyTranslations(language) {
-        document.querySelectorAll('[data-i18n]').forEach(function (element) {
-            const key = element.dataset.i18n;
-            if (translations[language] && translations[language][key]) {
-                element.textContent = translations[language][key];
-            }
-        });
-
-        document.querySelectorAll('[data-i18n-html]').forEach(function (element) {
-            const key = element.dataset.i18nHtml;
-            if (translations[language] && translations[language][key]) {
-                element.innerHTML = translations[language][key];
-            }
-        });
-
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(function (element) {
-            const key = element.dataset.i18nPlaceholder;
-            if (translations[language] && translations[language][key]) {
-                element.placeholder = translations[language][key];
-            }
-        });
-
-        document.querySelectorAll('[data-i18n-aria-label]').forEach(function (element) {
-            const key = element.dataset.i18nAriaLabel;
-            if (translations[language] && translations[language][key]) {
-                element.setAttribute('aria-label', translations[language][key]);
-            }
-        });
-
-        document.documentElement.lang = language === 'tl' ? 'tl' : 'en';
-        setActiveButton(language);
-        document.dispatchEvent(new CustomEvent('dashboard:language-changed', { detail: { language: language } }));
-    }
-
-    document.querySelectorAll('.language-toggle-button').forEach(function (button) {
-        button.addEventListener('click', function () {
-            const language = button.dataset.language || fallbackLanguage;
-            localStorage.setItem(storageKey, language);
-            applyTranslations(language);
-        });
+    window.adminDashboardI18n = window.SCAIMSI18n.create({
+        storageKey: storageKey,
+        fallbackLanguage: fallbackLanguage,
+        translations: translations,
     });
-
-    window.adminDashboardI18n = {
-        applyTranslations: applyTranslations,
-        getLanguage: getLanguage,
-        t: function (key) {
-            const language = getLanguage();
-            return (translations[language] && translations[language][key]) || translations.en[key] || key;
-        },
-    };
-
-    applyTranslations(getLanguage());
+    window.adminDashboardI18n.bindLanguageButtons();
+    window.adminDashboardI18n.applyTranslations(window.adminDashboardI18n.getLanguage());
 });

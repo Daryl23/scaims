@@ -39,10 +39,6 @@ function updateCropTypeFilter() {
     // Clear existing options
     typeSelect.innerHTML = '<option value="" disabled selected>Crop Type</option>';
 
-    // Debug logs
-    console.log("Selected commodity:", selectedCommodity);
-    console.log("Available crop types:", getParcelCropTypes(selectedCommodity));
-
     // If a commodity is selected, populate crop types
     if (selectedCommodity) {
         getParcelCropTypes(selectedCommodity).forEach(cropType => {
@@ -216,17 +212,12 @@ async function fetchFarmers() {
     try {
         const response = await fetch('getFarmers.php');
         
-        // Log the raw response
-        console.log('Raw response:', response);
-        
         // Check if the response is OK
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        // Log the response text before parsing
         const responseText = await response.text();
-        console.log('Response text:', responseText);
         
         // Try to parse JSON
         let data;
@@ -242,17 +233,10 @@ async function fetchFarmers() {
             throw new Error(data.error);
         }
         
-        // Log collation information for debugging
-        if (data.collations) {
-            console.log('Table Collations:', data.collations);
-        }
-        
         // If data is valid, proceed
         allFarmersData = data.farmers;
         filteredData = [...allFarmersData]; // Initialize filtered data with all data
         displayFarmers(1); // Show first page
-        
-        console.log('Farmers data loaded:', allFarmersData);
     } catch (error) {
         console.error('Error fetching farmers:', error);
         
@@ -306,16 +290,11 @@ function displayFarmers(page) {
 }
 
 function viewParcelDetails(farmerID, farmerName) {
-    console.log(`Fetching parcel details for Farmer ID: ${farmerID}, Name: ${farmerName}`);
-    
     fetch(`getParcelDetails.php?farmerID=${farmerID}`)
         .then(response => {
-            console.log('Response status:', response.status);
             return response.json();
         })
         .then(data => {
-            console.log('Received data:', data);
-            
             // Check for error message
             if (data.error) {
                 console.error('Error fetching parcel details:', data.error);

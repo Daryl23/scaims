@@ -78,36 +78,6 @@
     registerIcon(label, ALIASES[label]);
   });
 
-  function detectBasePath() {
-    if (typeof window.APP_BASE_PATH === "string") {
-      return window.APP_BASE_PATH;
-    }
-
-    var pathname = (window.location && window.location.pathname) || "";
-    if (pathname === "/scaims" || pathname.indexOf("/scaims/") === 0) {
-      return "/scaims";
-    }
-
-    return "";
-  }
-
-  function resolveAppPath(value) {
-    if (typeof window.resolveAppPath === "function") {
-      return window.resolveAppPath(value);
-    }
-
-    if (!value || value.charAt(0) !== "/") {
-      return value;
-    }
-
-    var basePath = detectBasePath();
-    if (!basePath || value === basePath || value.indexOf(basePath + "/") === 0) {
-      return value;
-    }
-
-    return basePath + value;
-  }
-
   function getIconFile(cropLabel) {
     return iconByKey[normalizeLabel(cropLabel)] || null;
   }
@@ -118,7 +88,7 @@
       return null;
     }
 
-    return resolveAppPath("/assets/icons/" + encodeURIComponent(fileName));
+    return window.SCAIMSAppPath.resolve("/assets/icons/" + encodeURIComponent(fileName));
   }
 
   function escapeHtml(value) {

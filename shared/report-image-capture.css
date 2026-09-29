@@ -1,6 +1,9 @@
+@import url("./design-tokens.css");
+@import url("./components.css");
+
 .report-image-uploader {
-    background: #ffffff;
-    border: 1px solid #dde8df;
+    background: var(--color-white);
+    border: 1px solid var(--color-border-green);
     border-radius: 8px;
     margin: 14px 0 18px;
     padding: 16px;
@@ -31,7 +34,7 @@
 }
 
 .report-image-feedback.is-error {
-    color: #b42318;
+    color: var(--color-danger);
     font-weight: 600;
 }
 
@@ -42,31 +45,27 @@
 }
 
 .report-image-button {
-    background: #198754;
-    border: 1px solid #198754;
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary);
     border-radius: 8px;
-    color: #ffffff;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
+    color: var(--color-white);
     font-size: 0.92rem;
-    font-weight: 600;
     padding: 10px 14px;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .report-image-button:hover:not(:disabled) {
-    background: #146c43;
-    border-color: #146c43;
+    background: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
 }
 
 .report-image-button:disabled {
-    cursor: not-allowed;
     opacity: 0.65;
 }
 
 .report-image-button-secondary {
     background: #eef6ef;
-    color: #198754;
+    color: var(--color-primary);
 }
 
 .report-image-button-secondary:hover:not(:disabled) {
@@ -76,7 +75,7 @@
 .report-image-button-danger {
     background: #fff4f2;
     border-color: #f2b8b5;
-    color: #b42318;
+    color: var(--color-danger);
 }
 
 .report-image-button-danger:hover:not(:disabled) {
@@ -92,7 +91,7 @@
 .report-image-camera video,
 .report-image-detail img {
     background: #f8faf7;
-    border: 1px solid #dde8df;
+    border: 1px solid var(--color-border-green);
     border-radius: 8px;
     display: block;
     height: auto;
@@ -107,6 +106,18 @@
     height: auto;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* Keep normal evidence previews inspectable without letting tall photos
+   dominate the form. The enlarge link still opens the untouched original. */
+.report-image-preview-wrap img,
+.report-image-detail img {
+    height: auto;
+    max-height: min(420px, 60vh);
+    max-width: 100%;
+    object-fit: contain;
+    width: auto;
+    margin-inline: auto;
 }
 
 .report-image-preview-wrap .report-image-actions {
@@ -136,7 +147,7 @@
 }
 
 .report-thumbnail img {
-    border: 1px solid #dde8df;
+    border: 1px solid var(--color-border-green);
     border-radius: 7px;
     display: block;
     height: 44px;
@@ -151,7 +162,7 @@
 }
 
 .report-image-detail {
-    background: #fffcef;
+    background: var(--color-cream);
     border: 1px solid rgba(200, 189, 68, 0.24);
     border-radius: 8px;
     margin: 0 0 18px;
@@ -159,7 +170,7 @@
 }
 
 .report-image-detail h3 {
-    color: #198754;
+    color: var(--color-primary);
     font-size: 1rem;
     margin: 0 0 10px;
 }
@@ -201,7 +212,7 @@
 .gps-photo-location { grid-column: 1 / -1; }
 .gps-photo-value dt { color: #506456; font-size: .85rem; margin-bottom: 4px; }
 .gps-photo-value dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; white-space: pre-wrap; }
-.report-image-feedback.is-reading::before { content: ''; display: inline-block; width: 1em; height: 1em; border: 2px solid #c3d8c8; border-top-color: #198754; border-radius: 50%; margin-right: 8px; vertical-align: middle; animation: gps-reading .8s linear infinite; }
+.report-image-feedback.is-reading::before { content: ''; display: inline-block; width: 1em; height: 1em; border: 2px solid #c3d8c8; border-top-color: var(--color-primary); border-radius: 50%; margin-right: 8px; vertical-align: middle; animation: gps-reading .8s linear infinite; }
 @keyframes gps-reading { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .report-image-feedback.is-reading::before { animation: none; } }
 @media (max-width: 576px) { .gps-photo-grid { grid-template-columns: minmax(0, 1fr); } }

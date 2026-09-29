@@ -1,13 +1,5 @@
 $(document).ready(function() {
-    let currentPage = 1;
-    const damageReportsPerPage = 10;
-    const damageMapState = {
-        map: null,
-        marker: null,
-        activeLayer: 'street',
-        layers: {},
-        currentReport: null
-    };
+    const reportView = window.SCAIMSAdminReportView;
 
     const fallbackPredefinedCrops = [
         'Rice', 'Corn', 'Coconut', 'Coffee', 'Sugarcane', 'Black Pepper', 'Cacao',
@@ -38,8 +30,7 @@ $(document).ready(function() {
         }
     }
 
-    function getDamageMapColor(type) {
-        const colors = {
+    const damageMapColors = {
             rice: '#dc2626',
             corn: '#f59e0b',
             sugarcane: '#fb923c',
@@ -57,124 +48,36 @@ $(document).ready(function() {
             default: '#94a3b8'
         };
 
-        if (!type) {
-            return colors.default;
-        }
-
-        return colors[type.toLowerCase().trim()] || colors.default;
-    }
-
-    function createDamageMapIcon(cropType) {
-        const color = getDamageMapColor(cropType);
-        if (window.SCAIMSCropIcons && typeof window.SCAIMSCropIcons.createLeafletIcon === 'function') {
-            const cropIcon = window.SCAIMSCropIcons.createLeafletIcon(cropType, {
-                color,
-                label: cropType || 'Damage Report'
-            });
-            if (cropIcon) {
-                return cropIcon;
-            }
-        }
-
-        return L.divIcon({
-            className: '',
-            html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:3px solid rgba(255,255,255,.9);box-shadow:0 2px 8px rgba(0,0,0,.35);"></div>`,
-            iconSize: [14, 14],
-            iconAnchor: [7, 7],
-            popupAnchor: [0, -10]
-        });
-    }
-
-    function ensureDamageMap() {
-        if (damageMapState.map || typeof L === 'undefined') {
-            return;
-        }
-
-        damageMapState.map = L.map('damage-report-map', {
-            center: [13.9411, 121.1631],
-            zoom: 13,
-            zoomControl: false
-        });
-
-        L.control.zoom({ position: 'bottomright' }).addTo(damageMapState.map);
-
-        damageMapState.layers.street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap',
-            maxZoom: 19
-        });
-        damageMapState.layers.satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: '&copy; Esri',
-            maxZoom: 19
-        });
-
-        damageMapState.layers.street.addTo(damageMapState.map);
-
-        $('#damage-map-street').on('click', function () {
-            setDamageMapLayer('street');
-        });
-        $('#damage-map-satellite').on('click', function () {
-            setDamageMapLayer('satellite');
-        });
-    }
-
-    function setDamageMapLayer(layerName) {
-        ensureDamageMap();
-        if (!damageMapState.map || damageMapState.activeLayer === layerName) {
-            return;
-        }
-
-        damageMapState.map.removeLayer(damageMapState.layers[damageMapState.activeLayer]);
-        damageMapState.layers[layerName].addTo(damageMapState.map);
-        damageMapState.activeLayer = layerName;
-
-        $('#damage-map-street, #damage-map-satellite').removeClass('active');
-        $('#damage-map-' + layerName).addClass('active');
-    }
-
-    function updateDamageMapCard(report) {
-        damageMapState.currentReport = report;
-
-        const latitude = parseFloat(report.Latitude);
-        const longitude = parseFloat(report.Longitude);
-        const hasCoordinates = Number.isFinite(latitude) && Number.isFinite(longitude);
-        const locationLabel = report.Location || report.Barangay || 'N/A';
-        const coordinatesLabel = hasCoordinates
-            ? `${latitude.toFixed(7)}, ${longitude.toFixed(7)}`
-            : 'No saved coordinates';
-
-        $('#damageMapCardLocation').text(locationLabel);
-        $('#damageMapCardCoordinates').text(coordinatesLabel);
-        $('#damage-open-map-button').prop('disabled', !hasCoordinates);
-        $('#damage-show-directions-button').prop('disabled', !hasCoordinates);
-
-        if (!hasCoordinates) {
-            $('#damage-report-map').hide();
-            $('#damage-report-map-message').text('No latitude and longitude available for this damage report.').show();
-
-            if (damageMapState.marker && damageMapState.map) {
-                damageMapState.map.removeLayer(damageMapState.marker);
-                damageMapState.marker = null;
-            }
-            return;
-        }
-
-        $('#damage-report-map-message').hide();
-        $('#damage-report-map').show();
-
-        ensureDamageMap();
-        setDamageMapLayer(damageMapState.activeLayer);
-
-        if (damageMapState.marker) {
-            damageMapState.map.removeLayer(damageMapState.marker);
-        }
-
-        damageMapState.marker = L.marker([latitude, longitude], {
-            icon: createDamageMapIcon(report.CropType)
-        }).addTo(damageMapState.map);
-
-        damageMapState.marker.bindPopup(`
+    const damageMap = reportView.createReportMap({
+        reportType: 'damage',
+        mapId: 'damage-report-map',
+        mapSelector: '#damage-report-map',
+        messageSelector: '#damage-report-map-message',
+        streetButtonSelector: '#damage-map-street',
+        satelliteButtonSelector: '#damage-map-satellite',
+        locationSelector: '#damageMapCardLocation',
+        coordinatesSelector: '#damageMapCardCoordinates',
+        openMapButtonSelector: '#damage-open-map-button',
+        directionsButtonSelector: '#damage-show-directions-button',
+        defaultMarkerLabel: 'Damage Report',
+        noCoordinatesMessage: 'No latitude and longitude available for this damage report.',
+        colors: damageMapColors,
+        getLocation: report => report.Location || report.Barangay,
+        getCropType: report => report.CropType,
+        buildPublicMapParams: (report, coordinates) => ({
+            lat: coordinates.latitude.toFixed(7),
+            lng: coordinates.longitude.toFixed(7),
+            crop: report.CropType || '',
+            commodity: report.CropCommodity || '',
+            location: report.Location || ''
+        }),
+        buildDirectionsUrl: (report, coordinates) => {
+            const destination = `${coordinates.latitude.toFixed(7)},${coordinates.longitude.toFixed(7)}`;
+            return 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(destination) + '&travelmode=driving';
+        },
+        renderPopup: (report, coordinatesLabel, color) => `
             <div style="min-width:240px;font-family:Inter,sans-serif;">
-                <div style="background:${getDamageMapColor(report.CropType)};padding:12px 16px 10px;">
+                <div style="background:${color};padding:12px 16px 10px;">
                     <div style="font-weight:700;font-size:15px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);">
                         ${report.CropCommodity || report.CropType || 'Damage Report'}
                     </div>
@@ -197,33 +100,25 @@ $(document).ready(function() {
                     </div>
                 </div>
             </div>
-        `).openPopup();
-
-        damageMapState.map.setView([latitude, longitude], 17);
-        setTimeout(function () {
-            damageMapState.map.invalidateSize();
-        }, 120);
-    }
+        `
+    });
+    const damageMapState = damageMap.state;
+    const updateDamageMapCard = damageMap.update;
 
     window.damageMapState = damageMapState;
     window.updateDamageMapCard = updateDamageMapCard;
+    window.damageReportMap = damageMap;
 
-    function updatePagination(totalReports) {
-        const totalPages = Math.ceil(totalReports / damageReportsPerPage);
-        
-        // Disable previous button if on first page
-        $('#prev-page').prop('disabled', currentPage === 1);
-        
-        // Disable next button if on last page or no pages
-        $('#next-page').prop('disabled', currentPage >= totalPages || totalPages === 0);
-        
-        // Update page text
-        if (totalPages === 0) {
-            $('#current-page').text('Page 0 of 0');
-        } else {
-            $('#current-page').text(`Page ${currentPage} of ${totalPages}`);
-        }
-    }
+    const pagination = reportView.createPagination({
+        pageSize: 10,
+        scrollSelector: '#previous-reports-section',
+        onPageChange: page => loadDamageReports(
+            $('#crop-filter').val(),
+            $('#barangay-filter').val(),
+            $('#reporter-filter').val(),
+            page
+        )
+    });
 
     refreshCropFilterOptions();
     document.addEventListener('scaims:crop-catalog-ready', function () {
@@ -232,12 +127,12 @@ $(document).ready(function() {
     });
 
     function handleFilterChange() {
-        currentPage = 1;
+        const page = pagination.reset();
         loadDamageReports(
             $('#crop-filter').val(),
             $('#barangay-filter').val(),
             $('#reporter-filter').val(),
-            currentPage
+            page
         );
     }
     
@@ -256,9 +151,9 @@ $(document).ready(function() {
             formattedFilter = filter.toLowerCase().replace(/\s+/g, '-');
         }
 
-        $.ajax({
+        reportView.fetchList({
             url: 'fetchDamageReports.php',
-            type: 'POST',
+            method: 'POST',
             data: { 
                 filter: formattedFilter, 
                 barangay: barangay, 
@@ -268,7 +163,7 @@ $(document).ready(function() {
                 filterDate: filterDate,
                 predefinedCrops: filter === 'Other' ? predefinedCrops : null
             },
-            success: function(response) {
+            onSuccess: function(response) {
                 try {
                     const data = (typeof response === 'string' ? JSON.parse(response) : response);
                     if (data.error) {
@@ -304,7 +199,7 @@ $(document).ready(function() {
                     }
                     
                     // Update pagination
-                    updatePagination(data.total);
+                    pagination.update(data.total);
                     
                 } catch (error) {
                     console.error('Error parsing response:', error);
@@ -313,7 +208,7 @@ $(document).ready(function() {
                     );
                 }
             },
-            error: function(xhr, status, error) {
+            onError: function(xhr, status, error) {
                 console.error('AJAX error:', error);
                 $('#new-reports-body, #previous-reports-body').html(
                     '<tr><td colspan="10">Failed to load data</td></tr>'
@@ -326,50 +221,11 @@ $(document).ready(function() {
         $('#crop-filter').val(),
         $('#barangay-filter').val(),
         $('#reporter-filter').val(),
-        currentPage
+        pagination.getPage()
     );
 
-    $('#search-bar').on('keypress', function(e) {
-        if (e.which === 13) {
-            e.preventDefault();
-            currentPage = 1;
-            loadDamageReports($('#crop-filter').val(), $('#barangay-filter').val(), $('#reporter-filter').val(), currentPage);
-        }
-    });
-
-    let debounceTimer;
-    $('#search-bar').on('input', function() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(function() {
-            currentPage = 1;
-            loadDamageReports($('#crop-filter').val(), $('#barangay-filter').val(), $('#reporter-filter').val(), currentPage);
-        }, 300);
-    });
-
-    $('#next-page, #prev-page').on('click', function() {
-        // Don't process if button is disabled
-        if ($(this).prop('disabled')) {
-            return;
-        }
-        
-        const isPrev = $(this).attr('id') === 'prev-page';
-        
-        if (isPrev && currentPage > 1) {
-            currentPage--;
-        } else if (!isPrev) {
-            currentPage++;
-        }
-        
-        loadDamageReports($('#crop-filter').val(), $('#barangay-filter').val(), $('#reporter-filter').val(), currentPage);
-        
-        // Smooth scroll to the Previous Reports section
-        const previousReportsSection = document.querySelector('h3.section-title:contains("Previous Damage Reports")');
-        if (previousReportsSection) {
-            previousReportsSection.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+    reportView.bindSearch({
+        onSearch: handleFilterChange
     });
 
     $('#export-button').on('click', function() {
@@ -379,29 +235,14 @@ $(document).ready(function() {
         const search = $('#search-bar').val();
         const filterDate = $('#date-filter').val();
 
-        // Create form and submit it
-        const form = $('<form>', {
-            'method': 'POST',
-            'action': 'exportDamageReports.php',
-            'style': 'display: none'
+        reportView.submitExportForm({
+            url: 'exportDamageReports.php',
+            fields: { crop, barangay, reporterType, search, filterDate }
         });
-
-        // Add input fields
-        if (crop) form.append($('<input>', {'name': 'crop', 'value': crop}));
-        if (barangay) form.append($('<input>', {'name': 'barangay', 'value': barangay}));
-        if (reporterType) form.append($('<input>', {'name': 'reporterType', 'value': reporterType}));
-        if (search) form.append($('<input>', {'name': 'search', 'value': search}));
-        if (filterDate) form.append($('<input>', {'name': 'filterDate', 'value': filterDate}));
-
-        // Append form to body and submit
-        $('body').append(form);
-        form.submit();
-        form.remove();
     });
 
     $('#date-filter').on('change', function() {
-        currentPage = 1;
-        loadDamageReports($('#crop-filter').val(), $('#barangay-filter').val(), $('#reporter-filter').val(), currentPage);
+        handleFilterChange();
     });
 
     let damageChart = null;
@@ -435,11 +276,6 @@ $(document).ready(function() {
                     // Get the canvas element
                     const ctx = document.getElementById('damageChart').getContext('2d');
 
-                    // Destroy existing chart if it exists
-                    if (window.damageChart instanceof Chart) {
-                        window.damageChart.destroy();
-                    }
-
                     // Format the date for display
                     const displayDate = filterDate ? 
                         new Date(filterDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : 
@@ -457,7 +293,7 @@ $(document).ready(function() {
                     };
 
                     // Create new chart
-                    window.damageChart = new Chart(ctx, {
+                    window.damageChart = reportView.replaceChart(window.damageChart, ctx, {
                         type: 'pie',
                         data: chartData,
                         options: {
@@ -497,50 +333,8 @@ $(document).ready(function() {
                         }
                     });
 
-                    // Add export buttons to modal
-                    if (!$('#export-buttons-container').length) {
-                        const buttonsContainer = $('<div>', {
-                            id: 'export-buttons-container',
-                            css: {
-                                'margin-top': '20px',
-                                'display': 'flex',
-                                'gap': '10px'
-                            }
-                        });
-
-                        const exportPdfButton = $('<button>', {
-                            id: 'export-pdf-button',
-                            text: 'Export as PDF',
-                            class: 'export-button',
-                            css: {
-                                'padding': '8px 16px',
-                                'background-color': '#198754',
-                                'color': 'white',
-                                'border': 'none',
-                                'border-radius': '4px',
-                                'cursor': 'pointer',
-                                'font-family': 'Poppins'
-                            }
-                        });
-
-                        const exportExcelButton = $('<button>', {
-                            id: 'export-excel-button',
-                            text: 'Export as Excel',
-                            class: 'export-button',
-                            css: {
-                                'padding': '8px 16px',
-                                'background-color': '#198754',
-                                'color': 'white',
-                                'border': 'none',
-                                'border-radius': '4px',
-                                'cursor': 'pointer',
-                                'font-family': 'Poppins'
-                            }
-                        });
-
-                        buttonsContainer.append(exportPdfButton, exportExcelButton);
-                        $('#graphModal .modal-content').append(buttonsContainer);
-                    }
+                    // Export content remains Damage-specific; only the button shell is shared.
+                    reportView.ensureExportButtons('#graphModal');
 
                     // Show the modal
                     $('#graphModal').css('display', 'block');
@@ -779,20 +573,11 @@ $(document).ready(function() {
         });
     });
 
-    // Close modal when clicking outside or on close button
-    $(window).on('click', function(event) {
-        if (event.target === document.getElementById('graphModal')) {
-            $('#graphModal').css('display', 'none');
-            if (window.damageChart instanceof Chart) {
-                window.damageChart.destroy();
-            }
-        }
-    });
-
-    $('#graphModal .close-button').on('click', function() {
-        $('#graphModal').css('display', 'none');
-        if (window.damageChart instanceof Chart) {
-            window.damageChart.destroy();
+    reportView.bindModalDismiss({
+        modalSelector: '#graphModal',
+        closeSelector: '#graphModal .close-button',
+        onClose: function () {
+            window.damageChart = reportView.destroyChart(window.damageChart);
         }
     });
 
@@ -812,34 +597,15 @@ $(document).ready(function() {
     }
 });
 
-function updateDamageReportImage(imageUrl) {
-    const panel = $('#damageReportImagePanel');
-    const image = $('#damageReportImage');
-    const noImage = $('#damageReportNoImage');
-
-    panel.removeAttr('hidden').show();
-
-    if (imageUrl) {
-        image.attr('src', imageUrl).removeAttr('hidden').show();
-        noImage.attr('hidden', true).hide();
-        return;
-    }
-
-    image.removeAttr('src').attr('hidden', true).hide();
-    noImage.removeAttr('hidden').show();
-}
-
 $(document).on('click', '.action-button', function() {
     const reportId = $(this).closest('tr').data('id');
-    console.log("Damage Report ID:", reportId);
     if (!reportId) return;
 
-    $.ajax({
+    window.SCAIMSAdminReportView.fetchDetail({
         url: 'getDamageReports.php',
-        type: 'POST',
+        method: 'POST',
         data: { id: reportId },
-        success: function(response) {
-            console.log('Response from server:', response);
+        onSuccess: function(response) {
             try {
                 const data = (typeof response === 'string' ? JSON.parse(response) : response);
 
@@ -869,7 +635,12 @@ $(document).on('click', '.action-button', function() {
                 $('#damageLongitude').text(data.Longitude || 'N/A');
                 $('#dmgReportDate').text(data.ReportDate || 'N/A');
                 $('#numberOfTrees').text(data.NumberOfTrees || 'N/A');
-                updateDamageReportImage(data.ImageUrl || '');
+                window.SCAIMSAdminReportView.setReportImage({
+                    panelSelector: '#damageReportImagePanel',
+                    imageSelector: '#damageReportImage',
+                    noImageSelector: '#damageReportNoImage',
+                    imageUrl: data.ImageUrl || ''
+                });
                 let gpsPanel = document.getElementById('damageReportImagePanelGPS');
                 if (!gpsPanel) { gpsPanel = document.createElement('section'); gpsPanel.id = 'damageReportImagePanelGPS'; document.getElementById('damageReportImagePanel').after(gpsPanel); }
                 gpsPanel.gpsPhoto = data.gps_photo;
@@ -881,81 +652,25 @@ $(document).on('click', '.action-button', function() {
                 }
 
                 // Make sure modal is visible
-                $('#damageReportModal').css('display', 'block');
+                window.SCAIMSAdminReportView.openModal('#damageReportModal');
                 setTimeout(function () {
-                    if (window.damageMapState && window.damageMapState.map) {
-                        window.damageMapState.map.invalidateSize();
-                    }
+                    if (window.damageReportMap) window.damageReportMap.invalidate();
                 }, 150);
             } catch (error) {
                 console.error('Error parsing response:', error);
                 alert('Failed to load damage report details.');
             }
         },
-        error: function(xhr, status, error) {
+        onError: function(xhr, status, error) {
             console.error('AJAX request failed:', status, error);
             alert('An error occurred while fetching the damage report details.');
         }
     });
 });
 
-// Update modal close handlers
-$('.close-button').on('click', function() {
-    $('#damageReportModal').css('display', 'none');
+window.SCAIMSAdminReportView.bindModalDismiss({
+    modalSelector: '#damageReportModal',
+    closeSelector: '#damageReportModal .close-button'
 });
-
-$(window).on('click', function(event) {
-    const modal = $('#damageReportModal');
-    if (event.target === modal[0]) {
-        modal.css('display', 'none');
-    }
-});
-
-$(document).on('click', '#damage-open-map-button', function () {
-    const sourceReport = window.damageMapState ? window.damageMapState.currentReport : null;
-    if (!sourceReport) {
-        return;
-    }
-
-    const latitude = parseFloat(sourceReport.Latitude);
-    const longitude = parseFloat(sourceReport.Longitude);
-    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-        return;
-    }
-
-    const params = new URLSearchParams({
-        lat: latitude.toFixed(7),
-        lng: longitude.toFixed(7),
-        crop: sourceReport.CropType || '',
-        commodity: sourceReport.CropCommodity || '',
-        location: sourceReport.Location || ''
-    });
-
-    window.open(resolveAppPath('/FARMERS%20UI/farmerLanding/map.html') + '?' + params.toString(), '_blank');
-});
-
-$(document).on('click', '#damage-show-directions-button', function () {
-    const sourceReport = window.damageMapState ? window.damageMapState.currentReport : null;
-    if (!sourceReport) {
-        return;
-    }
-
-    const latitude = parseFloat(sourceReport.Latitude);
-    const longitude = parseFloat(sourceReport.Longitude);
-    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-        return;
-    }
-
-    const destination = `${latitude.toFixed(7)},${longitude.toFixed(7)}`;
-    const directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(destination) + '&travelmode=driving';
-    window.open(directionsUrl, '_blank');
-});
-const resolveAppPath = typeof window.resolveAppPath === 'function'
-  ? window.resolveAppPath
-  : (path) => {
-      const pathname = window.location.pathname || '';
-      const basePath = (pathname === '/scaims' || pathname.indexOf('/scaims/') === 0) ? '/scaims' : '';
-      return path.charAt(0) === '/' ? basePath + path : path;
-    };
 
 document.addEventListener('dashboard:language-changed', function () { const panel = document.getElementById('damageReportImagePanelGPS'); if (panel) window.SCAIMSGPSPhoto.renderDetails(panel, panel.gpsPhoto); });

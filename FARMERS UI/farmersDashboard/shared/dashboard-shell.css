@@ -1,7 +1,9 @@
+@import url("../../../shared/design-tokens.css");
+
 .menu-item.is-active {
     background-color: #f0f4e8;
     border-radius: 10px;
-    color: #576f1b;
+    color: var(--color-olive-light);
     font-weight: 600;
 }
 
@@ -10,15 +12,15 @@
 }
 
 .language-switcher {
-    background: #f7f2e8;
-    border: 1px solid #d9c7ad;
+    background: var(--color-cream-warm);
+    border: 1px solid var(--color-border-warm);
     border-radius: 12px;
     margin: 0 20px 18px;
     padding: 12px;
 }
 
 .language-switcher-label {
-    color: #674636;
+    color: var(--color-brown);
     font-size: 0.9rem;
     font-weight: 600;
     margin: 0 0 10px;
@@ -30,10 +32,10 @@
 }
 
 .language-toggle-button {
-    background: #ffffff;
+    background: var(--color-white);
     border: 1px solid #b8a58a;
     border-radius: 999px;
-    color: #674636;
+    color: var(--color-brown);
     cursor: pointer;
     flex: 1;
     font-family: 'Poppins', sans-serif;
@@ -44,16 +46,16 @@
 }
 
 .language-toggle-button.active {
-    background: #576f1b;
-    border-color: #576f1b;
-    color: #ffffff;
+    background: var(--color-olive-light);
+    border-color: var(--color-olive-light);
+    color: var(--color-white);
 }
 
 .sidebar-help {
     background: #f0f4e8;
-    border-left: 4px solid #576f1b;
+    border-left: 4px solid var(--color-olive-light);
     border-radius: 10px;
-    color: #674636;
+    color: var(--color-brown);
     font-size: 0.9rem;
     line-height: 1.5;
     margin: 18px 20px 0;
@@ -61,10 +63,10 @@
 }
 
 .dashboard-help-note {
-    background: #f7f2e8;
-    border-left: 4px solid #576f1b;
+    background: var(--color-cream-warm);
+    border-left: 4px solid var(--color-olive-light);
     border-radius: 12px;
-    color: #674636;
+    color: var(--color-brown);
     margin: 14px 0 20px;
     padding: 12px 16px;
 }
@@ -75,7 +77,7 @@
 
 .menu-toggle {
     align-items: center;
-    background: #576f1b;
+    background: var(--color-olive-light);
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -91,7 +93,7 @@
 }
 
 .menu-toggle span {
-    background: #ffffff;
+    background: var(--color-white);
     border-radius: 2px;
     display: block;
     height: 3px;

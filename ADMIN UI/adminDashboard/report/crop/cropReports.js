@@ -1,13 +1,5 @@
 $(document).ready(function() {
-    let currentPage = 1;
-    const cropReportsPerPage = 10;
-    const reportMapState = {
-        map: null,
-        marker: null,
-        activeLayer: 'street',
-        layers: {},
-        currentReport: null
-    };
+    const reportView = window.SCAIMSAdminReportView;
 
     const fallbackPredefinedCrops = [
         'Rice', 'Corn', 'Coconut', 'Coffee', 'Sugarcane', 'Black Pepper', 'Cacao',
@@ -38,8 +30,7 @@ $(document).ready(function() {
         }
     }
 
-    function getCropMapColor(type) {
-        const colors = {
+    const cropMapColors = {
             rice: '#4ade80',
             corn: '#facc15',
             sugarcane: '#fb923c',
@@ -58,124 +49,36 @@ $(document).ready(function() {
             default: '#94a3b8'
         };
 
-        if (!type) {
-            return colors.default;
-        }
-
-        return colors[type.toLowerCase().trim()] || colors.default;
-    }
-
-    function createReportMapIcon(cropType) {
-        const color = getCropMapColor(cropType);
-        if (window.SCAIMSCropIcons && typeof window.SCAIMSCropIcons.createLeafletIcon === 'function') {
-            const cropIcon = window.SCAIMSCropIcons.createLeafletIcon(cropType, {
-                color,
-                label: cropType || 'Crop Report'
-            });
-            if (cropIcon) {
-                return cropIcon;
-            }
-        }
-
-        return L.divIcon({
-            className: '',
-            html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:3px solid rgba(255,255,255,.9);box-shadow:0 2px 8px rgba(0,0,0,.35);"></div>`,
-            iconSize: [14, 14],
-            iconAnchor: [7, 7],
-            popupAnchor: [0, -10]
-        });
-    }
-
-    function ensureReportMap() {
-        if (reportMapState.map || typeof L === 'undefined') {
-            return;
-        }
-
-        reportMapState.map = L.map('crop-report-map', {
-            center: [13.9411, 121.1631],
-            zoom: 13,
-            zoomControl: false
-        });
-
-        L.control.zoom({ position: 'bottomright' }).addTo(reportMapState.map);
-
-        reportMapState.layers.street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap',
-            maxZoom: 19
-        });
-        reportMapState.layers.satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: '&copy; Esri',
-            maxZoom: 19
-        });
-
-        reportMapState.layers.street.addTo(reportMapState.map);
-
-        $('#crop-map-street').on('click', function () {
-            setReportMapLayer('street');
-        });
-        $('#crop-map-satellite').on('click', function () {
-            setReportMapLayer('satellite');
-        });
-    }
-
-    function setReportMapLayer(layerName) {
-        ensureReportMap();
-        if (!reportMapState.map || reportMapState.activeLayer === layerName) {
-            return;
-        }
-
-        reportMapState.map.removeLayer(reportMapState.layers[reportMapState.activeLayer]);
-        reportMapState.layers[layerName].addTo(reportMapState.map);
-        reportMapState.activeLayer = layerName;
-
-        $('#crop-map-street, #crop-map-satellite').removeClass('active');
-        $('#crop-map-' + layerName).addClass('active');
-    }
-
-    function updateReportMapCard(report) {
-        reportMapState.currentReport = report;
-
-        const latitude = parseFloat(report.Latitude);
-        const longitude = parseFloat(report.Longitude);
-        const hasCoordinates = Number.isFinite(latitude) && Number.isFinite(longitude);
-        const locationLabel = report.Barangay || report.Location || 'N/A';
-        const coordinatesLabel = hasCoordinates
-            ? `${latitude.toFixed(7)}, ${longitude.toFixed(7)}`
-            : 'No saved coordinates';
-
-        $('#mapCardLocation').text(locationLabel);
-        $('#mapCardCoordinates').text(coordinatesLabel);
-        $('#open-report-map-button').prop('disabled', !hasCoordinates);
-        $('#show-directions-button').prop('disabled', !hasCoordinates);
-
-        if (!hasCoordinates) {
-            $('#crop-report-map').hide();
-            $('#crop-report-map-message').text('No latitude and longitude available for this crop report.').show();
-
-            if (reportMapState.marker && reportMapState.map) {
-                reportMapState.map.removeLayer(reportMapState.marker);
-                reportMapState.marker = null;
-            }
-            return;
-        }
-
-        $('#crop-report-map-message').hide();
-        $('#crop-report-map').show();
-
-        ensureReportMap();
-        setReportMapLayer(reportMapState.activeLayer);
-
-        if (reportMapState.marker) {
-            reportMapState.map.removeLayer(reportMapState.marker);
-        }
-
-        reportMapState.marker = L.marker([latitude, longitude], {
-            icon: createReportMapIcon(report.Crop)
-        }).addTo(reportMapState.map);
-
-        reportMapState.marker.bindPopup(`
+    const reportMap = reportView.createReportMap({
+        reportType: 'harvest',
+        mapId: 'crop-report-map',
+        mapSelector: '#crop-report-map',
+        messageSelector: '#crop-report-map-message',
+        streetButtonSelector: '#crop-map-street',
+        satelliteButtonSelector: '#crop-map-satellite',
+        locationSelector: '#mapCardLocation',
+        coordinatesSelector: '#mapCardCoordinates',
+        openMapButtonSelector: '#open-report-map-button',
+        directionsButtonSelector: '#show-directions-button',
+        defaultMarkerLabel: 'Crop Report',
+        noCoordinatesMessage: 'No latitude and longitude available for this crop report.',
+        colors: cropMapColors,
+        getLocation: report => report.Barangay || report.Location,
+        getCropType: report => report.Crop,
+        buildPublicMapParams: (report, coordinates) => ({
+            lat: coordinates.latitude.toFixed(7),
+            lng: coordinates.longitude.toFixed(7),
+            crop: report.Crop || '',
+            commodity: report.CropCommodity || '',
+            location: report.Barangay || ''
+        }),
+        buildDirectionsUrl: (report, coordinates) => {
+            const destination = `${coordinates.latitude.toFixed(7)},${coordinates.longitude.toFixed(7)}`;
+            return 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(destination) + '&travelmode=driving';
+        },
+        renderPopup: (report, coordinatesLabel, color) => `
             <div style="min-width:240px;font-family:Inter,sans-serif;">
-                <div style="background:${getCropMapColor(report.Crop)};padding:12px 16px 10px;">
+                <div style="background:${color};padding:12px 16px 10px;">
                     <div style="font-weight:700;font-size:15px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.3);">
                         ${report.CropCommodity || report.Crop || 'Crop Report'}
                     </div>
@@ -198,34 +101,22 @@ $(document).ready(function() {
                     </div>
                 </div>
             </div>
-        `).openPopup();
+        `
+    });
+    const updateReportMapCard = reportMap.update;
 
-        reportMapState.map.setView([latitude, longitude], 17);
-        setTimeout(function () {
-            reportMapState.map.invalidateSize();
-        }, 120);
-    }
-
-    function updatePagination(totalReports) {
-        const totalPages = Math.ceil(totalReports / cropReportsPerPage);
-        
-        // Disable previous button if on first page
-        $('#prev-page').prop('disabled', currentPage === 1);
-        
-        // Disable next button if on last page or no pages
-        $('#next-page').prop('disabled', currentPage >= totalPages || totalPages === 0);
-        
-        // Update page text
-        if (totalPages === 0) {
-            $('#current-page').text('Page 0 of 0');
-        } else {
-            $('#current-page').text(`Page ${currentPage} of ${totalPages}`);
-        }
-    }
+    const pagination = reportView.createPagination({
+        pageSize: 10,
+        scrollSelector: '#previous-reports-section',
+        onPageChange: page => loadCropReports(
+            $('#crop-filter').val(),
+            $('#barangay-filter').val(),
+            $('#reporter-filter').val(),
+            page
+        )
+    });
 
     function loadCropReports(filter, barangay, reporterType, page) {
-        console.log('Filter:', filter);
-        
         $('#new-reports-body, #previous-reports-body').html('<tr><td colspan="11">Loading...</td></tr>');
         
         // Get the month and year values separately
@@ -234,9 +125,9 @@ $(document).ready(function() {
         
         const predefinedCrops = getPredefinedCrops();
         
-        $.ajax({
+        reportView.fetchList({
             url: 'fetchCropReports.php',
-            type: 'POST',
+            method: 'POST',
             dataType: 'json',
             data: { 
                 filter,
@@ -248,8 +139,7 @@ $(document).ready(function() {
                 page: page,
                 predefinedCrops: filter === 'Other' ? predefinedCrops : null // Send predefined crops list when "Other" is selected
             },
-            success: function(response) {
-                console.log('Server response:', response);
+            onSuccess: function(response) {
                 try {
                     if (response.error) {
                         console.error('Server error:', response.error);
@@ -267,8 +157,7 @@ $(document).ready(function() {
                         `(${response.newCount} New, ${response.previousCount} Previous)`
                     );
             
-                    $('#current-page').text(`Page ${page}`);
-                    updatePagination(response.total);
+                    pagination.update(response.total);
                     
                     window.currentFilters = {
                         crop: filter,
@@ -285,7 +174,7 @@ $(document).ready(function() {
                     );
                 }
             },
-            error: function(xhr, status, error) {
+            onError: function(xhr, status, error) {
                 console.error('AJAX request failed:', status, error);
                 console.error('Response:', xhr.responseText);
                 $('#new-reports-body, #previous-reports-body').html(
@@ -296,8 +185,8 @@ $(document).ready(function() {
     }
 
     function refreshTable() {
-        currentPage = 1;
-        loadCropReports($('#crop-filter').val(), $('#barangay-filter').val(), $('#reporter-filter').val(), currentPage);
+        const page = pagination.reset();
+        loadCropReports($('#crop-filter').val(), $('#barangay-filter').val(), $('#reporter-filter').val(), page);
     }
 
     $('#search-button, #crop-filter, #barangay-filter, #month-filter, #reporter-filter').on('change input', function() {
@@ -314,52 +203,12 @@ $(document).ready(function() {
         });
         
         $('#crop-filter').on('change', function() {
-            console.log('Selected crop:', $(this).val());
             refreshTable();
         });
     });
 
-    $('#search-bar').on('keypress', function(e) {
-        if (e.which === 13) {
-            e.preventDefault();
-            currentPage = 1;
-            loadCropReports($('#crop-filter').val(), $('#barangay-filter').val(), $('#reporter-filter').val(), currentPage);
-        }
-    });
-
-    let debounceTimer;
-    $('#search-bar').on('input', function() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(function() {
-            currentPage = 1;
-            loadCropReports($('#crop-filter').val(), $('#barangay-filter').val(), $('#reporter-filter').val(), currentPage);
-        }, 300);
-    });
-
-    $('#next-page, #prev-page').on('click', function() {
-        // Don't process if button is disabled
-        if ($(this).prop('disabled')) {
-            return;
-        }
-        
-        const isPrev = $(this).attr('id') === 'prev-page';
-        
-        if (isPrev && currentPage > 1) {
-            currentPage--;
-        } else if (!isPrev) {
-            currentPage++;
-        }
-        
-        loadCropReports($('#crop-filter').val(), $('#barangay-filter').val(), $('#reporter-filter').val(), currentPage);
-        
-        // Smooth scroll to the Previous Reports section
-        const previousReportsSection = document.querySelector('h3.section-title:contains("Previous Crop Reports")');
-        if (previousReportsSection) {
-            previousReportsSection.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+    reportView.bindSearch({
+        onSearch: refreshTable
     });
 
     $('#export-button').on('click', function() {
@@ -376,27 +225,7 @@ $(document).ready(function() {
         
         exportUrl += params.join('&');
 
-        // Use fetch to handle the response
-        fetch(exportUrl)
-            .then(response => {
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        throw new Error(text || 'Export failed');
-                    });
-                }
-                return response.blob();
-            })
-            .then(blob => {
-                // Create and click a temporary download link
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'CropReports.xls';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                a.remove();
-            })
+        reportView.downloadBlob(exportUrl, 'CropReports.xls')
             .catch(error => {
                 alert('Error: ' + error.message);
             });
@@ -410,29 +239,12 @@ $(document).ready(function() {
         }
     });
 
-    function updateCropReportImage(imageUrl) {
-        const panel = $('#cropReportImagePanel');
-        const image = $('#cropReportImage');
-        const noImage = $('#cropReportNoImage');
-
-        panel.removeAttr('hidden').show();
-
-        if (imageUrl) {
-            image.attr('src', imageUrl).removeAttr('hidden').show();
-            noImage.attr('hidden', true).hide();
-            return;
-        }
-
-        image.removeAttr('src').attr('hidden', true).hide();
-        noImage.removeAttr('hidden').show();
-    }
-
     function showCropReportDetails(reportId) {
-        $.ajax({
+        reportView.fetchDetail({
             url: 'getCropReports.php',
-            type: 'POST',
+            method: 'POST',
             data: { id: reportId },
-            success: function(data) {
+            onSuccess: function(data) {
                 const report = (typeof data === 'string' ? JSON.parse(data) : data);
                 if (report.error) {
                     alert(report.error);
@@ -455,7 +267,12 @@ $(document).ready(function() {
                 $('#cropLatitude').text(report.Latitude || 'N/A');
                 $('#cropLongitude').text(report.Longitude || 'N/A');
                 $('#dateReported').text(report.DateReported);
-                updateCropReportImage(report.ImageUrl || '');
+                reportView.setReportImage({
+                    panelSelector: '#cropReportImagePanel',
+                    imageSelector: '#cropReportImage',
+                    noImageSelector: '#cropReportNoImage',
+                    imageUrl: report.ImageUrl || ''
+                });
                 let gpsPanel = document.getElementById('cropReportImagePanelGPS');
                 if (!gpsPanel) { gpsPanel = document.createElement('section'); gpsPanel.id = 'cropReportImagePanelGPS'; document.getElementById('cropReportImagePanel').after(gpsPanel); }
                 gpsPanel.gpsPhoto = report.gps_photo;
@@ -464,69 +281,20 @@ $(document).ready(function() {
 
                 updateReportMapCard(report);
                 // Show the modal
-                $('#cropReportModal').show();
+                reportView.openModal('#cropReportModal');
                 setTimeout(function () {
-                    if (reportMapState.map) {
-                        reportMapState.map.invalidateSize();
-                    }
+                    reportMap.invalidate();
                 }, 150);
             },
-            error: function() {
+            onError: function() {
                 alert('Error fetching report details.');
             }
         });
     }
 
-    // Close button functionality
-    $('.close-button').click(function() {
-        $('#cropReportModal').hide();
-    });
-
-    // Click outside modal to close
-    $(window).click(function(event) {
-        if ($(event.target).is('.modal')) {
-            $('.modal').hide();
-        }
-    });
-
-    $('#open-report-map-button').on('click', function () {
-        const report = reportMapState.currentReport;
-        if (!report) {
-            return;
-        }
-
-        const latitude = parseFloat(report.Latitude);
-        const longitude = parseFloat(report.Longitude);
-        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-            return;
-        }
-
-        const params = new URLSearchParams({
-            lat: latitude.toFixed(7),
-            lng: longitude.toFixed(7),
-            crop: report.Crop || '',
-            commodity: report.CropCommodity || '',
-            location: report.Barangay || ''
-        });
-
-    window.open(resolveAppPath('/FARMERS%20UI/farmerLanding/map.html') + '?' + params.toString(), '_blank');
-    });
-
-    $('#show-directions-button').on('click', function () {
-        const report = reportMapState.currentReport;
-        if (!report) {
-            return;
-        }
-
-        const latitude = parseFloat(report.Latitude);
-        const longitude = parseFloat(report.Longitude);
-        if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
-            return;
-        }
-
-        const destination = `${latitude.toFixed(7)},${longitude.toFixed(7)}`;
-        const directionsUrl = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(destination) + '&travelmode=driving';
-        window.open(directionsUrl, '_blank');
+    reportView.bindModalDismiss({
+        modalSelector: '#cropReportModal',
+        closeSelector: '#cropReportModal .close-button'
     });
 
     // Helper function to format dates
@@ -604,10 +372,6 @@ $(document).ready(function() {
 
                         const ctx = document.getElementById('harvestGraph').getContext('2d');
 
-                        if (harvestChart) {
-                            harvestChart.destroy();
-                        }
-
                         // Create dataset for the selected year
                         const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
                                           'July', 'August', 'September', 'October', 'November', 'December'];
@@ -624,7 +388,7 @@ $(document).ready(function() {
                         // Update modal title
                         $('#graphModalTitle').text(`Estimated Harvest Graph for ${cropType} - ${year}`);
 
-                        harvestChart = new Chart(ctx, {
+                        harvestChart = reportView.replaceChart(harvestChart, ctx, {
                             type: 'bar',
                             data: {
                                 labels: monthNames,
@@ -676,53 +440,8 @@ $(document).ready(function() {
                             }
                         });
 
-                        // Add export buttons container if it doesn't exist
-                        if (!$('#export-buttons-container').length) {
-                            const buttonsContainer = $('<div>', {
-                                id: 'export-buttons-container',
-                                css: {
-                                    'margin-top': '20px',
-                                    'display': 'flex',
-                                    'gap': '10px',
-                                    'justify-content': 'center'
-                                }
-                            });
-
-                            const exportPdfButton = $('<button>', {
-                                id: 'export-pdf-button',
-                                text: 'Export as PDF',
-                                class: 'export-button',
-                                css: {
-                                    'padding': '8px 16px',
-                                    'background-color': '#198754',
-                                    'color': 'white',
-                                    'border': 'none',
-                                    'border-radius': '4px',
-                                    'cursor': 'pointer',
-                                    'font-family': 'Poppins',
-                                    'hover': 'background-color: #3cc786'
-                                }
-                            });
-
-                            const exportExcelButton = $('<button>', {
-                                id: 'export-excel-button',
-                                text: 'Export as Excel',
-                                class: 'export-button',
-                                css: {
-                                    'padding': '8px 16px',
-                                    'background-color': '#198754',
-                                    'color': 'white',
-                                    'border': 'none',
-                                    'border-radius': '4px',
-                                    'cursor': 'pointer',
-                                    'font-family': 'Poppins',
-                                    'hover': 'background-color: #3cc786'
-                                }
-                            });
-
-                            buttonsContainer.append(exportPdfButton, exportExcelButton);
-                            $('#graphModal .modal-content').append(buttonsContainer);
-                        }
+                        // Export content remains Harvest-specific; only the button shell is shared.
+                        reportView.ensureExportButtons('#graphModal', { justifyContent: 'center' });
 
                         // Show the modal
                         $('#graphModal').show();
@@ -964,25 +683,14 @@ $(document).ready(function() {
             });
         }
 
-        // Close button functionality for the graph modal
-        $('.close-button').on('click', function() {
-            $('#graphModal').hide(); // Hide the graph modal
-        });
-
-        // Optionally, you can also close the modal when clicking outside of it
-        $(window).on('click', function(event) {
-            if ($(event.target).is('#graphModal')) {
-                $('#graphModal').hide(); // Hide the modal if the background is clicked
+        reportView.bindModalDismiss({
+            modalSelector: '#graphModal',
+            closeSelector: '#graphModal .close-button',
+            onClose: function () {
+                harvestChart = reportView.destroyChart(harvestChart);
             }
         });
     });
 });
-const resolveAppPath = typeof window.resolveAppPath === 'function'
-  ? window.resolveAppPath
-  : (path) => {
-      const pathname = window.location.pathname || '';
-      const basePath = (pathname === '/scaims' || pathname.indexOf('/scaims/') === 0) ? '/scaims' : '';
-      return path.charAt(0) === '/' ? basePath + path : path;
-    };
 
 document.addEventListener('dashboard:language-changed', function () { const panel = document.getElementById('cropReportImagePanelGPS'); if (panel) window.SCAIMSGPSPhoto.renderDetails(panel, panel.gpsPhoto); });

@@ -90,4 +90,9 @@
   window.APP_BASE_PATH = basePath;
   window.resolveAppPath = resolveAppPath;
   window.toAppRelativePath = toAppRelativePath;
+  window.SCAIMSAppPath = {
+    getBasePath: function () { return basePath; },
+    resolve: resolveAppPath,
+    toRelative: toAppRelativePath
+  };
 })();
