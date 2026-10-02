@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function closeSidebar() {
         menuToggle.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
         sidebar.classList.remove('active');
         overlay.classList.remove('active');
         document.body.style.overflow = '';
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function openSidebar() {
         menuToggle.classList.add('active');
+        menuToggle.setAttribute('aria-expanded', 'true');
         sidebar.classList.add('active');
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -30,6 +32,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     overlay.addEventListener('click', closeSidebar);
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && sidebar.classList.contains('active')) {
+            closeSidebar();
+            menuToggle.focus();
+        }
+    });
 
     document.querySelectorAll('.menu-item').forEach(function (item) {
         item.addEventListener('click', function () {

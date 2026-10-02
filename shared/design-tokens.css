@@ -29,17 +29,35 @@
     --color-gray-800: #343a40;
     --color-black: #1a1a1a;
 
-    /* Semantic colors */
-    --color-primary: #198754;
-    --color-primary-hover: #146c43;
-    --color-primary-deep: #066338;
+    /*
+     * Semantic roles follow the homepage's existing 60/30/10 hierarchy:
+     * cream/white surfaces, olive product identity, and orange/gold accents.
+     * Bootstrap green remains available for semantic success feedback only.
+     */
+    --color-background: var(--color-cream);
+    --color-surface: var(--color-white);
+    --color-surface-muted: var(--color-cream-warm);
+    --color-primary: var(--color-olive);
+    --color-primary-light: var(--color-olive-light);
+    --color-primary-hover: var(--color-olive-dark);
+    --color-primary-deep: var(--color-olive-dark);
+    --color-primary-soft: rgba(59, 73, 24, 0.09);
+    --color-secondary: var(--color-brown);
+    --color-accent: var(--color-harvest);
+    --color-accent-hover: var(--color-harvest-dark);
+    --color-accent-soft: rgba(247, 147, 30, 0.12);
+    --color-success: #198754;
+    --color-success-hover: #146c43;
+    --color-warning: var(--color-harvest);
     --color-danger: #b42318;
+    --color-danger-hover: #912018;
+    --color-on-primary: var(--color-cream);
     --color-text-primary: var(--color-olive);
     --color-text-secondary: #5a6b3a;
     --color-text-muted: #7a8a5a;
-    --color-bg-primary: var(--color-cream);
-    --color-bg-secondary: var(--color-white);
-    --color-accent: var(--color-harvest);
+    --color-bg-primary: var(--color-background);
+    --color-bg-secondary: var(--color-surface);
+    --color-border: var(--color-border-warm);
     --color-border-warm: #d9c7ad;
     --color-border-green: #dde8df;
 

@@ -98,15 +98,15 @@ $navItems = array_merge($navItems, [
 
 <link rel="stylesheet" href="<?php echo htmlspecialchars($sharedPath); ?>admin-sidebar.css?v=<?php echo @filemtime(__DIR__ . '/admin-sidebar.css') ?: time(); ?>">
 
-<button class="menu-toggle" type="button" aria-label="Toggle navigation" data-i18n-aria-label="toggle_navigation">
+<button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-controls="adminSidebar" aria-expanded="false" data-i18n-aria-label="toggle_navigation">
     <span></span>
     <span></span>
     <span></span>
 </button>
 
-<div class="sidebar-overlay"></div>
+<div class="sidebar-overlay" aria-hidden="true"></div>
 
-<aside class="sidebar">
+<aside class="sidebar" id="adminSidebar">
     <div class="sidebar-brand">
         <div class="sidebar-brand-mark">
             <img src="<?php echo htmlspecialchars($assetPath . 'logo.png'); ?>" alt="APGORRS">

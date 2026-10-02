@@ -10,6 +10,9 @@ const components = read('shared/components.css');
 const rootStyles = read('style.css');
 const adminSidebar = read('ADMIN UI/shared/admin-sidebar.php');
 const adminSidebarStyles = read('ADMIN UI/shared/admin-sidebar.css');
+const dashboardShell = read('shared/dashboard-shell.js');
+const farmerMobile = read('FARMERS UI/farmersDashboard/shared/farmer-mobile.css');
+const registrationSteps = read('FARMERS UI/registration/registration-steps.css');
 const reportView = read('shared/admin-report-view/report-view.css');
 const reportImage = read('shared/report-image-capture.css');
 const harvestPage = read('ADMIN UI/adminDashboard/report/crop/cropReports.php');
@@ -19,7 +22,11 @@ for (const contract of [
     '--color-olive: #3b4918',
     '--color-olive-light: #576f1b',
     '--color-brown: #674636',
-    '--color-primary: #198754',
+    '--color-primary: var(--color-olive)',
+    '--color-background: var(--color-cream)',
+    '--color-surface: var(--color-white)',
+    '--color-accent: var(--color-harvest)',
+    '--color-success: #198754',
     '--color-cream: #fffcef',
     '--space-4: 1rem',
     '--radius-md: 10px',
@@ -47,6 +54,20 @@ assert.ok(!adminSidebar.includes('<style>'), 'Active Admin sidebar must not embe
 assert.match(adminSidebarStyles, /^@import url\("\.\.\/\.\.\/shared\/design-tokens\.css"\);/);
 assert.ok(adminSidebarStyles.includes('.sidebar'));
 assert.ok(adminSidebarStyles.includes('@media (max-width: 768px)'));
+assert.match(adminSidebarStyles, /\.sidebar\s*\{[\s\S]*?pointer-events:\s*auto;[\s\S]*?z-index:\s*1100;/);
+assert.match(adminSidebarStyles, /\.sidebar-overlay\s*\{[\s\S]*?pointer-events:\s*none;[\s\S]*?z-index:\s*1090;/);
+assert.match(adminSidebarStyles, /\.sidebar-overlay\.active\s*\{[\s\S]*?pointer-events:\s*auto;/);
+assert.match(adminSidebarStyles, /\.menu-toggle\s*\{[\s\S]*?z-index:\s*1110;/);
+assert.ok(adminSidebar.includes('aria-controls="adminSidebar"'));
+assert.ok(adminSidebar.includes('aria-expanded="false"'));
+assert.ok(adminSidebar.includes('<aside class="sidebar" id="adminSidebar">'));
+assert.ok(dashboardShell.includes("setAttribute('aria-expanded', 'true')"));
+assert.ok(dashboardShell.includes("event.key === 'Escape'"));
+
+for (const stylesheet of [adminSidebarStyles, farmerMobile, registrationSteps]) {
+    assert.ok(stylesheet.includes('var(--color-primary'), 'Active portal CSS must consume the homepage-derived primary role');
+    assert.ok(stylesheet.includes('var(--color-'), 'Active portal CSS must consume canonical design tokens');
+}
 
 assert.match(reportView, /^@import url\("\.\.\/design-tokens\.css"\);\s+@import url\("\.\.\/components\.css"\);/);
 for (const page of [harvestPage, damagePage]) {
@@ -58,4 +79,4 @@ assert.match(reportImage, /\.report-image-preview-wrap img,[\s\S]*?\.report-imag
 assert.match(reportImage, /max-width:\s*100%;[\s\S]*?object-fit:\s*contain;[\s\S]*?width:\s*auto;[\s\S]*?margin-inline:\s*auto;/);
 assert.match(reportImage, /object-fit:\s*contain;/);
 
-console.log('PASS: canonical design tokens, shared components, extracted sidebar CSS, and report-page CSS contracts.');
+console.log('PASS: homepage-derived tokens, shared components, responsive portal styles, sidebar interaction layers, and report-page CSS contracts.');

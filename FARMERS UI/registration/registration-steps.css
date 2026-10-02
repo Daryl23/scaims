@@ -15,18 +15,18 @@
     align-items: center;
     gap: 10px;
     padding: 14px;
-    border-bottom: 3px solid #d8dbd1;
-    color: #666b5e;
+    border-bottom: 3px solid var(--color-border);
+    color: var(--color-text-secondary);
     font-size: 14px;
 }
 .registration-progress li[aria-current="step"] {
     border-color: var(--color-olive-light);
-    background: #eaf0dc;
+    background: var(--color-primary-soft);
     color: var(--color-olive);
     font-weight: 600;
     border-radius: 8px 8px 0 0;
 }
-.registration-progress li.is-complete { border-color: #859e44; color: var(--color-olive-light); }
+.registration-progress li.is-complete { border-color: var(--color-primary-light); color: var(--color-primary-light); }
 .step-number {
     display: inline-flex;
     align-items: center;
@@ -34,29 +34,29 @@
     flex: 0 0 30px;
     height: 30px;
     border-radius: 50%;
-    background: #dfe4d3;
+    background: var(--color-surface-muted);
     font-weight: 600;
 }
 [aria-current="step"] .step-number { background: var(--color-olive-light); color: var(--color-white); }
 .required-note, .step-help { font-size: 13px; margin: 0 0 18px; }
-#registrationForm .required { color: #b42318; font-weight: bold; }
+#registrationForm .required { color: var(--color-danger); font-weight: bold; }
 .registration-step { border: 0; padding: 0; margin: 0; min-width: 0; }
 .registration-step legend { float: none; width: 100%; font-size: 18px; font-weight: 600; margin-bottom: 20px; }
 .registration-step legend:focus { outline: none; }
 .registration-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 24px; }
 #registrationForm .registration-actions button { width: auto; margin: 0; padding: 12px 18px; border: 0; border-radius: 10px; font: 600 14px 'Poppins', sans-serif; cursor: pointer; }
 #registrationForm .registration-actions .submit-button { background: var(--color-harvest); color: var(--color-white); }
-#registrationForm .registration-actions .submit-button:hover { background: #df7c0b; }
-#registrationForm #backButton { margin-right: auto; background: var(--color-white); color: var(--color-olive-light); border: 1px solid #859e44; }
+#registrationForm .registration-actions .submit-button:hover { background: var(--color-accent-hover); }
+#registrationForm #backButton { margin-right: auto; background: var(--color-surface); color: var(--color-primary-light); border: 1px solid var(--color-primary-light); }
 #registrationForm button:disabled { opacity: .6; cursor: wait; }
 #registrationForm button:focus-visible { outline: 3px solid var(--color-olive-light); outline-offset: 3px; }
 .registration-password { position: relative; }
-#registrationForm .registration-password input { width: 100%; padding: 10px 80px 10px 10px; margin-bottom: 15px; border: 1px solid var(--color-brown); border-radius: 8px; font: inherit; }
+#registrationForm .registration-password input { width: 100%; padding: 10px 80px 10px 10px; margin-bottom: 15px; border: 1px solid var(--color-border); border-radius: 8px; font: inherit; }
 #registrationForm .password-toggle { position: absolute; top: 4px; right: 4px; width: auto; margin: 0; padding: 6px 10px; background: transparent; color: var(--color-olive-light); font-size: 13px; }
-.registration-error { padding: 12px; border: 1px solid #b42318; background: #fff1f0; color: #912018; border-radius: 8px; }
+.registration-error { padding: 12px; border: 1px solid var(--color-danger); background: #fff1f0; color: var(--color-danger-hover); border-radius: 8px; }
 /* Show validation feedback after interaction, rather than on an empty form. */
-#registrationForm input:invalid, #registrationForm select:invalid { border: 1px solid var(--color-brown); }
-#registrationForm .was-validated input:invalid, #registrationForm .was-validated select:invalid { border: 2px solid #b42318; }
+#registrationForm input:invalid, #registrationForm select:invalid { border: 1px solid var(--color-border); }
+#registrationForm .was-validated input:invalid, #registrationForm .was-validated select:invalid { border: 2px solid var(--color-danger); }
 @media (max-width: 540px) {
     html, body { overflow-x: clip; }
     .registration-progress { gap: 6px; }

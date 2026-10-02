@@ -1,13 +1,14 @@
 @import url("../../shared/design-tokens.css");
 
 :root {
-    --admin-sidebar-bg: linear-gradient(180deg, #41561a 0%, #314112 100%);
+    --admin-sidebar-bg: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-primary-hover) 100%);
     --admin-sidebar-border: rgba(255, 255, 255, 0.08);
     --admin-accent: var(--color-accent-gold);
-    --admin-olive: var(--color-olive-light);
-    --admin-brown: var(--color-brown);
+    --admin-olive: var(--color-primary);
+    --admin-brown: var(--color-secondary);
     --admin-text-soft: rgba(255, 255, 255, 0.72);
     --admin-text-muted: rgba(255, 255, 255, 0.42);
+    --admin-drawer-width: min(82vw, 300px);
 }
 
 .sidebar {
@@ -21,10 +22,11 @@
     min-width: 280px;
     overflow-y: auto;
     padding: 0;
+    pointer-events: auto;
     position: sticky;
     top: 0;
     width: 280px;
-    z-index: 1000;
+    z-index: 1100;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -285,14 +287,26 @@
     border-radius: 12px;
     cursor: pointer;
     display: none;
-    height: 50px;
+    box-shadow: var(--shadow-md);
+    height: 48px;
     justify-content: center;
-    left: 14px;
+    left: max(12px, env(safe-area-inset-left));
     padding: 0;
     position: fixed;
-    top: 14px;
-    width: 50px;
-    z-index: 1101;
+    top: max(12px, env(safe-area-inset-top));
+    touch-action: manipulation;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, left 0.25s ease;
+    width: 48px;
+    z-index: 1110;
+}
+
+.menu-toggle:hover {
+    background: var(--color-primary-hover);
+}
+
+.menu-toggle:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
 }
 
 .menu-toggle span {
@@ -322,6 +336,7 @@
     display: none;
     inset: 0;
     opacity: 0;
+    pointer-events: none;
     position: fixed;
     transition: opacity 0.25s ease;
     z-index: 1090;
@@ -330,6 +345,149 @@
 .sidebar-overlay.active {
     display: block;
     opacity: 1;
+    pointer-events: auto;
+}
+
+/* Shared Admin presentation layer. Feature styles keep their layout and
+   dimensions; this late-loaded boundary gives equivalent controls the same
+   homepage-derived color, surface, border and focus hierarchy. */
+body,
+.container,
+.main-content,
+.content,
+.admin-content {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+.card-content,
+.content-card,
+.form-container,
+.admin-report-form-panel,
+.crop-form,
+.crop-list-panel,
+.post-form,
+.post,
+.suggestions-section,
+.registration-section,
+.detail-section,
+.parcel-details,
+.crops-section,
+.report-map-card,
+.modal-content,
+.pin-modal {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+}
+
+.main-content h1,
+.main-content h2,
+.content h1,
+.content h2,
+.admin-content h1,
+.admin-content h2,
+.page-title,
+.panel-heading h2,
+.section-header,
+.registration-header,
+.detail-section h3,
+.parcel-details h3,
+.crops-section h3,
+.report-fields h3 {
+    color: var(--color-primary);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select,
+textarea {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+    outline: none;
+}
+
+thead,
+:where(.user-table, .crops-table, #farmersTable table) thead,
+:where(.cropreport-table, .damagereport-table) th {
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary);
+}
+
+:where(.user-table, .crops-table, #farmersTable table, .cropreport-table, .damagereport-table) {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+}
+
+.edit-btn,
+#export-button,
+#exportButton,
+#farmersTable button,
+.pagination button,
+.crop-pagination button,
+#navigationButtons button,
+.submit-for-farmer-action,
+.admin-report-edit-button,
+.admin-report-apply-button,
+.submit-report-button,
+.post-button,
+.mark-read,
+.primary-button,
+.view-btn,
+.export-btn {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.edit-btn:hover,
+#export-button:hover,
+#exportButton:hover,
+#farmersTable button:hover,
+.pagination button:hover:not(:disabled),
+.crop-pagination button:hover:not(:disabled),
+#navigationButtons button:hover,
+.submit-for-farmer-action:hover,
+.admin-report-edit-button:hover,
+.admin-report-apply-button:hover,
+.submit-report-button:hover,
+.post-button:hover,
+.mark-read:hover,
+.primary-button:hover,
+.view-btn:hover,
+.export-btn:hover {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}
+
+.admin-report-cancel-button,
+.gps-button,
+.ghost-button {
+    background-color: var(--color-surface-muted);
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.sidebar .menu-item > * {
+    background-color: transparent;
+}
+
+.sidebar .menu-item:focus-visible,
+.edit-btn:focus-visible,
+#export-button:focus-visible,
+#exportButton:focus-visible,
+.pagination button:focus-visible,
+.submit-report-button:focus-visible,
+.post-button:focus-visible,
+.mark-read:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
 }
 
 @media (max-width: 900px) {
@@ -349,10 +507,15 @@
     }
 
     .sidebar {
+        height: 100vh;
+        height: 100dvh;
         left: 0;
+        min-width: var(--admin-drawer-width);
+        overscroll-behavior: contain;
         position: fixed;
         transform: translateX(-100%);
         transition: transform 0.25s ease;
+        width: var(--admin-drawer-width);
     }
 
     .sidebar.active {
@@ -362,6 +525,10 @@
     .menu-toggle {
         display: flex;
         flex-direction: column;
+    }
+
+    .menu-toggle.active {
+        left: calc(var(--admin-drawer-width) - 60px);
     }
 
     .language-switcher-buttons {

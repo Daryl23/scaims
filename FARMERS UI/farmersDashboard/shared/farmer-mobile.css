@@ -17,13 +17,13 @@
    ============================================================ */
 
 :root {
-    --fm-olive:       var(--color-olive-light);
-    --fm-olive-dark:  #465a15;
-    --fm-olive-tint:  #f0f4e8;
-    --fm-brown:       var(--color-brown);
-    --fm-cream:       var(--color-cream-warm);
-    --fm-border:      var(--color-border-warm);
-    --fm-border-soft: #e6dcc9;
+    --fm-olive:       var(--color-primary);
+    --fm-olive-dark:  var(--color-primary-hover);
+    --fm-olive-tint:  var(--color-primary-soft);
+    --fm-brown:       var(--color-secondary);
+    --fm-cream:       var(--color-surface-muted);
+    --fm-border:      var(--color-border);
+    --fm-border-soft: var(--color-border);
 
     /* A comfortable thumb target. */
     --fm-tap: 56px;
@@ -37,6 +37,92 @@
 
     --fm-radius: 14px;
     --fm-gap: 12px;
+}
+
+/* Shared Farmer presentation layer. This stylesheet loads after each active
+   dashboard feature, so equivalent surfaces and controls inherit the same
+   homepage palette without changing feature geometry or JavaScript hooks. */
+body,
+.container,
+.main-content,
+.content {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+.sidebar {
+    background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-primary-hover) 100%);
+}
+
+.account-section,
+.parcel-card,
+.farmer-report-list,
+.report-form,
+.edit-profile-container,
+.post-card,
+.report-card,
+.farmer-report-modal-content,
+.modal-content,
+#farmForm,
+#editParcelForm {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+}
+
+.main-content h1,
+.main-content h2,
+.content h1,
+.content h2,
+.page-title,
+.section-title,
+.account-section h2,
+.parcel-card h2,
+.report-form h2,
+.edit-profile-container h2 {
+    color: var(--color-primary);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select,
+textarea {
+    background-color: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 0 3px var(--color-primary-soft);
+    outline: none;
+}
+
+.submit-btn,
+.report-save-button,
+.report-edit-button,
+.add-parcel-btn,
+.home-report-type-actions button:first-child,
+.pagination button:not(:disabled) {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+}
+
+.submit-btn:hover,
+.report-save-button:hover,
+.report-edit-button:hover,
+.add-parcel-btn:hover,
+.home-report-type-actions button:first-child:hover,
+.pagination button:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+    border-color: var(--color-primary-hover);
+}
+
+.report-cancel-edit-button {
+    background-color: var(--color-surface-muted);
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
 }
 
 /* ------------------------------------------------------------

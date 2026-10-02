@@ -23,7 +23,7 @@
     background: var(--color-primary);
     border: 1px solid var(--color-primary);
     border-radius: var(--radius-md);
-    color: var(--color-white);
+    color: var(--color-on-primary);
     padding: 10px 14px;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
@@ -33,17 +33,50 @@
     border-color: var(--color-primary-hover);
 }
 
+.scaims-button--secondary {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-secondary);
+}
+
+.scaims-button--secondary:hover:not(:disabled) {
+    background: var(--color-surface-muted);
+    border-color: var(--color-primary-light);
+}
+
+.scaims-button--accent {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-white);
+}
+
+.scaims-button--accent:hover:not(:disabled) {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+}
+
+.scaims-button--danger {
+    background: var(--color-danger);
+    border-color: var(--color-danger);
+    color: var(--color-white);
+}
+
+.scaims-button--danger:hover:not(:disabled) {
+    background: var(--color-danger-hover);
+    border-color: var(--color-danger-hover);
+}
+
 .scaims-card {
-    background: var(--color-white);
-    border: 1px solid var(--color-border-warm);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
     padding: var(--space-4);
 }
 
 .scaims-field {
-    background: var(--color-white);
-    border: 1px solid var(--color-border-warm);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     color: var(--color-text-primary);
     font: inherit;
@@ -75,7 +108,7 @@
 }
 
 :where(.cropreport-table, .damagereport-table) th {
-    background-color: #2aaa532d;
+    background-color: var(--color-primary-soft);
     color: var(--color-primary);
     font-size: 14px;
 }
@@ -90,11 +123,11 @@
 }
 
 :where(.cropreport-table, .damagereport-table) tr {
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid var(--color-border);
 }
 
 :where(.cropreport-table, .damagereport-table) tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+    background-color: var(--color-surface-muted);
 }
 
 :where(.cropreport-table, .damagereport-table) tr:last-of-type {
@@ -118,7 +151,7 @@
     background-color: var(--color-primary);
     border: none;
     border-radius: 5px;
-    color: var(--color-white);
+    color: var(--color-on-primary);
     cursor: pointer;
     font-family: var(--font-family-ui);
     margin-left: 5px;
@@ -136,7 +169,7 @@
     border: none;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    color: var(--color-white);
+    color: var(--color-on-primary);
     cursor: pointer;
     display: inline-flex;
     font-family: var(--font-family-ui);
