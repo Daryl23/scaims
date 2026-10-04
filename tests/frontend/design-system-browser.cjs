@@ -93,7 +93,7 @@ async function checkAdminMobileSidebar(context) {
 
     await Promise.all([
         page.waitForURL(/userManagement\.php/),
-        page.locator('a[href*="userManagement.php"]').click(),
+        page.locator('#adminSidebar a[href*="userManagement.php"]').click(),
     ]);
 
     await page.goto(harness.base + '/ADMIN%20UI/adminDashboard/home/home.php', { waitUntil: 'domcontentloaded' });

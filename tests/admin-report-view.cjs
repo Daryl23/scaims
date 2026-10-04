@@ -38,7 +38,7 @@ async function exerciseReportPage(page, config) {
     await page.locator('#new-reports-body .action-button, #previous-reports-body .action-button').first().waitFor();
 
     assert.equal(await page.evaluate(() => innerWidth), 1366);
-    assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim()), '#198754');
+    assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim()), '#3b4918');
 
     assert.match(await page.locator('#current-page').innerText(), /^Page \d+ of \d+$/);
     assert.equal(await page.locator('#export-button').isVisible(), true);

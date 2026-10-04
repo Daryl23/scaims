@@ -1,0 +1,18 @@
+{
+  "type": "Feature",
+  "properties": {
+    "name": "Synthetic sample parcel - not a farmer location"
+  },
+  "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+      [
+        [121.150000, 13.850000],
+        [121.152000, 13.850000],
+        [121.152000, 13.852000],
+        [121.150000, 13.852000],
+        [121.150000, 13.850000]
+      ]
+    ]
+  }
+}

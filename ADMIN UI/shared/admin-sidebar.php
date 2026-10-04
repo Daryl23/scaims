@@ -21,6 +21,8 @@ if ($activePage === '') {
         $activePage = 'parcel';
     } elseif (strpos($currentScript, '/adminDashboard/report/') !== false) {
         $activePage = 'reports';
+    } elseif (strpos($currentScript, '/adminDashboard/monitoring/') !== false) {
+        $activePage = 'satellite';
     } elseif (strpos($currentScript, '/adminDashboard/crops/') !== false) {
         $activePage = 'crops';
     } elseif (strpos($currentScript, '/adminDashboard/post/') !== false) {
@@ -63,6 +65,13 @@ $navItems = [
         'translationKey' => 'nav_reports',
         'icon' => 'reports.png',
         'href' => $pagePrefix . 'adminDashboard/report/reportAnalytics.php',
+    ],
+    [
+        'id' => 'satellite',
+        'label' => 'Satellite Monitoring',
+        'translationKey' => 'nav_satellite',
+        'icon' => 'lipa-loc.png',
+        'href' => $pagePrefix . 'adminDashboard/monitoring/satelliteMonitoring.php',
     ],
 ];
 
