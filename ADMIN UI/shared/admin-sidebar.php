@@ -34,7 +34,7 @@ if ($activePage === '') {
 
 $adminName = trim($_SESSION['AdminName'] ?? '');
 if ($adminName === '') {
-    $adminName = 'APGORRS Admin';
+    $adminName = 'SCAIMS / APGORRS Admin';
 }
 
 $navItems = [
@@ -118,10 +118,10 @@ $navItems = array_merge($navItems, [
 <aside class="sidebar" id="adminSidebar">
     <div class="sidebar-brand">
         <div class="sidebar-brand-mark">
-            <img src="<?php echo htmlspecialchars($assetPath . 'logo.png'); ?>" alt="APGORRS">
+            <img src="<?php echo htmlspecialchars($assetPath . 'logo.png'); ?>" alt="SCAIMS / APGORRS">
         </div>
         <div class="sidebar-brand-copy">
-            <strong>APGORRS</strong>
+            <strong>SCAIMS / APGORRS</strong>
             <span data-i18n="admin_portal">Admin Portal</span>
         </div>
     </div>

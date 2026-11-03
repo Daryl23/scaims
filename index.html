@@ -180,6 +180,9 @@
       transition: background 0.22s, color 0.22s;
     }
     .c-playpause:hover { background: #3b4918; color: #fffcef; }
+
+    .team-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .team-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(59,73,24,0.12); }
   </style>
   <link rel="stylesheet" href="shared/tap-targets.css?v=20260907">
 </head>
@@ -458,6 +461,83 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- From the Fields -->
+  <section class="py-24 bg-cream relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-14 items-center">
+        <div class="reveal order-2 lg:order-1">
+          <div class="relative w-full max-w-md mx-auto lg:mx-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-gold/20 to-harvest/15 rounded-3xl rotate-3"></div>
+            <img src="assets/about%20us/section1.png" alt="Lipa City farmers at work in the field"
+              class="relative rounded-2xl shadow-2xl w-full object-cover border border-gold/20">
+          </div>
+        </div>
+        <div class="reveal order-1 lg:order-2 space-y-6">
+          <span class="inline-flex items-center gap-2 text-harvest font-bold tracking-wider uppercase text-sm">
+            <span class="w-8 h-0.5 bg-harvest"></span>
+            Rooted in Lipa City
+          </span>
+          <h2 class="text-4xl lg:text-5xl font-serif font-bold text-olive leading-tight">
+            Built From <span class="text-gold-light italic">Real Fields</span>
+          </h2>
+          <p class="text-lg text-olive/75 leading-relaxed">
+            SCAIMS was shaped alongside the farmers, market vendors, and agricultural staff who work Lipa City's soil every day. Every feature exists to make their records easier to keep and their harvests easier to track.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meet the Team -->
+  <section class="py-24 bg-white relative overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-harvest/5 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div class="text-center mb-16 reveal">
+        <span class="text-harvest font-bold tracking-wider uppercase text-sm">The People Behind It</span>
+        <h2 class="text-4xl lg:text-5xl font-serif font-bold text-olive mt-3 mb-4">Meet the Team</h2>
+        <p class="text-lg text-olive/60 max-w-xl mx-auto">Dedicated professionals building smart agricultural tools for Filipino farmers.</p>
+      </div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div class="team-card reveal bg-cream rounded-2xl p-6 text-center border border-gold/20 shadow-sm" style="transition-delay:0.05s">
+          <div class="relative mx-auto w-24 h-24 mb-5">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-olive to-olive-light opacity-20"></div>
+            <img src="assets/about%20us/coronel.jpeg" alt="Marielle Coronel"
+              class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md relative z-10">
+          </div>
+          <h3 class="font-bold text-olive text-lg leading-tight">Marielle Coronel</h3>
+          <span class="inline-block mt-2 px-3 py-1 bg-olive/10 text-olive text-xs font-semibold rounded-full">Project Leader</span>
+        </div>
+        <div class="team-card reveal bg-cream rounded-2xl p-6 text-center border border-gold/20 shadow-sm" style="transition-delay:0.12s">
+          <div class="relative mx-auto w-24 h-24 mb-5">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-harvest to-harvest-dark opacity-20"></div>
+            <img src="assets/about%20us/custodio.png" alt="Juliana Beatriz Custodio"
+              class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md relative z-10">
+          </div>
+          <h3 class="font-bold text-olive text-lg leading-tight">Juliana Beatriz Custodio</h3>
+          <span class="inline-block mt-2 px-3 py-1 bg-harvest/10 text-harvest text-xs font-semibold rounded-full">UI Designer</span>
+        </div>
+        <div class="team-card reveal bg-cream rounded-2xl p-6 text-center border border-gold/20 shadow-sm" style="transition-delay:0.19s">
+          <div class="relative mx-auto w-24 h-24 mb-5">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-gold to-gold-light opacity-20"></div>
+            <img src="assets/about%20us/lansangan.png" alt="Janine Lansangan"
+              class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md relative z-10">
+          </div>
+          <h3 class="font-bold text-olive text-lg leading-tight">Janine Lansangan</h3>
+          <span class="inline-block mt-2 px-3 py-1 bg-gold/20 text-olive text-xs font-semibold rounded-full">Lead Developer</span>
+        </div>
+        <div class="team-card reveal bg-cream rounded-2xl p-6 text-center border border-gold/20 shadow-sm" style="transition-delay:0.26s">
+          <div class="relative mx-auto w-24 h-24 mb-5">
+            <div class="absolute inset-0 rounded-full bg-gradient-to-br from-olive-light to-olive opacity-20"></div>
+            <img src="assets/about%20us/sanpablo.jpg" alt="Yukari San Pablo"
+              class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md relative z-10">
+          </div>
+          <h3 class="font-bold text-olive text-lg leading-tight">Yukari San Pablo</h3>
+          <span class="inline-block mt-2 px-3 py-1 bg-olive/10 text-olive text-xs font-semibold rounded-full">SysAdmin</span>
         </div>
       </div>
     </div>
