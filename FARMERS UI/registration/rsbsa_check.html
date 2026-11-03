@@ -145,11 +145,12 @@
     <!-- Copy the footer from registration_form.html -->
     <footer class="footer">
         <div class="footer-left">
-            <p>© 2024 All Rights Reserved</p>
+            <p>© <span data-current-year>2026</span> SCAIMS / APGORRS. All Rights Reserved</p>
         </div>
         <div class="footer-right">
             <p>Lipa City Agricultural Office</p>
         </div>
     </footer>
+  <script>document.querySelectorAll('[data-current-year]').forEach(el => { el.textContent = new Date().getFullYear(); });</script>
 </body>
 </html>

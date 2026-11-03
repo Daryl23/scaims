@@ -276,7 +276,7 @@
             </div>
 
             <div class="flex justify-end -mt-1">
-              <a href="#" class="tap-link text-xs text-harvest font-semibold hover:text-harvest-dark transition-colors">Forgot password?</a>
+              <span class="text-xs text-olive/55 font-semibold">Forgot password? Ask a superadmin to reset it.</span>
             </div>
 
             <button type="submit"
@@ -319,7 +319,7 @@
           <a href="../../FARMERS%20UI/farmerLanding/faq.html"     class="hover:text-white transition-colors">FAQ</a>
           <a href="../../FARMERS%20UI/farmerLanding/contact.html" class="hover:text-white transition-colors">Contact</a>
           <span class="text-white/20">·</span>
-          <span>© 2024 SCAIMS / APGORRS</span>
+          <span>© <span data-current-year>2026</span> SCAIMS / APGORRS</span>
         </div>
       </div>
     </footer>
@@ -375,5 +375,6 @@
         : `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
     });
   </script>
+  <script>document.querySelectorAll('[data-current-year]').forEach(el => { el.textContent = new Date().getFullYear(); });</script>
 </body>
 </html>

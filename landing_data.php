@@ -32,6 +32,12 @@ function createExcerpt(string $content, int $length = 160): string
     return rtrim(substr($plainText, 0, $length - 1)) . '...';
 }
 
+function scaims_filipino_date(int $timestamp): string
+{
+    $months = ['Enero', 'Pebrero', 'Marso', 'Abril', 'Mayo', 'Hunyo', 'Hulyo', 'Agosto', 'Setyembre', 'Oktubre', 'Nobyembre', 'Disyembre'];
+    return $months[(int) date('n', $timestamp) - 1] . ' ' . date('j, Y', $timestamp);
+}
+
 try {
     $conn = scaims_db_mysqli();
 } catch (RuntimeException $e) {
@@ -106,7 +112,7 @@ if ($latestPostQuery && $latestPostQuery->num_rows > 0) {
         'content' => html_entity_decode($row['content'], ENT_QUOTES, 'UTF-8'),
         'excerpt' => createExcerpt($row['content']),
         'createdAt' => $row['created_at'],
-        'formattedDate' => date('F j, Y', strtotime($row['created_at'])),
+        'formattedDate' => scaims_filipino_date(strtotime($row['created_at'])),
         'image' => $imageUrl,
     ];
 }

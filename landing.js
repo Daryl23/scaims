@@ -3,7 +3,7 @@ const resolveAppPath = typeof window.resolveAppPath === 'function'
   : (path) => path;
 
 function formatLandingNumber(value, decimals = 0) {
-  return Number(value || 0).toLocaleString(undefined, {
+  return Number(value || 0).toLocaleString('en-PH', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals
   });
@@ -112,7 +112,7 @@ async function loadLandingData() {
         'serviceAccountMeta',
         'mt-5 inline-flex items-center rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-gold-light'
       );
-      farmerBadge.textContent = `${formatLandingNumber(stats.registeredFarmers)} farmers already registered`;
+      farmerBadge.textContent = `${formatLandingNumber(stats.registeredFarmers)} magsasaka na ang rehistrado`;
 
       const accountLink = farmerCard.querySelector('a[href="#"]');
       if (accountLink) {
@@ -134,23 +134,23 @@ async function loadLandingData() {
       const body = paragraphs[paragraphs.length - 1];
       const link = newsCard.querySelector('a');
 
-      if (title) title.textContent = 'Latest Announcement';
-      if (dateLine) dateLine.textContent = latestPost ? latestPost.formattedDate : 'No announcements yet';
+      if (title) title.textContent = 'Pinakabagong Anunsyo';
+      if (dateLine) dateLine.textContent = latestPost ? latestPost.formattedDate : 'Wala pang anunsyo';
       if (body) {
         body.textContent = latestPost
           ? latestPost.excerpt
-          : 'Once the agriculture office publishes a post, it will appear here automatically.';
+          : 'Kapag naglabas ng anunsyo ang Tanggapan ng Agrikultura, lalabas ito rito.';
       }
       if (link) {
         link.href = resolveAppPath('/FARMERS%20UI/farmerLogin/farmerlogin.html');
-        link.innerHTML = 'Farmer Login <span class="group-hover/link:translate-x-1 transition-transform">→</span>';
+        link.innerHTML = 'Mag-login bilang Magsasaka <span class="group-hover/link:translate-x-1 transition-transform">→</span>';
       }
     }
 
     if (suggestionCard) {
       const suggestionText = suggestionCard.querySelector('p');
       if (suggestionText) {
-        suggestionText.textContent = `${formatLandingNumber(stats.suggestionsReceived)} suggestions have already been recorded from the community. Add yours to help shape the next improvements.`;
+        suggestionText.textContent = `${formatLandingNumber(stats.suggestionsReceived)} mungkahi na ang natanggap mula sa komunidad. Idagdag ang sa inyo para mapaganda pa ang sistema.`;
       }
     }
 
@@ -161,19 +161,19 @@ async function loadLandingData() {
       const bullets = snapshotSection.querySelectorAll('ul li span:last-child');
       const statCards = snapshotSection.querySelectorAll('.grid.grid-cols-2 > div');
 
-      if (introLabel) introLabel.textContent = 'Live System Snapshot';
-      if (heading) heading.innerHTML = 'Your Agricultural Data,<br>Updated From The Database';
+      if (introLabel) introLabel.textContent = 'Kasalukuyang Datos';
+      if (heading) heading.innerHTML = 'Datos ng Agrikultura,<br>Diretso Mula sa Sistema';
       if (intro) {
-        intro.textContent = 'These figures come from your farmer, parcel, report, post, and suggestion records so the landing page reflects real system activity instead of static placeholders.';
+        intro.textContent = 'Ang mga bilang dito ay galing mismo sa talaan ng mga magsasaka, parsela, ulat, anunsyo, at mungkahi — totoong aktibidad ng sistema, hindi gawa-gawa.';
       }
 
-      if (bullets[0]) bullets[0].textContent = `${formatLandingNumber(stats.registeredFarmers)} farmer records are currently in the system.`;
-      if (bullets[1]) bullets[1].textContent = `${formatLandingNumber(stats.totalParcels)} parcel records are already encoded for monitoring.`;
-      if (bullets[2]) bullets[2].textContent = `${formatLandingNumber(stats.suggestionsReceived)} feedback submissions have been stored so far.`;
+      if (bullets[0]) bullets[0].textContent = `${formatLandingNumber(stats.registeredFarmers)} talaan ng magsasaka ang nasa sistema.`;
+      if (bullets[1]) bullets[1].textContent = `${formatLandingNumber(stats.totalParcels)} parsela ang naka-encode para sa pagbabantay.`;
+      if (bullets[2]) bullets[2].textContent = `${formatLandingNumber(stats.suggestionsReceived)} mungkahi ang naitala na.`;
 
       if (statCards[0]) {
         statCards[0].innerHTML = `
-          <div class="text-white/50 text-sm mb-2 uppercase tracking-wider">Crop Reports</div>
+          <div class="text-white/50 text-sm mb-2 uppercase tracking-wider">Ulat ng Pananim</div>
           <div class="text-3xl font-bold text-gold-light mb-3" id="snapshotCropReports">0</div>
           <div class="h-2 bg-white/10 rounded-full overflow-hidden">
             <div id="snapshotCropReportsBar" class="h-full bg-gold-light rounded-full transition-all duration-700" style="width:0%"></div>
@@ -183,7 +183,7 @@ async function loadLandingData() {
 
       if (statCards[1]) {
         statCards[1].innerHTML = `
-          <div class="text-white/50 text-sm mb-2 uppercase tracking-wider">Damage Reports</div>
+          <div class="text-white/50 text-sm mb-2 uppercase tracking-wider">Ulat ng Pinsala</div>
           <div class="text-3xl font-bold text-harvest mb-3" id="snapshotDamageReports">0</div>
           <div class="h-2 bg-white/10 rounded-full overflow-hidden">
             <div id="snapshotDamageReportsBar" class="h-full bg-harvest rounded-full transition-all duration-700" style="width:0%"></div>
@@ -215,7 +215,7 @@ async function submitSuggestion(event) {
   feedback.classList.add('hidden');
   feedback.classList.remove('modal-message-success', 'modal-message-error');
   submitButton.disabled = true;
-  submitButton.textContent = 'Submitting...';
+  submitButton.textContent = 'Ipinapadala...';
 
   try {
     const response = await fetch(resolveAppPath('/submit_suggestion.php'), {
@@ -225,10 +225,10 @@ async function submitSuggestion(event) {
     const payload = await response.json();
 
     if (!response.ok || !payload.success) {
-      throw new Error(payload.error || 'Unable to submit your suggestion.');
+      throw new Error(payload.error || 'Hindi naipadala ang mungkahi.');
     }
 
-    feedback.textContent = 'Your suggestion has been saved successfully.';
+    feedback.textContent = 'Salamat! Naitala na ang inyong mungkahi.';
     feedback.classList.remove('hidden');
     feedback.classList.add('modal-message-success');
     form.reset();
@@ -245,7 +245,7 @@ async function submitSuggestion(event) {
     feedback.classList.add('modal-message-error');
   } finally {
     submitButton.disabled = false;
-    submitButton.textContent = 'Submit';
+    submitButton.textContent = 'Ipadala';
   }
 }
 
