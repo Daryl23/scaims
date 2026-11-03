@@ -103,11 +103,11 @@ if ($username !== $currentUser['UName']) {
 
 // Validate RSBSA number format
 if ($rsbsaNumber !== '') {  // Only validate if RSBSA is provided
-    // Check format (XX-XX-XX-XXX-XXXXXX where X is a digit)
-    if (!preg_match('/^\d{2}-\d{2}-\d{2}-\d{3}-\d{6}$/', $rsbsaNumber)) {
+    // Accepts both the old all-digit format and the new alphanumeric RSBSA format
+    if (!preg_match('/^\d{2,4}-\d{2,4}-\d{2,4}-\d{2,4}-[A-Za-z0-9]{4,10}$/', $rsbsaNumber)) {
         die(json_encode([
-            'success' => false, 
-            'message' => 'Invalid RSBSA number format. Please use the format: XX-XX-XX-XXX-XXXXXX (e.g., 12-34-56-789-012345)'
+            'success' => false,
+            'message' => 'Invalid RSBSA number format. Please use the format: XX-XX-XX-XXX-XXXXXX (e.g., 12-34-56-789-012345 or 04-010-14-0123-289AbYQ)'
         ]));
     }
 

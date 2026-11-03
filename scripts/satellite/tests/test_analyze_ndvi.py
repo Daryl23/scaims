@@ -139,5 +139,77 @@ class MockedWorkflowTests(unittest.TestCase):
         self.assertNotIn("mock-secret", json.dumps(result))
 
 
+class ClassifyNdviChangeTests(unittest.TestCase):
+    def test_significant_decline(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.45)
+        self.assertEqual(result["classification"], "significant_decline")
+        self.assertAlmostEqual(result["ndvi_change"], -0.15)
+
+    def test_slight_decline(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.53)
+        self.assertEqual(result["classification"], "slight_decline")
+
+    def test_stable(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.61)
+        self.assertEqual(result["classification"], "stable")
+
+    def test_slight_improvement(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.67)
+        self.assertEqual(result["classification"], "slight_improvement")
+
+    def test_significant_improvement(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.75)
+        self.assertEqual(result["classification"], "significant_improvement")
+
+    def test_boundary_is_exclusive_lower_bound(self):
+        # exactly -0.05 delta should land in "stable", not "slight_decline"
+        result = ndvi.classify_ndvi_change(0.60, 0.55)
+        self.assertEqual(result["classification"], "stable")
+
+
+class CompareTests(unittest.TestCase):
+    def test_compare_success(self):
+        previous = {"ok": True, "observation_date": "2026-09-22", "ndvi_mean": 0.60}
+        current = {"ok": True, "observation_date": "2026-09-29", "ndvi_mean": 0.45}
+        result = ndvi.compare(previous, current)
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["previous_observation_date"], "2026-09-22")
+        self.assertEqual(result["current_observation_date"], "2026-09-29")
+        self.assertEqual(result["classification"], "significant_decline")
+
+    def test_compare_rejects_failed_observation(self):
+        previous = {"ok": False, "reason": "no_imagery"}
+        current = {"ok": True, "observation_date": "2026-09-29", "ndvi_mean": 0.45}
+        result = ndvi.compare(previous, current)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["reason"], "invalid_input")
+
+    def test_cli_compare_mode(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous_path = Path(tmp) / "previous.json"
+            current_path = Path(tmp) / "current.json"
+            previous_path.write_text(
+                json.dumps({"ok": True, "observation_date": "2026-09-22", "ndvi_mean": 0.60}),
+                encoding="utf-8",
+            )
+            current_path.write_text(
+                json.dumps({"ok": True, "observation_date": "2026-09-29", "ndvi_mean": 0.45}),
+                encoding="utf-8",
+            )
+            with tempfile.TemporaryDirectory() as out_dir:
+                captured = Path(out_dir) / "stdout.txt"
+                original_stdout = sys.stdout
+                try:
+                    with open(captured, "w", encoding="utf-8") as handle:
+                        sys.stdout = handle
+                        exit_code = ndvi.main(["--compare", str(previous_path), str(current_path)])
+                finally:
+                    sys.stdout = original_stdout
+                output = json.loads(captured.read_text(encoding="utf-8"))
+        self.assertEqual(exit_code, 0)
+        self.assertTrue(output["ok"])
+        self.assertEqual(output["classification"], "significant_decline")
+
+
 if __name__ == "__main__":
     unittest.main()

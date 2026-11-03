@@ -3,6 +3,8 @@ require_once __DIR__ . '/../../../shared/admin_auth.php';
 scaims_require_admin('../../adminLogin/adminLogin.html');
 require_once 'db_connection.php';
 
+$canValidate = scaims_can_validate_farmers();
+
 $filter = $_POST['filter'] ?? '';
 $barangay = $_POST['barangay'] ?? '';
 $search = $_POST['search'] ?? '';
@@ -71,7 +73,9 @@ if ($filter === 'Farmer') {
             f.Barangay,
             DATE_FORMAT(f.registration_date, '%Y-%m-%d') as RegistrationDate,
             f.is_active,
-            f.RSBSA_Number
+            f.RSBSA_Number,
+            f.IsValidated,
+            f.FarmerStatus
         FROM farmer f
         WHERE registration_date >= DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY)" . $whereSQL . "
         ORDER BY f.registration_date DESC
@@ -97,7 +101,9 @@ if ($filter === 'Farmer') {
             f.Barangay,
             DATE_FORMAT(f.registration_date, '%Y-%m-%d') as RegistrationDate,
             f.is_active,
-            f.RSBSA_Number
+            f.RSBSA_Number,
+            f.IsValidated,
+            f.FarmerStatus
         FROM farmer f
         WHERE registration_date < DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY)" . $whereSQL . "
         ORDER BY f.registration_date DESC
@@ -122,11 +128,13 @@ if ($filter === 'Farmer') {
                     <th>Barangay</th>
                     <th>Registration Date</th>
                     <th>Status</th>
+                    <th>Farmer Status</th>
                     <th>RSBSA Number</th>
+                    <th>Validated</th>
                     <th>Action</th>
                     </tr></thead><tbody>';
         while ($row = $newResult->fetch_assoc()) {
-            $output .= buildTableRow($row);
+            $output .= buildTableRow($row, $canValidate);
         }
         $output .= '</tbody></table>';
         
@@ -152,11 +160,13 @@ if ($filter === 'Farmer') {
                     <th>Barangay</th>
                     <th>Registration Date</th>
                     <th>Status</th>
+                    <th>Farmer Status</th>
                     <th>RSBSA Number</th>
+                    <th>Validated</th>
                     <th>Action</th>
                     </tr></thead><tbody>';
         while ($row = $oldResult->fetch_assoc()) {
-            $output .= buildTableRow($row);
+            $output .= buildTableRow($row, $canValidate);
         }
         $output .= '</tbody></table>';
         
@@ -247,17 +257,39 @@ $stmt->close();
 $conn->close();
 
 // Helper function to build table rows
-function buildTableRow($row) {
+function buildTableRow($row, $canValidate = false) {
     $status = $row['is_active'] ? 'Active' : 'Inactive';
     $statusBtnText = $row['is_active'] ? 'Deactivate' : 'Activate';
     $btnClass = $row['is_active'] ? 'deactivate' : 'activate';
+
+    $farmerStatus = $row['FarmerStatus'] ?? 'Active';
+    $isValidated = !empty($row['IsValidated']);
+
+    if ($canValidate) {
+        $statusSelect = "<select class='farmer-status-select' data-id='{$row['FarmerID']}'>";
+        foreach (['Active', 'Inactive', 'Deceased'] as $option) {
+            $selected = $option === $farmerStatus ? ' selected' : '';
+            $statusSelect .= "<option value='{$option}'{$selected}>{$option}</option>";
+        }
+        $statusSelect .= '</select>';
+
+        $validateBtnText = $isValidated ? 'Unvalidate' : 'Validate';
+        $validateBtnClass = $isValidated ? 'unvalidate-btn' : 'validate-btn';
+        $validateCell = "<button class='{$validateBtnClass}' data-id='{$row['FarmerID']}' data-action='" . ($isValidated ? 'unvalidate' : 'validate') . "'>{$validateBtnText}</button>";
+    } else {
+        $statusSelect = htmlspecialchars($farmerStatus);
+        $validateCell = $isValidated ? "<span class='validated-badge'>Validated</span>" : "<span class='not-validated-badge'>Not validated</span>";
+    }
+
     return "<tr>
             <td>{$row['Name']}</td>
             <td>{$row['ContactNo']}</td>
             <td>" . ucfirst(strtolower($row['Barangay'])) . "</td>
             <td>{$row['RegistrationDate']}</td>
             <td>{$status}</td>
+            <td>{$statusSelect}</td>
             <td>{$row['RSBSA_Number']}</td>
+            <td>{$validateCell}</td>
             <td>
                 <div class='action-buttons'>
                     <button class='edit-btn' data-id='{$row['FarmerID']}'>Edit</button>

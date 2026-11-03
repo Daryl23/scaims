@@ -380,6 +380,57 @@ class CopernicusClient:
             raise ProviderError("invalid_api_response", "Statistical API response is missing NDVI statistics.") from exc
 
 
+# Week-over-week NDVI change bands. Thresholds follow common vegetation
+# change-detection practice (an NDVI delta smaller than ~0.05 is within
+# typical sensor/illumination noise and is not treated as real change).
+NDVI_CHANGE_BANDS: list[tuple[float, str]] = [
+    (-0.10, "significant_decline"),
+    (-0.05, "slight_decline"),
+    (0.05, "stable"),
+    (0.10, "slight_improvement"),
+]
+NDVI_CHANGE_BAND_ABOVE_LAST = "significant_improvement"
+
+
+def classify_ndvi_change(previous_mean: float, current_mean: float) -> dict[str, Any]:
+    """Classify the parcel-mean NDVI delta between two observations into a band.
+
+    This compares the aggregate (parcel-mean) NDVI returned by the Statistical
+    API, not a per-pixel raster: the current provider integration never
+    downloads per-pixel imagery, so a true pixel-by-pixel classification is
+    out of scope until a raster (Process API) adapter exists.
+    """
+    delta = current_mean - previous_mean
+    band = NDVI_CHANGE_BAND_ABOVE_LAST
+    for threshold, name in NDVI_CHANGE_BANDS:
+        if delta < threshold:
+            band = name
+            break
+    return {
+        "previous_ndvi_mean": round(previous_mean, 6),
+        "current_ndvi_mean": round(current_mean, 6),
+        "ndvi_change": round(delta, 6),
+        "classification": band,
+    }
+
+
+def compare(previous: dict[str, Any], current: dict[str, Any]) -> dict[str, Any]:
+    """Compare two `analyze()` results (e.g. two different weeks) for the same parcel."""
+    if not previous.get("ok") or not current.get("ok"):
+        return failure(
+            "invalid_input",
+            "Both observations must be successful ('ok': true) NDVI results to compare.",
+        )
+    result = {
+        "ok": True,
+        "provider": PROVIDER,
+        "previous_observation_date": previous.get("observation_date"),
+        "current_observation_date": current.get("observation_date"),
+    }
+    result.update(classify_ndvi_change(previous["ndvi_mean"], current["ndvi_mean"]))
+    return result
+
+
 def failure(reason: str, message: str, elapsed: float | None = None) -> dict[str, Any]:
     result: dict[str, Any] = {
         "ok": False,
@@ -461,7 +512,16 @@ def analyze(args: argparse.Namespace, transport: Any | None = None) -> dict[str,
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Calculate cloud-masked Sentinel-2 NDVI for one GeoJSON polygon.")
-    parser.add_argument("geojson", help="Path to a GeoJSON Polygon or Feature containing a Polygon")
+    parser.add_argument(
+        "--compare",
+        nargs=2,
+        metavar=("PREVIOUS_JSON", "CURRENT_JSON"),
+        help=(
+            "Skip analysis; classify week-over-week NDVI change between two prior "
+            "`analyze_ndvi.py` JSON result files (parcel-mean comparison, not per-pixel)."
+        ),
+    )
+    parser.add_argument("geojson", nargs="?", help="Path to a GeoJSON Polygon or Feature containing a Polygon")
     parser.add_argument("--start-date", help="Inclusive start date (YYYY-MM-DD); defaults to a 30-day window")
     parser.add_argument("--end-date", help="Inclusive end date (YYYY-MM-DD); defaults to current UTC date")
     parser.add_argument(
@@ -477,7 +537,24 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    if args.compare:
+        previous_path, current_path = args.compare
+        try:
+            previous = json.loads(Path(previous_path).read_text(encoding="utf-8"))
+            current = json.loads(Path(current_path).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            result = failure("invalid_input", f"Could not read comparison file: {exc}")
+        else:
+            result = compare(previous, current)
+        print(json.dumps(result, separators=(",", ":"), ensure_ascii=False))
+        return 0 if result["ok"] else 1
+
+    if not args.geojson:
+        parser.error("geojson is required unless --compare is used")
+
     result = analyze(args)
     print(json.dumps(result, separators=(",", ":"), ensure_ascii=False))
     return 0 if result["ok"] else 1

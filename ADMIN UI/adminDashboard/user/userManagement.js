@@ -394,6 +394,54 @@ $(document).ready(function () {
         }
     });
 
+    // Superadmin-only: validate / unvalidate a farmer record.
+    $(document).on('click', '.validate-btn, .unvalidate-btn', function () {
+        const farmerId = $(this).data('id');
+        const action = $(this).data('action');
+        const confirmMsg = action === 'validate'
+            ? 'Validate this farmer as a genuine, confirmed farmer?'
+            : 'Remove validation from this farmer?';
+
+        if (confirm(confirmMsg)) {
+            $.ajax({
+                url: 'validateFarmer.php',
+                type: 'POST',
+                data: { farmerId: farmerId, action: action },
+                success: function (response) {
+                    const data = typeof response === 'string' ? JSON.parse(response) : response;
+                    alert(data.message);
+                    if (data.success) {
+                        loadUsers($('#user-filter').val(), $('#barangay-filter').val(), $('#rsbsa-filter').val());
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.status === 403 ? 'Only a superadmin can validate a farmer.' : 'An error occurred while updating validation status.');
+                }
+            });
+        }
+    });
+
+    // Superadmin-only: set farmer status (Active / Inactive / Deceased).
+    $(document).on('change', '.farmer-status-select', function () {
+        const farmerId = $(this).data('id');
+        const status = $(this).val();
+
+        $.ajax({
+            url: 'setFarmerStatus.php',
+            type: 'POST',
+            data: { farmerId: farmerId, status: status },
+            success: function (response) {
+                const data = typeof response === 'string' ? JSON.parse(response) : response;
+                if (!data.success) {
+                    alert(data.message);
+                }
+            },
+            error: function (xhr) {
+                alert(xhr.status === 403 ? 'Only a superadmin can change a farmer status.' : 'An error occurred while updating the farmer status.');
+            }
+        });
+    });
+
     // Helper function to capitalize barangay names
     function capitalizeBarangay(barangay) {
         if (!barangay) return '';

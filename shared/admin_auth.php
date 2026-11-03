@@ -30,7 +30,13 @@ if (!function_exists('scaims_normalize_admin_role')) {
     function scaims_normalize_admin_role(?string $role): string
     {
         $role = strtolower(trim((string) $role));
-        return in_array($role, ['super_admin', 'super-admin', 'superadmin'], true) ? 'super_admin' : 'admin';
+        if (in_array($role, ['super_admin', 'super-admin', 'superadmin'], true)) {
+            return 'super_admin';
+        }
+        if (in_array($role, ['barangay', 'barangay_admin', 'barangay-admin'], true)) {
+            return 'barangay';
+        }
+        return 'admin';
     }
 }
 
@@ -95,7 +101,27 @@ if (!function_exists('scaims_require_super_admin')) {
 if (!function_exists('scaims_admin_role_label')) {
     function scaims_admin_role_label(): string
     {
-        return scaims_is_super_admin() ? 'Super Administrator' : 'Administrator';
+        scaims_session_start();
+        $role = scaims_normalize_admin_role($_SESSION['AdminRole'] ?? '');
+        if ($role === 'super_admin') {
+            return 'Super Administrator';
+        }
+        if ($role === 'barangay') {
+            return 'Barangay Administrator';
+        }
+        return 'Administrator';
+    }
+}
+
+if (!function_exists('scaims_can_validate_farmers')) {
+    /**
+     * Only the agency-level superadmin can mark a farmer as validated.
+     * Barangay (and plain admin) accounts may still search for and
+     * register farmers, just not validate them.
+     */
+    function scaims_can_validate_farmers(): bool
+    {
+        return scaims_is_super_admin();
     }
 }
 

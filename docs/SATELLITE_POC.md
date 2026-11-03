@@ -141,6 +141,47 @@ The tests validate polygons, verify construction of spatial/date/cloud requests 
 
 Live test status on 2026-10-03: **not run because `COPERNICUS_CLIENT_ID` and `COPERNICUS_CLIENT_SECRET` were not configured in the execution environment.** No NDVI value has been fabricated. The measured local validation/missing-credential path completed in approximately 0.001 seconds; network and raster-processing runtime remains unmeasured until credentials are supplied, and the live command will report it as `execution_seconds`.
 
+## Week-over-week change classification
+
+`--compare PREVIOUS_JSON CURRENT_JSON` skips a live analysis and instead classifies the
+change between two previously saved `analyze_ndvi.py` JSON results (e.g. two different
+weeks for the same parcel) by their `ndvi_mean`:
+
+```powershell
+python scripts/satellite/analyze_ndvi.py --compare previous.json current.json
+```
+
+```json
+{
+  "ok": true,
+  "provider": "Copernicus Data Space Ecosystem / Sentinel-2 L2A",
+  "previous_observation_date": "2026-09-22",
+  "current_observation_date": "2026-09-29",
+  "previous_ndvi_mean": 0.6,
+  "current_ndvi_mean": 0.45,
+  "ndvi_change": -0.15,
+  "classification": "significant_decline"
+}
+```
+
+Classification bands (parcel-mean NDVI delta, current minus previous):
+
+| Delta | Classification |
+|---|---|
+| < -0.10 | `significant_decline` |
+| -0.10 to < -0.05 | `slight_decline` |
+| -0.05 to < 0.05 | `stable` |
+| 0.05 to < 0.10 | `slight_improvement` |
+| ≥ 0.10 | `significant_improvement` |
+
+This compares the **parcel-mean** NDVI from the Statistical API, not a per-pixel raster:
+the provider integration only requests aggregated statistics (mean/min/max/sample count),
+so it never downloads per-pixel imagery. A true pixel-by-pixel week-over-week map would
+require switching to the Sentinel Hub Process API (or downloading raw band rasters) plus
+a raster/array dependency, which is intentionally out of scope for this dependency-free,
+standard-library-only script. Both input files must be successful (`"ok": true`) results;
+comparing against a failed observation returns an `invalid_input` failure.
+
 ## Limitations and next integration step
 
 - Product cloud metadata covers a Sentinel-2 tile, not just the parcel; the additional SCL percentage is an estimate over the parcel.

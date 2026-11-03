@@ -35,7 +35,7 @@ if (!$birthDate || $birthDate->format('Y-m-d') !== $data['dob'] || $birthDate >=
 }
 if (!in_array($data['sex'], ['male', 'female', 'other'], true)
     || !preg_match('/^09\d{9}$/', $data['contactNumber'])
-    || !preg_match('/^\d{2}-\d{2}-\d{2}-\d{3}-\d{6}$/', $data['rsbsaNumber'])) {
+    || !preg_match('/^\d{2,4}-\d{2,4}-\d{2,4}-\d{2,4}-[A-Za-z0-9]{4,10}$/', $data['rsbsaNumber'])) {
     registration_response(422, 'Please check your sex, contact number, and RSBSA number in Part 1.');
 }
 $rawPassword = isset($_POST['password']) && is_string($_POST['password']) ? $_POST['password'] : '';

@@ -145,6 +145,10 @@ CREATE TABLE `farmer` (
   `UserID` int(11) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT 1,
   `RSBSA_Number` varchar(50) DEFAULT NULL,
+  `IsValidated` tinyint(1) NOT NULL DEFAULT 0,
+  `ValidatedBy` varchar(234) DEFAULT NULL,
+  `ValidatedAt` datetime DEFAULT NULL,
+  `FarmerStatus` enum('Active','Inactive','Deceased') NOT NULL DEFAULT 'Active',
   PRIMARY KEY (`FarmerID`),
   KEY `fk_user_farmer` (`UserID`),
   CONSTRAINT `fk_user_farmer` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE
