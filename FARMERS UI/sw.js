@@ -39,6 +39,12 @@ self.addEventListener('fetch', (event) => {
         });
         return response;
       })
-      .catch(() => caches.match(event.request))
+      .catch(() =>
+        caches.match(event.request).then((cached) => {
+          if (cached) return cached;
+          if (event.request.mode === 'navigate') return caches.match('farmerLogin/farmerlogin.html');
+          return Response.error();
+        })
+      )
   );
 });

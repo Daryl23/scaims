@@ -38,7 +38,8 @@ if ($stmt->execute()) {
         'message' => $isValidated ? 'Farmer validated.' : 'Farmer validation removed.',
     ]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Could not update validation status: ' . $conn->error]);
+    error_log('SCAIMS validateFarmer failed: ' . $conn->error);
+    echo json_encode(['success' => false, 'message' => 'Could not update validation status. Please try again.']);
 }
 
 $stmt->close();

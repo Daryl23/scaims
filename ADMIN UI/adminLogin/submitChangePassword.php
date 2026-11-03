@@ -25,8 +25,9 @@ if ($newPassword !== $confirmPassword) {
     exit();
 }
 
-if (strlen($newPassword) < 8) {
-    echo "<script>alert('New password must be at least 8 characters.'); window.location.href='changePassword.html';</script>";
+if (strlen($newPassword) < 8 || !preg_match('/[a-z]/', $newPassword) || !preg_match('/[A-Z]/', $newPassword)
+    || !preg_match('/[0-9]/', $newPassword) || !preg_match('/[^A-Za-z0-9\s]/', $newPassword)) {
+    echo "<script>alert('Use at least 8 characters with an uppercase letter, a lowercase letter, a number, and a special character.'); window.location.href='changePassword.html';</script>";
     exit();
 }
 
@@ -46,6 +47,12 @@ $stmt->close();
 
 if (!$row || !password_verify($currentPassword, $row['AdminPass'])) {
     echo "<script>alert('Current password is incorrect.'); window.location.href='changePassword.html';</script>";
+    exit();
+}
+
+// Re-using the old password would make the 90-day rotation meaningless.
+if (password_verify($newPassword, $row['AdminPass'])) {
+    echo "<script>alert('Your new password must be different from your current password.'); window.location.href='changePassword.html';</script>";
     exit();
 }
 

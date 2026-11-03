@@ -41,6 +41,50 @@ $result = $checkStmt->get_result();
 $currentUser = $result->fetch_assoc();
 $checkStmt->close();
 
+if (!$currentUser) {
+    die(json_encode(['success' => false, 'message' => 'Farmer not found.']));
+}
+
+// All validation runs before any write, so a rejected edit never leaves
+// the account half-updated.
+if (preg_match('/^\d{2,4}-\d{2,4}-/', (string) $username)) {
+    die(json_encode(['success' => false, 'message' => 'Username cannot look like an RSBSA number, because farmers can also sign in with their RSBSA number.']));
+}
+
+if ($username !== $currentUser['UName']) {
+    $dupUserStmt = $conn->prepare("SELECT COUNT(*) AS count FROM user WHERE UName = ?");
+    $dupUserStmt->bind_param("s", $username);
+    $dupUserStmt->execute();
+    $dupUserCount = (int) $dupUserStmt->get_result()->fetch_assoc()['count'];
+    $dupUserStmt->close();
+    if ($dupUserCount > 0) {
+        die(json_encode(['success' => false, 'message' => 'That username is already taken.']));
+    }
+}
+
+if ($rsbsaNumber !== '') {
+    // Accepts both the old all-digit format and the new alphanumeric RSBSA format
+    if (!preg_match('/^\d{2,4}-\d{2,4}-\d{2,4}-\d{2,4}-[A-Za-z0-9]{4,10}$/', $rsbsaNumber)) {
+        die(json_encode([
+            'success' => false,
+            'message' => 'Invalid RSBSA number format. Please use the format: XX-XX-XX-XXX-XXXXXX (e.g., 12-34-56-789-012345 or 04-010-14-0123-289AbYQ)'
+        ]));
+    }
+
+    $checkRsbsaStmt = $conn->prepare("SELECT COUNT(*) as count FROM farmer WHERE RSBSA_Number = ? AND FarmerID != ?");
+    $checkRsbsaStmt->bind_param("si", $rsbsaNumber, $farmerId);
+    $checkRsbsaStmt->execute();
+    $rsbsaCount = $checkRsbsaStmt->get_result()->fetch_assoc()['count'];
+    $checkRsbsaStmt->close();
+
+    if ($rsbsaCount > 0) {
+        die(json_encode([
+            'success' => false,
+            'message' => 'This RSBSA number is already registered to another farmer.'
+        ]));
+    }
+}
+
 // Password validation — only when the admin actually typed a new one.
 if (trim($password) !== '') {
     // Check password requirements
@@ -102,33 +146,6 @@ if ($username !== $currentUser['UName']) {
         $updateStmt->bind_param("ss", $username, $currentUser['UName']);
         $updateStmt->execute();
         $updateStmt->close();
-    }
-}
-
-// Validate RSBSA number format
-if ($rsbsaNumber !== '') {  // Only validate if RSBSA is provided
-    // Accepts both the old all-digit format and the new alphanumeric RSBSA format
-    if (!preg_match('/^\d{2,4}-\d{2,4}-\d{2,4}-\d{2,4}-[A-Za-z0-9]{4,10}$/', $rsbsaNumber)) {
-        die(json_encode([
-            'success' => false,
-            'message' => 'Invalid RSBSA number format. Please use the format: XX-XX-XX-XXX-XXXXXX (e.g., 12-34-56-789-012345 or 04-010-14-0123-289AbYQ)'
-        ]));
-    }
-
-    // Check if RSBSA number already exists (excluding current farmer)
-    $checkRsbsaSql = "SELECT COUNT(*) as count FROM farmer WHERE RSBSA_Number = ? AND FarmerID != ?";
-    $checkRsbsaStmt = $conn->prepare($checkRsbsaSql);
-    $checkRsbsaStmt->bind_param("si", $rsbsaNumber, $farmerId);
-    $checkRsbsaStmt->execute();
-    $rsbsaResult = $checkRsbsaStmt->get_result();
-    $rsbsaCount = $rsbsaResult->fetch_assoc()['count'];
-    $checkRsbsaStmt->close();
-
-    if ($rsbsaCount > 0) {
-        die(json_encode([
-            'success' => false, 
-            'message' => 'This RSBSA number is already registered to another farmer.'
-        ]));
     }
 }
 

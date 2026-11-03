@@ -41,6 +41,11 @@ if (!in_array($data['sex'], ['male', 'female', 'other'], true)
 if (!in_array($data['landTenure'], ['Landowner', 'Tenant', 'Farm Worker'], true)) {
     registration_response(422, 'Please select a valid Land Tenure Status in Part 1.');
 }
+// Farmers can sign in with either their username or RSBSA number, so a
+// username must never look like an RSBSA number.
+if (preg_match('/^\d{2,4}-\d{2,4}-/', $data['username'])) {
+    registration_response(422, 'Your username cannot look like an RSBSA number. Please choose a different username.');
+}
 $rawPassword = isset($_POST['password']) && is_string($_POST['password']) ? $_POST['password'] : '';
 // Keep password normalization consistent with the existing login endpoint.
 $password = trim($rawPassword);

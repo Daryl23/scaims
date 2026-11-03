@@ -32,7 +32,8 @@ $stmt->bind_param('si', $status, $farmerId);
 if ($stmt->execute()) {
     echo json_encode(['success' => true, 'message' => 'Farmer status updated.']);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Could not update status: ' . $conn->error]);
+    error_log('SCAIMS setFarmerStatus failed: ' . $conn->error);
+    echo json_encode(['success' => false, 'message' => 'Could not update status. Please try again.']);
 }
 
 $stmt->close();

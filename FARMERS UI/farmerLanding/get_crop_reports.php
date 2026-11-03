@@ -547,13 +547,15 @@ try {
     $stmt->execute($params);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
+    error_log('SCAIMS crop map query failed: ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['error' => 'Query failed: ' . $e->getMessage()]);
+    echo json_encode(['error' => 'Unable to load crop map data.']);
     exit;
 }
 
 $features = [];
 $locationDescriptors = [];
+$anonymousFarmIds = [];
 
 foreach ($rows as $row) {
     $locationInfo = scaims_crop_map_location_info(
@@ -588,6 +590,13 @@ foreach ($rows as $row) {
         ];
     }
 
+    // This feed is public (no login), so farmers are anonymized per response:
+    // the map can still group a farm's reports, but no names or real database
+    // IDs are exposed (RA 10173). Many reports are stored with a NULL
+    // FarmerID, so the submitting account is the fallback grouping key.
+    $farmKey = $row['FarmerID'] !== null ? 'f:' . $row['FarmerID'] : 'u:' . $row['created_by'];
+    $anonymousFarmNumber = $anonymousFarmIds[$farmKey] ??= count($anonymousFarmIds) + 1;
+
     $features[] = [
         'type' => 'Feature',
         'geometry' => ['type' => 'Point', 'coordinates' => [$lng, $lat]],
@@ -606,8 +615,8 @@ foreach ($rows as $row) {
             'date_planted' => $row['date_planted'],
             'harvest_date' => $row['harvest_date'],
             'estimate_harvest' => (float) $row['estimate_harvest'],
-            'farmer_id' => $row['FarmerID'],
-            'farmer_name' => trim($row['farmer_name']) ?: ('Farmer #' . $row['FarmerID']),
+            'farmer_id' => 'farm-' . $anonymousFarmNumber,
+            'farmer_name' => 'Farm ' . $anonymousFarmNumber,
             'farmer_barangay' => $row['farmer_barangay'],
             'report_date' => $row['reportDate'],
             'farm_gate_price' => $price,

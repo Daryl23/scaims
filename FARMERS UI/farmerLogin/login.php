@@ -19,36 +19,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Login identifier can be the account username or the farmer's RSBSA number
+    // Login identifier can be the account username or the farmer's RSBSA number.
+    // RSBSA numbers are not guaranteed unique in existing data, so every
+    // matching account is checked and only the one whose password verifies
+    // signs in (exact username matches are tried first).
     $stmt = $conn->prepare("
         SELECT user.UserID, user.UName, user.UPass, user.ProfileImage, farmer.FirstName, farmer.Surname
         FROM user
         JOIN farmer ON user.UserID = farmer.UserID
-        WHERE (user.UName = ? OR farmer.RSBSA_Number = ?) AND farmer.is_active = 1
+        WHERE (user.UName = ? OR farmer.RSBSA_Number = ?)
+          AND farmer.is_active = 1
+          AND farmer.FarmerStatus <> 'Deceased'
+        ORDER BY (user.UName = ?) DESC
     ");
-    $stmt->bind_param("ss", $user, $user);
+    $stmt->bind_param("sss", $user, $user, $user);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        if (password_verify($pass, $row['UPass'])) {
-            session_regenerate_id(true);
-            // Set session variables
-            $_SESSION['UserID'] = $row['UserID'];
-            $_SESSION['UName'] = $row['UName'];
-            $_SESSION['ProfileImage'] = $row['ProfileImage'];
-            $_SESSION['FirstName'] = $row['FirstName'];
-            $_SESSION['Surname'] = $row['Surname'];
-
-            header("Location: ../farmersDashboard/home/home.php");
-            exit();
-        } else {
-            echo "<script>alert('Invalid username or password.'); window.location.href='farmerlogin.html';</script>";
+    $row = null;
+    while ($candidate = $result->fetch_assoc()) {
+        if (password_verify($pass, $candidate['UPass'])) {
+            $row = $candidate;
+            break;
         }
-    } else {
-        echo "<script>alert('Invalid username or password.'); window.location.href='farmerlogin.html';</script>";
     }
+
+    if ($row !== null) {
+        session_regenerate_id(true);
+        $_SESSION['UserID'] = $row['UserID'];
+        $_SESSION['UName'] = $row['UName'];
+        $_SESSION['ProfileImage'] = $row['ProfileImage'];
+        $_SESSION['FirstName'] = $row['FirstName'];
+        $_SESSION['Surname'] = $row['Surname'];
+
+        header("Location: ../farmersDashboard/home/home.php");
+        exit();
+    }
+
+    echo "<script>alert('Invalid username or password.'); window.location.href='farmerlogin.html';</script>";
     $stmt->close();
 }
 $conn->close();

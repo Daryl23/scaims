@@ -232,11 +232,14 @@ if ($filter === 'Farmer') {
             $status = $row['is_active'] ? 'Active' : 'Inactive';
             $statusBtnText = $row['is_active'] ? 'Deactivate' : 'Activate';
             $btnClass = $row['is_active'] ? 'deactivate' : 'activate';
+            $adminName = scaims_h($row['Name']);
+            $adminId = scaims_h($row['AdminID']);
+            $isActive = (int) $row['is_active'];
             $output .= "<tr>
-                        <td>{$row['Name']}</td>
+                        <td>{$adminName}</td>
                         <td>{$status}</td>
                         <td>
-                            <button class='toggle-status-btn {$btnClass}' data-id='{$row['AdminID']}' data-status='{$row['is_active']}'>{$statusBtnText}</button>
+                            <button class='toggle-status-btn {$btnClass}' data-id='{$adminId}' data-status='{$isActive}'>{$statusBtnText}</button>
                         </td>
                     </tr>";
         }
@@ -265,16 +268,30 @@ if (isset($stmt)) {
 $conn->close();
 
 // Helper function to build table rows
+function scaims_h($value): string {
+    return htmlspecialchars((string) ($value ?? ''), ENT_QUOTES, 'UTF-8');
+}
+
 function buildTableRow($row, $canValidate = false) {
     $status = $row['is_active'] ? 'Active' : 'Inactive';
     $statusBtnText = $row['is_active'] ? 'Deactivate' : 'Activate';
     $btnClass = $row['is_active'] ? 'deactivate' : 'activate';
 
+    // Farmer fields come from public self-registration, so every value is
+    // escaped before it reaches the admin page (prevents stored XSS).
+    $farmerId = (int) $row['FarmerID'];
+    $isActive = (int) $row['is_active'];
+    $name = scaims_h($row['Name']);
+    $contactNo = scaims_h($row['ContactNo']);
+    $barangay = scaims_h(ucfirst(strtolower((string) $row['Barangay'])));
+    $registrationDate = scaims_h($row['RegistrationDate']);
+    $rsbsaNumber = scaims_h($row['RSBSA_Number']);
+
     $farmerStatus = $row['FarmerStatus'] ?? 'Active';
     $isValidated = !empty($row['IsValidated']);
 
     if ($canValidate) {
-        $statusSelect = "<select class='farmer-status-select' data-id='{$row['FarmerID']}'>";
+        $statusSelect = "<select class='farmer-status-select' data-id='{$farmerId}'>";
         foreach (['Active', 'Inactive', 'Deceased'] as $option) {
             $selected = $option === $farmerStatus ? ' selected' : '';
             $statusSelect .= "<option value='{$option}'{$selected}>{$option}</option>";
@@ -283,28 +300,28 @@ function buildTableRow($row, $canValidate = false) {
 
         $validateBtnText = $isValidated ? 'Unvalidate' : 'Validate';
         $validateBtnClass = $isValidated ? 'unvalidate-btn' : 'validate-btn';
-        $validateCell = "<button class='{$validateBtnClass}' data-id='{$row['FarmerID']}' data-action='" . ($isValidated ? 'unvalidate' : 'validate') . "'>{$validateBtnText}</button>";
+        $validateCell = "<button class='{$validateBtnClass}' data-id='{$farmerId}' data-action='" . ($isValidated ? 'unvalidate' : 'validate') . "'>{$validateBtnText}</button>";
     } else {
-        $statusSelect = htmlspecialchars($farmerStatus);
+        $statusSelect = scaims_h($farmerStatus);
         $validateCell = $isValidated ? "<span class='validated-badge'>Validated</span>" : "<span class='not-validated-badge'>Not validated</span>";
     }
 
-    $landTenure = htmlspecialchars($row['LandTenure'] ?? 'Landowner');
+    $landTenure = scaims_h($row['LandTenure'] ?? 'Landowner');
 
     return "<tr>
-            <td>{$row['Name']}</td>
-            <td>{$row['ContactNo']}</td>
-            <td>" . ucfirst(strtolower($row['Barangay'])) . "</td>
-            <td>{$row['RegistrationDate']}</td>
+            <td>{$name}</td>
+            <td>{$contactNo}</td>
+            <td>{$barangay}</td>
+            <td>{$registrationDate}</td>
             <td>{$status}</td>
             <td>{$statusSelect}</td>
             <td>{$landTenure}</td>
-            <td>{$row['RSBSA_Number']}</td>
+            <td>{$rsbsaNumber}</td>
             <td>{$validateCell}</td>
             <td>
                 <div class='action-buttons'>
-                    <button class='edit-btn' data-id='{$row['FarmerID']}'>Edit</button>
-                    <button class='toggle-status-btn {$btnClass}' data-id='{$row['FarmerID']}' data-status='{$row['is_active']}'>{$statusBtnText}</button>
+                    <button class='edit-btn' data-id='{$farmerId}'>Edit</button>
+                    <button class='toggle-status-btn {$btnClass}' data-id='{$farmerId}' data-status='{$isActive}'>{$statusBtnText}</button>
                 </div>
             </td>
         </tr>";

@@ -76,12 +76,17 @@ if (!function_exists('scaims_require_admin')) {
             scaims_deny_admin_access($loginPath, $isXhr, 'Not signed in.');
         }
 
-        // Re-check on every request (not just at login) so a deactivated or
-        // offboarded admin's existing session stops working immediately.
-        if (!scaims_admin_still_active((string) $_SESSION['AdminID'])) {
+        // Re-check on every request (not just at login) so a deactivated,
+        // offboarded, or demoted admin's existing session changes immediately.
+        $account = scaims_admin_account((string) $_SESSION['AdminID']);
+        if ($account === null || (int) $account['is_active'] !== 1) {
             scaims_session_destroy();
             scaims_deny_admin_access($loginPath, $isXhr, 'This account has been deactivated.');
         }
+
+        $currentRole = scaims_normalize_admin_role($account['AdminRole'] ?? 'admin');
+        $_SESSION['AdminRole'] = $currentRole;
+        $_SESSION['IsSuperAdmin'] = $currentRole === 'super_admin';
 
         if (!$allowExpiredPassword && scaims_admin_password_expired((string) $_SESSION['AdminID'])) {
             $changePasswordPath = preg_replace('#adminLogin/adminLogin\.html$#', 'adminLogin/changePassword.html', $loginPath);
@@ -105,29 +110,29 @@ if (!function_exists('scaims_deny_admin_access')) {
     }
 }
 
-if (!function_exists('scaims_admin_still_active')) {
-    function scaims_admin_still_active(string $adminId): bool
+if (!function_exists('scaims_admin_account')) {
+    // One lookup per request, shared by the active, role, and expiry checks.
+    function scaims_admin_account(string $adminId): ?array
     {
-        $conn = scaims_db_mysqli();
-        $stmt = $conn->prepare('SELECT is_active FROM admin WHERE AdminID = ?');
-        $stmt->bind_param('s', $adminId);
-        $stmt->execute();
-        $row = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
+        static $cache = [];
+        if (!array_key_exists($adminId, $cache)) {
+            $conn = scaims_db_mysqli();
+            $stmt = $conn->prepare('SELECT is_active, AdminRole, PasswordChangedAt FROM admin WHERE AdminID = ?');
+            $stmt->bind_param('s', $adminId);
+            $stmt->execute();
+            $cache[$adminId] = $stmt->get_result()->fetch_assoc() ?: null;
+            $stmt->close();
+            $conn->close();
+        }
 
-        return !empty($row) && (int) $row['is_active'] === 1;
+        return $cache[$adminId];
     }
 }
 
 if (!function_exists('scaims_admin_password_expired')) {
     function scaims_admin_password_expired(string $adminId): bool
     {
-        $conn = scaims_db_mysqli();
-        $stmt = $conn->prepare('SELECT PasswordChangedAt FROM admin WHERE AdminID = ?');
-        $stmt->bind_param('s', $adminId);
-        $stmt->execute();
-        $row = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
+        $row = scaims_admin_account($adminId);
 
         if (empty($row) || empty($row['PasswordChangedAt'])) {
             return true;
