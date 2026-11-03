@@ -11,6 +11,12 @@ if (!$userId || !$userType) {
     exit;
 }
 
+if ($userType !== 'Farmer' && !scaims_is_super_admin()) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Only a superadmin can deactivate an admin account.']);
+    exit;
+}
+
 $table = $userType === 'Farmer' ? 'farmer' : 'admin';
 $idField = $userType === 'Farmer' ? 'FarmerID' : 'AdminID';
 

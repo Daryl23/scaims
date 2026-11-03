@@ -185,6 +185,8 @@ if ($filter === 'Farmer') {
     }
     $output .= '</div>';
 
+} elseif (!scaims_is_super_admin()) {
+    $output = '<div class="registration-section"><div class="registration-header">System Administrators</div><div class="no-records">Only a superadmin can view the administrator list.</div></div>';
 } else {
     // Base query for admins (no sorting needed)
     if (!empty($search)) {
@@ -257,7 +259,9 @@ echo json_encode([
     'oldTotalPages' => ceil(($counts['old_count'] ?? 0) / $usersPerPage)
 ]);
 
-$stmt->close();
+if (isset($stmt)) {
+    $stmt->close();
+}
 $conn->close();
 
 // Helper function to build table rows

@@ -10,6 +10,7 @@ CREATE TABLE `admin` (
   `AdminID` varchar(234) NOT NULL,
   `AdminName` varchar(234) NOT NULL,
   `AdminPass` varchar(225) NOT NULL,
+  `PasswordChangedAt` datetime DEFAULT NULL,
   `AdminRole` varchar(32) NOT NULL DEFAULT 'admin',
   `is_active` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`AdminID`),

@@ -50,29 +50,53 @@ if (!function_exists('scaims_is_super_admin')) {
     }
 }
 
+if (!defined('SCAIMS_PASSWORD_MAX_AGE_DAYS')) {
+    define('SCAIMS_PASSWORD_MAX_AGE_DAYS', 90);
+}
+
 if (!function_exists('scaims_require_admin')) {
     /**
      * Gate an admin page or endpoint behind a signed-in admin session.
      *
      * Pages get redirected to the admin login; XHR and export endpoints
      * get a 401 instead, so the calling script sees a clear failure
-     * rather than a login page parsed as data.
+     * rather than a login page parsed as data. Pass $allowExpiredPassword
+     * true only from the change-password page/endpoint itself, so an
+     * admin with an expired password can still reach the one page that
+     * lets them fix it.
      */
-    function scaims_require_admin(string $loginPath = '../../adminLogin/adminLogin.html'): void
+    function scaims_require_admin(string $loginPath = '../../adminLogin/adminLogin.html', bool $allowExpiredPassword = false): void
     {
         scaims_session_start();
-
-        if (!empty($_SESSION['AdminID'])) {
-            return;
-        }
 
         $isXhr = strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest'
             || strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json') !== false;
 
+        if (empty($_SESSION['AdminID'])) {
+            scaims_deny_admin_access($loginPath, $isXhr, 'Not signed in.');
+        }
+
+        // Re-check on every request (not just at login) so a deactivated or
+        // offboarded admin's existing session stops working immediately.
+        if (!scaims_admin_still_active((string) $_SESSION['AdminID'])) {
+            scaims_session_destroy();
+            scaims_deny_admin_access($loginPath, $isXhr, 'This account has been deactivated.');
+        }
+
+        if (!$allowExpiredPassword && scaims_admin_password_expired((string) $_SESSION['AdminID'])) {
+            $changePasswordPath = preg_replace('#adminLogin/adminLogin\.html$#', 'adminLogin/changePassword.html', $loginPath);
+            scaims_deny_admin_access($changePasswordPath ?: $loginPath, $isXhr, 'Your password has expired and must be changed.');
+        }
+    }
+}
+
+if (!function_exists('scaims_deny_admin_access')) {
+    function scaims_deny_admin_access(string $loginPath, bool $isXhr, string $message): void
+    {
         if ($isXhr) {
             http_response_code(401);
             header('Content-Type: application/json');
-            echo json_encode(['error' => 'Not signed in.']);
+            echo json_encode(['error' => $message]);
             exit();
         }
 
@@ -81,15 +105,45 @@ if (!function_exists('scaims_require_admin')) {
     }
 }
 
+if (!function_exists('scaims_admin_still_active')) {
+    function scaims_admin_still_active(string $adminId): bool
+    {
+        $conn = scaims_db_mysqli();
+        $stmt = $conn->prepare('SELECT is_active FROM admin WHERE AdminID = ?');
+        $stmt->bind_param('s', $adminId);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        return !empty($row) && (int) $row['is_active'] === 1;
+    }
+}
+
+if (!function_exists('scaims_admin_password_expired')) {
+    function scaims_admin_password_expired(string $adminId): bool
+    {
+        $conn = scaims_db_mysqli();
+        $stmt = $conn->prepare('SELECT PasswordChangedAt FROM admin WHERE AdminID = ?');
+        $stmt->bind_param('s', $adminId);
+        $stmt->execute();
+        $row = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+
+        if (empty($row) || empty($row['PasswordChangedAt'])) {
+            return true;
+        }
+
+        $changedAt = strtotime($row['PasswordChangedAt']);
+        $maxAgeSeconds = SCAIMS_PASSWORD_MAX_AGE_DAYS * 86400;
+
+        return $changedAt === false || (time() - $changedAt) > $maxAgeSeconds;
+    }
+}
+
 if (!function_exists('scaims_require_super_admin')) {
     function scaims_require_super_admin(string $fallbackPath = '../home/home.php'): void
     {
-        scaims_session_start();
-
-        if (empty($_SESSION['AdminID'])) {
-            header('Location: ../../adminLogin/adminLogin.html');
-            exit();
-        }
+        scaims_require_admin('../../adminLogin/adminLogin.html');
 
         if (!scaims_is_super_admin()) {
             header('Location: ' . $fallbackPath);
