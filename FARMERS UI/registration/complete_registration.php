@@ -17,10 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $data = [];
-foreach (['surname', 'firstName', 'middleName', 'extensionName', 'dob', 'sex', 'contactNumber', 'address', 'barangay', 'rsbsaNumber', 'username'] as $field) {
+foreach (['surname', 'firstName', 'middleName', 'extensionName', 'dob', 'sex', 'contactNumber', 'address', 'barangay', 'rsbsaNumber', 'landTenure', 'username'] as $field) {
     $data[$field] = isset($_POST[$field]) && is_string($_POST[$field]) ? trim($_POST[$field]) : '';
 }
-foreach (['surname', 'firstName', 'dob', 'sex', 'contactNumber', 'address', 'barangay', 'rsbsaNumber', 'username'] as $field) {
+foreach (['surname', 'firstName', 'dob', 'sex', 'contactNumber', 'address', 'barangay', 'rsbsaNumber', 'landTenure', 'username'] as $field) {
     if ($data[$field] === '') registration_response(422, 'Please complete all required fields in both parts.');
 }
 if (($_POST['terms'] ?? '') !== 'on') registration_response(422, 'Please agree to the Terms of Service and Privacy Policy.');
@@ -37,6 +37,9 @@ if (!in_array($data['sex'], ['male', 'female', 'other'], true)
     || !preg_match('/^09\d{9}$/', $data['contactNumber'])
     || !preg_match('/^\d{2,4}-\d{2,4}-\d{2,4}-\d{2,4}-[A-Za-z0-9]{4,10}$/', $data['rsbsaNumber'])) {
     registration_response(422, 'Please check your sex, contact number, and RSBSA number in Part 1.');
+}
+if (!in_array($data['landTenure'], ['Landowner', 'Tenant', 'Farm Worker'], true)) {
+    registration_response(422, 'Please select a valid Land Tenure Status in Part 1.');
 }
 $rawPassword = isset($_POST['password']) && is_string($_POST['password']) ? $_POST['password'] : '';
 // Keep password normalization consistent with the existing login endpoint.
@@ -73,8 +76,8 @@ try {
     $insertUser = $db->prepare('INSERT INTO user (UName, UPass, UserRole, creationDate, ProfileImage) VALUES (?, ?, ?, NOW(), ?)');
     $insertUser->execute([$data['username'], password_hash($password, PASSWORD_BCRYPT), 'farmer', $image]);
     $userID = $db->lastInsertId();
-    $insertFarmer = $db->prepare('INSERT INTO farmer (FirstName, Surname, MiddleName, Suffix, Sex, BirthDate, ContactNo, Address, Barangay, RSBSA_Number, registration_date, UserID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)');
-    $insertFarmer->execute([$data['firstName'], $data['surname'], $data['middleName'], $data['extensionName'], $data['sex'], $data['dob'], $data['contactNumber'], $data['address'], $data['barangay'], $data['rsbsaNumber'], $userID]);
+    $insertFarmer = $db->prepare('INSERT INTO farmer (FirstName, Surname, MiddleName, Suffix, Sex, BirthDate, ContactNo, Address, Barangay, RSBSA_Number, LandTenure, registration_date, UserID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?)');
+    $insertFarmer->execute([$data['firstName'], $data['surname'], $data['middleName'], $data['extensionName'], $data['sex'], $data['dob'], $data['contactNumber'], $data['address'], $data['barangay'], $data['rsbsaNumber'], $data['landTenure'], $userID]);
     $db->commit();
     registration_response(200, 'Account successfully created.', true);
 } catch (Throwable $failure) {

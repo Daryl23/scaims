@@ -185,6 +185,7 @@ $(document).ready(function () {
                 $('#editUsername').val(farmer.UName);
                 $('#editPassword').val('');
                 $('#editRsbsaNumber').val(farmer.RSBSA_Number);
+                $('#editLandTenure').val(farmer.LandTenure || 'Landowner');
                 $('.modal-overlay').fadeIn();
             }
         });
@@ -270,6 +271,14 @@ $(document).ready(function () {
                                     <label for="rsbsaNumber">RSBSA Number (if registered)</label>
                                     <input type="text" id="editRsbsaNumber" name="rsbsaNumber" required>
                                 </div>
+                                <div>
+                                    <label for="landTenure">Land Tenure Status</label>
+                                    <select id="editLandTenure" name="landTenure" required>
+                                        <option value="Landowner">Landowner</option>
+                                        <option value="Tenant">Tenant</option>
+                                        <option value="Farm Worker">Farm Worker</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div>
@@ -330,9 +339,10 @@ $(document).ready(function () {
     $(document).on('click', '.modal-submit-btn', function () {
         const rsbsaNumber = $('#editRsbsaNumber').val();
         
-        // Validate RSBSA format before submitting
-        if (rsbsaNumber && !rsbsaNumber.match(/^\d{2}-\d{2}-\d{2}-\d{3}-\d{6}$/)) {
-            alert('Please enter a valid RSBSA number in the format: XX-XX-XX-XXX-XXXXXX');
+        // Validate RSBSA format before submitting (accepts both the old numeric
+        // format and the newer alphanumeric format)
+        if (rsbsaNumber && !rsbsaNumber.match(/^\d{2,4}-\d{2,4}-\d{2,4}-\d{2,4}-[A-Za-z0-9]{4,10}$/)) {
+            alert('Please enter a valid RSBSA number, e.g. 04-10-14-003-123456 or 04-010-14-0123-289AbYQ');
             return;
         }
 
@@ -456,20 +466,16 @@ $(document).ready(function () {
         const input = $(this);
         const value = input.val();
         
-        // Auto-format as user types
-        let formatted = value.replace(/\D/g, ''); // Remove non-digits
-        if (formatted.length > 2) formatted = formatted.slice(0,2) + '-' + formatted.slice(2);
-        if (formatted.length > 5) formatted = formatted.slice(0,5) + '-' + formatted.slice(5);
-        if (formatted.length > 8) formatted = formatted.slice(0,8) + '-' + formatted.slice(8);
-        if (formatted.length > 12) formatted = formatted.slice(0,12) + '-' + formatted.slice(12);
-        if (formatted.length > 19) formatted = formatted.slice(0,19);
-        
+        // Allow digits, letters, and hyphens (old format is numeric-only,
+        // new RSBSA format ends in an alphanumeric segment)
+        let formatted = value.replace(/[^A-Za-z0-9-]/g, '').slice(0, 25);
+
         if (value !== formatted) {
             input.val(formatted);
         }
-        
-        // Validate format
-        const isValid = /^\d{2}-\d{2}-\d{2}-\d{3}-\d{6}$/.test(formatted);
+
+        // Validate format: accepts both the old numeric and new alphanumeric RSBSA formats
+        const isValid = /^\d{2,4}-\d{2,4}-\d{2,4}-\d{2,4}-[A-Za-z0-9]{4,10}$/.test(formatted);
         
         // Visual feedback
         if (formatted.length > 0) {

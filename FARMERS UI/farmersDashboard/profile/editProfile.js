@@ -148,11 +148,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return true;
         }
         
-        // Check format: XX-XX-XX-XXX-XXXXXX (where X are numbers)
-        const rsbsaFormat = /^\d{2}-\d{2}-\d{2}-\d{3}-\d{6}$/;
-        
+        // Accepts both the old numeric format and the newer alphanumeric format
+        const rsbsaFormat = /^\d{2,4}-\d{2,4}-\d{2,4}-\d{2,4}-[A-Za-z0-9]{4,10}$/;
+
         if (!rsbsaFormat.test(rsbsaValue)) {
-            alert('RSBSA Number should follow the format: XX-XX-XX-XXX-XXXXXX\nExample: 12-34-56-789-012345');
+            alert('RSBSA Number format is invalid.\nExamples: 12-34-56-789-012345 or 04-010-14-0123-289AbYQ');
             rsbsaNumber.focus();
             return false;
         }

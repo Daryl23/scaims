@@ -25,6 +25,10 @@ $address = $_POST['address'];
 $username = $_POST['username'];
 $password = $_POST['password'];
 $rsbsaNumber = $_POST['rsbsaNumber'];
+$landTenure = $_POST['landTenure'] ?? 'Landowner';
+if (!in_array($landTenure, ['Landowner', 'Tenant', 'Farm Worker'], true)) {
+    die(json_encode(['success' => false, 'message' => 'Invalid Land Tenure Status.']));
+}
 
 // A blank password field means "leave the current password alone".
 $checkSql = "SELECT u.UName, u.UPass FROM user u 
@@ -142,12 +146,13 @@ try {
                 f.BirthDate = ?, 
                 f.ContactNo = ?, 
                 f.Barangay = ?, 
-                f.Address = ?, 
-                f.RSBSA_Number = ?
+                f.Address = ?,
+                f.RSBSA_Number = ?,
+                f.LandTenure = ?
             WHERE f.FarmerID = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssssssi", $firstName, $surname, $middleName, $suffix, $sex, $birthdate, $contactNo, $barangay, $address, $rsbsaNumber, $farmerId);
+    $stmt->bind_param("sssssssssssi", $firstName, $surname, $middleName, $suffix, $sex, $birthdate, $contactNo, $barangay, $address, $rsbsaNumber, $landTenure, $farmerId);
 
     $success = $stmt->execute();
 

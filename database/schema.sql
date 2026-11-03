@@ -149,6 +149,7 @@ CREATE TABLE `farmer` (
   `ValidatedBy` varchar(234) DEFAULT NULL,
   `ValidatedAt` datetime DEFAULT NULL,
   `FarmerStatus` enum('Active','Inactive','Deceased') NOT NULL DEFAULT 'Active',
+  `LandTenure` enum('Landowner','Tenant','Farm Worker') NOT NULL DEFAULT 'Landowner',
   PRIMARY KEY (`FarmerID`),
   KEY `fk_user_farmer` (`UserID`),
   CONSTRAINT `fk_user_farmer` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE

@@ -19,14 +19,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Your existing login validation logic
+    // Login identifier can be the account username or the farmer's RSBSA number
     $stmt = $conn->prepare("
-        SELECT user.UserID, user.UName, user.UPass, user.ProfileImage, farmer.FirstName, farmer.Surname 
-        FROM user 
-        JOIN farmer ON user.UserID = farmer.UserID 
-        WHERE user.UName = ? AND farmer.is_active = 1
+        SELECT user.UserID, user.UName, user.UPass, user.ProfileImage, farmer.FirstName, farmer.Surname
+        FROM user
+        JOIN farmer ON user.UserID = farmer.UserID
+        WHERE (user.UName = ? OR farmer.RSBSA_Number = ?) AND farmer.is_active = 1
     ");
-    $stmt->bind_param("s", $user);
+    $stmt->bind_param("ss", $user, $user);
     $stmt->execute();
     $result = $stmt->get_result();
 

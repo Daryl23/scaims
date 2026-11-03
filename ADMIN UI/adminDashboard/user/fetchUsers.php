@@ -75,7 +75,8 @@ if ($filter === 'Farmer') {
             f.is_active,
             f.RSBSA_Number,
             f.IsValidated,
-            f.FarmerStatus
+            f.FarmerStatus,
+            f.LandTenure
         FROM farmer f
         WHERE registration_date >= DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY)" . $whereSQL . "
         ORDER BY f.registration_date DESC
@@ -103,7 +104,8 @@ if ($filter === 'Farmer') {
             f.is_active,
             f.RSBSA_Number,
             f.IsValidated,
-            f.FarmerStatus
+            f.FarmerStatus,
+            f.LandTenure
         FROM farmer f
         WHERE registration_date < DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY)" . $whereSQL . "
         ORDER BY f.registration_date DESC
@@ -129,6 +131,7 @@ if ($filter === 'Farmer') {
                     <th>Registration Date</th>
                     <th>Status</th>
                     <th>Farmer Status</th>
+                    <th>Land Tenure</th>
                     <th>RSBSA Number</th>
                     <th>Validated</th>
                     <th>Action</th>
@@ -161,6 +164,7 @@ if ($filter === 'Farmer') {
                     <th>Registration Date</th>
                     <th>Status</th>
                     <th>Farmer Status</th>
+                    <th>Land Tenure</th>
                     <th>RSBSA Number</th>
                     <th>Validated</th>
                     <th>Action</th>
@@ -281,6 +285,8 @@ function buildTableRow($row, $canValidate = false) {
         $validateCell = $isValidated ? "<span class='validated-badge'>Validated</span>" : "<span class='not-validated-badge'>Not validated</span>";
     }
 
+    $landTenure = htmlspecialchars($row['LandTenure'] ?? 'Landowner');
+
     return "<tr>
             <td>{$row['Name']}</td>
             <td>{$row['ContactNo']}</td>
@@ -288,6 +294,7 @@ function buildTableRow($row, $canValidate = false) {
             <td>{$row['RegistrationDate']}</td>
             <td>{$status}</td>
             <td>{$statusSelect}</td>
+            <td>{$landTenure}</td>
             <td>{$row['RSBSA_Number']}</td>
             <td>{$validateCell}</td>
             <td>
