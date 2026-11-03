@@ -14,7 +14,8 @@ CREATE TABLE `admin` (
   `AdminRole` varchar(32) NOT NULL DEFAULT 'admin',
   `is_active` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`AdminID`),
-  KEY `idx_admin_name` (`AdminName`)
+  KEY `idx_admin_name` (`AdminName`),
+  UNIQUE KEY `uq_admin_name` (`AdminName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -151,8 +152,10 @@ CREATE TABLE `farmer` (
   `ValidatedAt` datetime DEFAULT NULL,
   `FarmerStatus` enum('Active','Inactive','Deceased') NOT NULL DEFAULT 'Active',
   `LandTenure` enum('Landowner','Tenant','Farm Worker') NOT NULL DEFAULT 'Landowner',
+  `RSBSA_Unique` varchar(50) GENERATED ALWAYS AS (nullif(`RSBSA_Number`,'')) STORED,
   PRIMARY KEY (`FarmerID`),
   KEY `fk_user_farmer` (`UserID`),
+  UNIQUE KEY `uq_farmer_rsbsa` (`RSBSA_Unique`),
   CONSTRAINT `fk_user_farmer` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -249,7 +252,8 @@ CREATE TABLE `user` (
   `ProfileImage` longblob DEFAULT NULL,
   `plain_password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`UserID`),
-  KEY `idx_user_username` (`UName`)
+  KEY `idx_user_username` (`UName`),
+  UNIQUE KEY `uq_user_uname` (`UName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 SET FOREIGN_KEY_CHECKS=1;

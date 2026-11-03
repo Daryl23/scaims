@@ -88,5 +88,10 @@ try {
 } catch (Throwable $failure) {
     if ($db && $db->inTransaction()) $db->rollBack();
     error_log('Registration failed: ' . $failure->getMessage());
+    // 1062 = a unique key rejected the row, e.g. two people registering the
+    // same username or RSBSA number at the same moment.
+    if ($failure instanceof PDOException && (int) ($failure->errorInfo[1] ?? 0) === 1062) {
+        registration_response(409, 'That username or RSBSA Number was just registered. Please check it and try again.');
+    }
     registration_response(500, 'Unable to create your account. Your entries are still here; please try again.');
 }

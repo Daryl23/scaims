@@ -182,7 +182,11 @@ try {
     }
 } catch (Exception $e) {
     $conn->rollback();
-    die(json_encode(['success' => false, 'message' => 'Failed to update farmer details: ' . $e->getMessage()]));
+    error_log('SCAIMS updateFarmer failed: ' . $e->getMessage());
+    if ($e instanceof mysqli_sql_exception && $e->getCode() === 1062) {
+        die(json_encode(['success' => false, 'message' => 'That RSBSA number or username is already registered to another account.']));
+    }
+    die(json_encode(['success' => false, 'message' => 'Failed to update farmer details. Please try again.']));
 } finally {
     if (isset($stmt)) $stmt->close();
     if (isset($conn)) $conn->close();
