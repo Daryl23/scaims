@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="../../shared/app-path.js"></script>
+  <script src="../../shared/pwa-register.js" defer></script>
   <script src="../../shared/public-nav-config.js"></script>
   <script src="../../shared/public-nav.js?v=20260908-2" defer></script>
   <script>
@@ -280,6 +281,22 @@
             </p>
 
           </form>
+
+          <button type="button" id="installFarmerAppBtn" hidden
+            class="w-full mt-4 border-2 border-olive/20 text-olive py-3 rounded-xl font-bold text-sm hover:bg-olive hover:text-white hover:border-olive transition-all flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
+            Install Farmer App
+          </button>
+          <script>
+            window.addEventListener('scaims:pwa-installable', function () {
+              var btn = document.getElementById('installFarmerAppBtn');
+              if (!btn) return;
+              btn.hidden = false;
+              btn.addEventListener('click', function () {
+                if (window.scaimsInstallFarmerApp) window.scaimsInstallFarmerApp();
+              });
+            });
+          </script>
         </div>
 
         <!-- Right panel — teal branding -->

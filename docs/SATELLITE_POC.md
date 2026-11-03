@@ -176,11 +176,44 @@ Classification bands (parcel-mean NDVI delta, current minus previous):
 
 This compares the **parcel-mean** NDVI from the Statistical API, not a per-pixel raster:
 the provider integration only requests aggregated statistics (mean/min/max/sample count),
-so it never downloads per-pixel imagery. A true pixel-by-pixel week-over-week map would
-require switching to the Sentinel Hub Process API (or downloading raw band rasters) plus
-a raster/array dependency, which is intentionally out of scope for this dependency-free,
-standard-library-only script. Both input files must be successful (`"ok": true`) results;
-comparing against a failed observation returns an `invalid_input` failure.
+so it never downloads per-pixel imagery. Both input files must be successful
+(`"ok": true`) results; comparing against a failed observation returns an
+`invalid_input` failure.
+
+### Per-pixel scaffolding (not live, not wired up)
+
+The pieces below exist so that true pixel-by-pixel comparison can be built later,
+once real Copernicus credentials and parcel boundary data exist. None of this
+has been exercised against a live API — there is nothing to test it against yet.
+
+- `build_process_api_request(polygon, date, width=None, height=None)` builds a
+  Sentinel Hub **Process API** request (different endpoint from the Statistical
+  API above) using the same cloud/shadow/snow-masked NDVI formula, but asking
+  for a raster image instead of aggregated stats. Preview one without sending
+  it: `python3 analyze_ndvi.py --process-raster 2026-09-29 parcel.geojson` —
+  this validates the polygon/date and prints the request JSON, nothing more.
+- `classify_pixel_grid(previous_grid, current_grid)` classifies two equal-shaped
+  2D NDVI grids pixel-by-pixel, reusing the exact same bands/thresholds as
+  `classify_ndvi_change()` so a parcel-mean and a per-pixel classification can
+  never disagree about what counts as "stable".
+
+**What's still missing before any of this is real:**
+
+1. Real `COPERNICUS_CLIENT_ID`/`COPERNICUS_CLIENT_SECRET` credentials to call
+   the Process API at all.
+2. A stored parcel boundary polygon per parcel (`parcel_details.ParcelBoundary`,
+   added as scaffolding — currently `NULL` for every row; nothing populates it).
+3. Decoding the Process API's actual response. It returns an image
+   (`image/tiff` here), not JSON — turning that into the numeric grid
+   `classify_pixel_grid()` expects requires an image/array library. Which one
+   (Pillow, tifffile, numpy, ...) is deliberately not chosen yet: this
+   dependency-free script shouldn't acquire one speculatively, and the right
+   choice depends on the actual response format a credentialed call returns.
+4. A `satellite_readings` table (also added as scaffolding, empty) to persist
+   readings over time — without it, "week-over-week" only ever means two
+   files a human supplies by hand, same as `--compare` today.
+5. A scheduled job to populate (4), and a server-side adapter to invoke any
+   of this safely (see "next integration step" below — still applies).
 
 ## Limitations and next integration step
 

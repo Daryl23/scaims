@@ -14,6 +14,7 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmers Dashboard</title>
+    <script src="../../../shared/pwa-register.js" defer></script>
     <link rel="stylesheet" href="../shared/dashboard-shell.css">
     <link rel="stylesheet" href="home.css?v=<?php echo $homeCssVersion; ?>">
     <link rel="stylesheet" href="../../../shared/report-image-capture.css?v=<?php echo $sharedImageCssVersion; ?>">
