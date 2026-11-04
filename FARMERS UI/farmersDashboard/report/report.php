@@ -195,6 +195,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmers Reports</title>
+    <script src="../../../shared/pwa-register.js?v=7.0.0" defer></script>
     <link rel="stylesheet" href="../shared/dashboard-shell.css">
     <link rel="stylesheet" href="reps.css?v=<?php echo $reportCssVersion; ?>">
     <link rel="stylesheet" href="../../../shared/report-image-capture.css?v=<?php echo $sharedImageCssVersion; ?>">
@@ -493,7 +494,7 @@ try {
     </div>
 
     <script src="../../../shared/i18n.js"></script>
-    <script src="../shared/dashboard-language.js"></script>
+    <script src="../shared/dashboard-language.js?v=7.0.0"></script>
     <script src="../../../shared/dashboard-shell.js"></script>
     <script src="../../../shared/app-path.js"></script>
     <script src="../../../shared/crop-catalog.js"></script>

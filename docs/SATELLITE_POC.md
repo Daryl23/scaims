@@ -141,6 +141,80 @@ The tests validate polygons, verify construction of spatial/date/cloud requests 
 
 Live test status on 2026-10-03: **not run because `COPERNICUS_CLIENT_ID` and `COPERNICUS_CLIENT_SECRET` were not configured in the execution environment.** No NDVI value has been fabricated. The measured local validation/missing-credential path completed in approximately 0.001 seconds; network and raster-processing runtime remains unmeasured until credentials are supplied, and the live command will report it as `execution_seconds`.
 
+## Week-over-week change classification
+
+`--compare PREVIOUS_JSON CURRENT_JSON` skips a live analysis and instead classifies the
+change between two previously saved `analyze_ndvi.py` JSON results (e.g. two different
+weeks for the same parcel) by their `ndvi_mean`:
+
+```powershell
+python scripts/satellite/analyze_ndvi.py --compare previous.json current.json
+```
+
+```json
+{
+  "ok": true,
+  "provider": "Copernicus Data Space Ecosystem / Sentinel-2 L2A",
+  "previous_observation_date": "2026-09-22",
+  "current_observation_date": "2026-09-29",
+  "previous_ndvi_mean": 0.6,
+  "current_ndvi_mean": 0.45,
+  "ndvi_change": -0.15,
+  "classification": "significant_decline"
+}
+```
+
+Classification bands (parcel-mean NDVI delta, current minus previous):
+
+| Delta | Classification |
+|---|---|
+| < -0.10 | `significant_decline` |
+| -0.10 to < -0.05 | `slight_decline` |
+| -0.05 to < 0.05 | `stable` |
+| 0.05 to < 0.10 | `slight_improvement` |
+| ≥ 0.10 | `significant_improvement` |
+
+This compares the **parcel-mean** NDVI from the Statistical API, not a per-pixel raster:
+the provider integration only requests aggregated statistics (mean/min/max/sample count),
+so it never downloads per-pixel imagery. Both input files must be successful
+(`"ok": true`) results; comparing against a failed observation returns an
+`invalid_input` failure.
+
+### Per-pixel scaffolding (not live, not wired up)
+
+The pieces below exist so that true pixel-by-pixel comparison can be built later,
+once real Copernicus credentials and parcel boundary data exist. None of this
+has been exercised against a live API — there is nothing to test it against yet.
+
+- `build_process_api_request(polygon, date, width=None, height=None)` builds a
+  Sentinel Hub **Process API** request (different endpoint from the Statistical
+  API above) using the same cloud/shadow/snow-masked NDVI formula, but asking
+  for a raster image instead of aggregated stats. Preview one without sending
+  it: `python3 analyze_ndvi.py --process-raster 2026-09-29 parcel.geojson` —
+  this validates the polygon/date and prints the request JSON, nothing more.
+- `classify_pixel_grid(previous_grid, current_grid)` classifies two equal-shaped
+  2D NDVI grids pixel-by-pixel, reusing the exact same bands/thresholds as
+  `classify_ndvi_change()` so a parcel-mean and a per-pixel classification can
+  never disagree about what counts as "stable".
+
+**What's still missing before any of this is real:**
+
+1. Real `COPERNICUS_CLIENT_ID`/`COPERNICUS_CLIENT_SECRET` credentials to call
+   the Process API at all.
+2. A stored parcel boundary polygon per parcel (`parcel_details.ParcelBoundary`,
+   added as scaffolding — currently `NULL` for every row; nothing populates it).
+3. Decoding the Process API's actual response. It returns an image
+   (`image/tiff` here), not JSON — turning that into the numeric grid
+   `classify_pixel_grid()` expects requires an image/array library. Which one
+   (Pillow, tifffile, numpy, ...) is deliberately not chosen yet: this
+   dependency-free script shouldn't acquire one speculatively, and the right
+   choice depends on the actual response format a credentialed call returns.
+4. A `satellite_readings` table (also added as scaffolding, empty) to persist
+   readings over time — without it, "week-over-week" only ever means two
+   files a human supplies by hand, same as `--compare` today.
+5. A scheduled job to populate (4), and a server-side adapter to invoke any
+   of this safely (see "next integration step" below — still applies).
+
 ## Limitations and next integration step
 
 - Product cloud metadata covers a Sentinel-2 tile, not just the parcel; the additional SCL percentage is an estimate over the parcel.

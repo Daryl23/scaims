@@ -10,10 +10,12 @@ CREATE TABLE `admin` (
   `AdminID` varchar(234) NOT NULL,
   `AdminName` varchar(234) NOT NULL,
   `AdminPass` varchar(225) NOT NULL,
+  `PasswordChangedAt` datetime DEFAULT NULL,
   `AdminRole` varchar(32) NOT NULL DEFAULT 'admin',
   `is_active` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`AdminID`),
-  KEY `idx_admin_name` (`AdminName`)
+  KEY `idx_admin_name` (`AdminName`),
+  UNIQUE KEY `uq_admin_name` (`AdminName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -145,8 +147,15 @@ CREATE TABLE `farmer` (
   `UserID` int(11) DEFAULT NULL,
   `is_active` tinyint(1) DEFAULT 1,
   `RSBSA_Number` varchar(50) DEFAULT NULL,
+  `IsValidated` tinyint(1) NOT NULL DEFAULT 0,
+  `ValidatedBy` varchar(234) DEFAULT NULL,
+  `ValidatedAt` datetime DEFAULT NULL,
+  `FarmerStatus` enum('Active','Inactive','Deceased') NOT NULL DEFAULT 'Active',
+  `LandTenure` enum('Landowner','Tenant','Farm Worker') NOT NULL DEFAULT 'Landowner',
+  `RSBSA_Unique` varchar(50) GENERATED ALWAYS AS (nullif(`RSBSA_Number`,'')) STORED,
   PRIMARY KEY (`FarmerID`),
   KEY `fk_user_farmer` (`UserID`),
+  UNIQUE KEY `uq_farmer_rsbsa` (`RSBSA_Unique`),
   CONSTRAINT `fk_user_farmer` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -189,9 +198,27 @@ CREATE TABLE `parcel_details` (
   `ownership_type` varchar(255) NOT NULL,
   `created_by` varchar(28) NOT NULL,
   `parcel_number` int(11) NOT NULL,
+  `ParcelBoundary` text DEFAULT NULL COMMENT 'GeoJSON Polygon geometry for this parcel, used by the satellite NDVI adapter',
   PRIMARY KEY (`id`),
   KEY `farm_parcel_id` (`farm_parcel_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `satellite_readings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `parcel_detail_id` int(11) NOT NULL,
+  `reading_date` date NOT NULL,
+  `ndvi_mean` decimal(8,6) DEFAULT NULL,
+  `ndvi_min` decimal(8,6) DEFAULT NULL,
+  `ndvi_max` decimal(8,6) DEFAULT NULL,
+  `valid_pixel_count` int(11) DEFAULT NULL,
+  `raw_response` longtext DEFAULT NULL COMMENT 'Full analyze_ndvi.py JSON result for this reading, kept for audit/replay',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `parcel_detail_id` (`parcel_detail_id`),
+  KEY `idx_satellite_readings_parcel_date` (`parcel_detail_id`,`reading_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -225,7 +252,8 @@ CREATE TABLE `user` (
   `ProfileImage` longblob DEFAULT NULL,
   `plain_password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`UserID`),
-  KEY `idx_user_username` (`UName`)
+  KEY `idx_user_username` (`UName`),
+  UNIQUE KEY `uq_user_uname` (`UName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 SET FOREIGN_KEY_CHECKS=1;

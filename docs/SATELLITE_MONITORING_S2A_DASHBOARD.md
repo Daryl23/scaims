@@ -168,3 +168,23 @@ S2B must deliberately add:
 7. verification rules based on reviewed evidence, not an NDVI health diagnosis.
 
 No S2B table, migration, provider request, background job, automation, or notification was implemented in S2A.
+
+### Schema/adapter scaffolding added after S2A (still not wired up)
+
+A later pass added the *shapes* for (1) and (4) above, plus a Process API
+request builder and a pixel classifier function, so the eventual S2B adapter
+work has somewhere to land. None of this is wired into this dashboard, none
+of it has run against a live credentialed call, and the dashboard's behavior
+described above (disabled button, truthful empty states) is unchanged:
+
+- `parcel_details.ParcelBoundary` (migration
+  `database/migrations/2026_11_04_add_satellite_pixel_scaffolding.sql`) — a
+  nullable GeoJSON column, currently `NULL` on every row.
+- `satellite_readings` table (same migration) — empty; nothing writes to it.
+- `scripts/satellite/analyze_ndvi.py`: `build_process_api_request()` and
+  `classify_pixel_grid()`, reachable only via the explicit
+  `--process-raster` CLI flag, which previews a request without sending it.
+  See `docs/SATELLITE_POC.md` for the full list of what's still missing
+  before per-pixel comparison is real (credentials, response decoding, a
+  populated `satellite_readings` table, a scheduled job, and the adapter
+  itself).

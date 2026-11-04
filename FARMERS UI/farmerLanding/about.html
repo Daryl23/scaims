@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APGORRS - About Us</title>
+  <script src="../../shared/app-version.js?v=7.0.0"></script>
+  <title>SCAIMS / APGORRS - About Us</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,7 +77,7 @@
       <div class="reveal space-y-6">
         <span class="inline-flex items-center gap-2 text-harvest font-bold tracking-wider uppercase text-sm">
           <span class="w-8 h-0.5 bg-harvest"></span>
-          About APGORRS
+          About SCAIMS / APGORRS
         </span>
         <h1 class="text-4xl lg:text-5xl font-serif font-bold text-olive leading-tight">
           Information Management<br>
@@ -117,7 +118,7 @@
         <div class="reveal order-2 lg:order-1 flex items-center justify-center" style="transition-delay:0.1s">
           <div class="relative w-full max-w-md">
             <div class="absolute inset-0 bg-gradient-to-br from-harvest/20 to-gold/15 rounded-3xl -rotate-2"></div>
-            <img src="assets/about us/section2.png" alt="About APGORRS"
+            <img src="assets/about us/section2.png" alt="About SCAIMS / APGORRS"
               class="relative rounded-2xl shadow-2xl w-full object-cover border border-white/10">
           </div>
         </div>
@@ -128,13 +129,13 @@
             Our Platform
           </span>
           <h2 class="text-4xl lg:text-5xl font-serif font-bold leading-tight">
-            About <span class="text-gold-light italic">APGORRS</span>
+            About <span class="text-gold-light italic">SCAIMS / APGORRS</span>
           </h2>
           <p class="text-white/80 text-lg leading-relaxed">
             Agricultural Profile Gateway Online Registration and Reporting System (APGORRS) is a specialized platform developed for the monitoring and evaluation of agricultural productivity and output.
           </p>
           <p class="text-white/70 leading-relaxed">
-            It allows for seamless reporting, data collection, and insightful analytics to enhance agricultural performance across Lipa City, Batangas.
+            It allows for seamless reporting, data collection, and insightful analytics to enhance agricultural performance across Lipa City.
           </p>
 
           <!-- Feature bullets -->
@@ -238,15 +239,13 @@
               </svg>
             </div>
             <div>
-              <span class="text-2xl font-bold block">APGORRS</span>
+              <span class="text-xl font-bold block">SCAIMS / APGORRS</span>
               <span class="text-xs text-white/60">Agricultural Profile Gateway</span>
             </div>
           </div>
           <p class="text-white/60 max-w-sm mb-6 leading-relaxed">Agricultural Profile Gateway Online Registration and Reporting System for Lipa City farmers.</p>
           <div class="flex gap-3">
-            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1">FB</a>
-            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1">IG</a>
-            <a href="#" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1">TW</a>
+            <a href="https://www.facebook.com/lipacityagricultureoffice/" target="_blank" rel="noopener" aria-label="Facebook" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-harvest transition-all hover:-translate-y-1"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 10-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0022 12z"/></svg></a>
           </div>
         </div>
         <div>
@@ -261,14 +260,14 @@
         <div>
           <h4 class="font-bold mb-4 text-gold-light">Contact</h4>
           <ul class="space-y-3 text-white/60">
-            <li class="flex items-start gap-2"><span>📍</span><span>Lipa City, Batangas</span></li>
+            <li class="flex items-start gap-2"><span>📍</span><span>Lipa City</span></li>
             <li class="flex items-start gap-2"><span>✉️</span><span class="min-w-0 break-all">agriculture@lipa.gov.ph</span></li>
-            <li class="flex items-center gap-2"><span>📞</span><span>+63 (043) 123-4567</span></li>
+            <li class="flex items-center gap-2"><span>📞</span><span><a href="tel:+63437733518" class="hover:text-white transition-colors">(043) 773 3518</a></span></li>
           </ul>
         </div>
       </div>
       <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-white/40 text-sm">© 2024 APGORRS. All rights reserved.</p>
+        <p class="text-white/40 text-sm">© <span data-current-year>2026</span> SCAIMS / APGORRS. All rights reserved.</p>
         <button onclick="window.scrollTo({top:0,behavior:'smooth'})" class="text-white/40 hover:text-white text-sm flex items-center gap-2 transition-colors group">
           Back to Top <span class="group-hover:-translate-y-1 transition-transform">↑</span>
         </button>
@@ -284,5 +283,6 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
+  <script>document.querySelectorAll('[data-current-year]').forEach(el => { el.textContent = new Date().getFullYear(); });</script>
 </body>
 </html>

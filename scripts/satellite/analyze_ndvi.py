@@ -30,6 +30,7 @@ TOKEN_URL = (
 )
 STAC_SEARCH_URL = "https://stac.dataspace.copernicus.eu/v1/search"
 STATISTICS_URL = "https://sh.dataspace.copernicus.eu/statistics/v1"
+PROCESS_URL = "https://sh.dataspace.copernicus.eu/api/v1/process"
 COLLECTION = "sentinel-2-l2a"
 DEFAULT_WINDOW_DAYS = 30
 DEFAULT_MAX_CLOUD = 30.0
@@ -274,6 +275,114 @@ def build_statistics_request(
     }
 
 
+# S2B scaffolding: a raster evalscript for the Process API (not the
+# Statistical API above). It mirrors the same cloud/shadow/snow masking
+# and NDVI formula as EVALSCRIPT, but outputs one float32 NDVI value per
+# pixel instead of an aggregated mean, since the Process API returns an
+# image, not statistics.
+PROCESS_EVALSCRIPT = r"""//VERSION=3
+function setup() {
+  return {
+    input: [{
+      bands: ["B04", "B08", "SCL", "dataMask"],
+      units: "REFLECTANCE"
+    }],
+    output: { id: "default", bands: 1, sampleType: "FLOAT32" }
+  };
+}
+
+function evaluatePixel(sample) {
+  const denominator = sample.B08 + sample.B04;
+  const cloudOrShadow = [3, 8, 9, 10, 11].includes(sample.SCL);
+  const valid = sample.dataMask && !cloudOrShadow && denominator !== 0;
+  const ndvi = denominator === 0 ? 0 : (sample.B08 - sample.B04) / denominator;
+  // NaN marks a masked-out pixel so the caller can tell "no data" apart
+  // from a genuine NDVI of 0.
+  return [valid ? ndvi : NaN];
+}
+"""
+
+
+def build_process_api_request(
+    polygon: dict[str, Any],
+    observation_date: date,
+    *,
+    width: int | None = None,
+    height: int | None = None,
+) -> dict[str, Any]:
+    """Build a Sentinel Hub Process API request for a single-band NDVI raster.
+
+    S2B scaffolding only: nothing in this module calls this against a live
+    endpoint yet (see `--process-raster`, which validates and echoes the
+    request instead of sending it). Decoding the returned image (TIFF/PNG)
+    into a numeric grid is intentionally not implemented here — see
+    docs/SATELLITE_POC.md for why that waits on real credentials and a
+    concrete raster sample.
+    """
+    next_day = observation_date + timedelta(days=1)
+    request: dict[str, Any] = {
+        "input": {
+            "bounds": {
+                "geometry": polygon,
+                "properties": {"crs": "http://www.opengis.net/def/crs/OGC/1.3/CRS84"},
+            },
+            "data": [
+                {
+                    "type": COLLECTION,
+                    "dataFilter": {
+                        "timeRange": {
+                            "from": f"{observation_date.isoformat()}T00:00:00Z",
+                            "to": f"{next_day.isoformat()}T00:00:00Z",
+                        },
+                        "mosaickingOrder": "mostRecent",
+                    },
+                }
+            ],
+        },
+        "output": {
+            "responses": [
+                {"identifier": "default", "format": {"type": "image/tiff"}},
+            ],
+        },
+        "evalscript": PROCESS_EVALSCRIPT,
+    }
+    if width is not None:
+        request["output"]["width"] = width
+    if height is not None:
+        request["output"]["height"] = height
+    return request
+
+
+# Reuses the exact bands/thresholds as classify_ndvi_change() so a
+# parcel-mean classification and a per-pixel one never disagree about
+# what counts as "stable" vs "declining".
+def classify_pixel_grid(
+    previous_grid: list[list[float | None]], current_grid: list[list[float | None]]
+) -> list[list[str | None]]:
+    """Classify a per-pixel NDVI delta grid into the same bands as classify_ndvi_change().
+
+    Both grids must have identical dimensions. A pixel is `None` in the
+    output wherever either input pixel is `None` (masked out/no data) —
+    this never happens in practice until a Process API response is
+    actually decoded into these grids, which this module does not yet do.
+    """
+    if len(previous_grid) != len(current_grid):
+        raise ValidationError("Pixel grids must have the same number of rows.")
+
+    result: list[list[str | None]] = []
+    for row_index, (previous_row, current_row) in enumerate(zip(previous_grid, current_grid)):
+        if len(previous_row) != len(current_row):
+            raise ValidationError(f"Row {row_index} has mismatched column counts between grids.")
+        result_row: list[str | None] = []
+        for previous_value, current_value in zip(previous_row, current_row):
+            if previous_value is None or current_value is None:
+                result_row.append(None)
+            else:
+                result_row.append(classify_ndvi_change(previous_value, current_value)["classification"])
+        result.append(result_row)
+    return result
+
+
 @dataclass(frozen=True)
 class Candidate:
     scene_id: str
@@ -380,6 +489,57 @@ class CopernicusClient:
             raise ProviderError("invalid_api_response", "Statistical API response is missing NDVI statistics.") from exc
 
 
+# Week-over-week NDVI change bands. Thresholds follow common vegetation
+# change-detection practice (an NDVI delta smaller than ~0.05 is within
+# typical sensor/illumination noise and is not treated as real change).
+NDVI_CHANGE_BANDS: list[tuple[float, str]] = [
+    (-0.10, "significant_decline"),
+    (-0.05, "slight_decline"),
+    (0.05, "stable"),
+    (0.10, "slight_improvement"),
+]
+NDVI_CHANGE_BAND_ABOVE_LAST = "significant_improvement"
+
+
+def classify_ndvi_change(previous_mean: float, current_mean: float) -> dict[str, Any]:
+    """Classify the parcel-mean NDVI delta between two observations into a band.
+
+    This compares the aggregate (parcel-mean) NDVI returned by the Statistical
+    API, not a per-pixel raster: the current provider integration never
+    downloads per-pixel imagery, so a true pixel-by-pixel classification is
+    out of scope until a raster (Process API) adapter exists.
+    """
+    delta = current_mean - previous_mean
+    band = NDVI_CHANGE_BAND_ABOVE_LAST
+    for threshold, name in NDVI_CHANGE_BANDS:
+        if delta < threshold:
+            band = name
+            break
+    return {
+        "previous_ndvi_mean": round(previous_mean, 6),
+        "current_ndvi_mean": round(current_mean, 6),
+        "ndvi_change": round(delta, 6),
+        "classification": band,
+    }
+
+
+def compare(previous: dict[str, Any], current: dict[str, Any]) -> dict[str, Any]:
+    """Compare two `analyze()` results (e.g. two different weeks) for the same parcel."""
+    if not previous.get("ok") or not current.get("ok"):
+        return failure(
+            "invalid_input",
+            "Both observations must be successful ('ok': true) NDVI results to compare.",
+        )
+    result = {
+        "ok": True,
+        "provider": PROVIDER,
+        "previous_observation_date": previous.get("observation_date"),
+        "current_observation_date": current.get("observation_date"),
+    }
+    result.update(classify_ndvi_change(previous["ndvi_mean"], current["ndvi_mean"]))
+    return result
+
+
 def failure(reason: str, message: str, elapsed: float | None = None) -> dict[str, Any]:
     result: dict[str, Any] = {
         "ok": False,
@@ -461,7 +621,25 @@ def analyze(args: argparse.Namespace, transport: Any | None = None) -> dict[str,
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Calculate cloud-masked Sentinel-2 NDVI for one GeoJSON polygon.")
-    parser.add_argument("geojson", help="Path to a GeoJSON Polygon or Feature containing a Polygon")
+    parser.add_argument(
+        "--compare",
+        nargs=2,
+        metavar=("PREVIOUS_JSON", "CURRENT_JSON"),
+        help=(
+            "Skip analysis; classify week-over-week NDVI change between two prior "
+            "`analyze_ndvi.py` JSON result files (parcel-mean comparison, not per-pixel)."
+        ),
+    )
+    parser.add_argument(
+        "--process-raster",
+        metavar="DATE",
+        help=(
+            "S2B scaffolding: validate GEOJSON and build a Sentinel Hub Process API "
+            "raster request for this date (YYYY-MM-DD), then print and exit without "
+            "sending it. No live call is made; nothing is decoded into pixels yet."
+        ),
+    )
+    parser.add_argument("geojson", nargs="?", help="Path to a GeoJSON Polygon or Feature containing a Polygon")
     parser.add_argument("--start-date", help="Inclusive start date (YYYY-MM-DD); defaults to a 30-day window")
     parser.add_argument("--end-date", help="Inclusive end date (YYYY-MM-DD); defaults to current UTC date")
     parser.add_argument(
@@ -477,7 +655,44 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = build_parser().parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
+
+    if args.compare:
+        previous_path, current_path = args.compare
+        try:
+            previous = json.loads(Path(previous_path).read_text(encoding="utf-8"))
+            current = json.loads(Path(current_path).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            result = failure("invalid_input", f"Could not read comparison file: {exc}")
+        else:
+            result = compare(previous, current)
+        print(json.dumps(result, separators=(",", ":"), ensure_ascii=False))
+        return 0 if result["ok"] else 1
+
+    if args.process_raster:
+        if not args.geojson:
+            parser.error("geojson is required with --process-raster")
+        try:
+            polygon = load_polygon(Path(args.geojson))
+            observation_date = parse_date(args.process_raster, "--process-raster")
+        except ValidationError as exc:
+            result = failure("invalid_input", str(exc))
+        else:
+            result = {
+                "ok": True,
+                "provider": PROVIDER,
+                "mode": "process_raster_request_preview",
+                "note": "This request was built and validated but NOT sent. No live Process API call is wired up yet.",
+                "observation_date": observation_date.isoformat(),
+                "request": build_process_api_request(polygon, observation_date),
+            }
+        print(json.dumps(result, separators=(",", ":"), ensure_ascii=False))
+        return 0 if result["ok"] else 1
+
+    if not args.geojson:
+        parser.error("geojson is required unless --compare is used")
+
     result = analyze(args)
     print(json.dumps(result, separators=(",", ":"), ensure_ascii=False))
     return 0 if result["ok"] else 1

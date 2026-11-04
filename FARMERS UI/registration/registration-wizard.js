@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
         dob.setCustomValidity(dob.value && new Date(dob.value + 'T00:00:00') >= today
             ? 'Birth date must be before today.' : '');
         const rsbsa = document.getElementById('rsbsaNumber');
-        rsbsa.setCustomValidity(rsbsa.value && !/^\d{2}-\d{2}-\d{2}-\d{3}-\d{6}$/.test(rsbsa.value.trim())
-            ? 'Use the RSBSA format XX-XX-XX-XXX-XXXXXX.' : '');
+        rsbsa.setCustomValidity(rsbsa.value && !/^\d{2,4}-\d{2,4}-\d{2,4}-\d{2,4}-[A-Za-z0-9]{4,10}$/.test(rsbsa.value.trim())
+            ? 'Use the RSBSA format, e.g. 04-10-14-003-123456 or the new 04-010-14-0123-289AbYQ.' : '');
         ['surname', 'firstName', 'address'].forEach(function (id) {
             const field = document.getElementById(id);
             if (!field.value.trim()) field.setCustomValidity('Please fill out this field.');
@@ -111,9 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     document.getElementById('rsbsaNumber').addEventListener('input', function (event) {
-        const digits = event.target.value.replace(/\D/g, '').slice(0, 15);
-        event.target.value = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 6), digits.slice(6, 9), digits.slice(9)]
-            .filter(Boolean).join('-');
+        event.target.value = event.target.value.replace(/[^A-Za-z0-9-]/g, '').slice(0, 25);
     });
 
     backButton.addEventListener('click', function () { if (!busy) showStep(1); });

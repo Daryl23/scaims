@@ -28,7 +28,7 @@ try {
     echo '<body>';
 
     echo '<table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; font-family: Arial; font-size: 12px;">';
-    echo '<tr><td colspan="16" align="center" style="font-weight: bold; font-size: 14px;">APGORRS</td></tr>';
+    echo '<tr><td colspan="16" align="center" style="font-weight: bold; font-size: 14px;">SCAIMS / APGORRS</td></tr>';
     echo '<tr><td colspan="16" align="center" style="font-weight: bold; font-size: 13px;">CROP HARVEST REPORTS</td></tr>';
     echo '<tr><td colspan="16"></td></tr>';
 

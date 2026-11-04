@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APGORRS - Farmer Login</title>
+  <script src="../../shared/app-version.js?v=7.0.0"></script>
+  <title>SCAIMS / APGORRS - Farmer Login</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="../../shared/app-path.js"></script>
+  <script src="../../shared/pwa-register.js?v=7.0.0" defer></script>
   <script src="../../shared/public-nav-config.js"></script>
   <script src="../../shared/public-nav.js?v=20260908-2" defer></script>
   <script>
@@ -21,8 +23,6 @@
             harvest: '#f7931e', 'harvest-dark': '#d97b0d',
             cream: '#fffcef', 'cream-dark': '#f5f5f0',
             gold: '#c8bd44', 'gold-light': '#ccc14f',
-            /* Farmer teal palette */
-            teal: '#1a5c55', 'teal-light': '#22736b', 'teal-dark': '#113d38',
           },
           fontFamily: {
             sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -71,14 +71,14 @@
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     .field-input:focus {
-      border-color: #1a5c55;
-      box-shadow: 0 0 0 4px rgba(26,92,85,0.10);
+      border-color: #f7931e;
+      box-shadow: 0 0 0 4px rgba(247,147,30,0.12);
     }
     .field-input::placeholder { color: rgba(59,73,24,0.35); }
 
-    /* Teal panel gradient */
-    .teal-panel {
-      background: linear-gradient(135deg, #1a5c55 0%, #113d38 100%);
+    /* Same olive branding panel as the admin login */
+    .brand-panel {
+      background: linear-gradient(135deg, #3b4918 0%, #2a3311 100%);
     }
 
     @media (max-width: 640px) {
@@ -153,7 +153,7 @@
 <body class="font-sans bg-cream text-olive antialiased">
   <div
     data-public-navbar
-    data-brand-title="APGORRS"
+    data-brand-title="SCAIMS / APGORRS"
     data-brand-subtitle="Lipa City Agriculture"
   ></div>
   <!-- PAGE BODY -->
@@ -172,8 +172,8 @@
         </svg>
       </div>
 
-      <!-- Blobs — teal tinted -->
-      <div class="blob  absolute -top-24 -right-24 w-80 h-80 rounded-full blur-3xl pointer-events-none" style="background:rgba(26,92,85,0.10)"></div>
+      <!-- Blobs -->
+      <div class="blob  absolute -top-24 -right-24 w-80 h-80 rounded-full blur-3xl pointer-events-none" style="background:rgba(59,73,24,0.08)"></div>
       <div class="blob2 absolute -bottom-24 -left-24 w-96 h-96 rounded-full blur-3xl pointer-events-none" style="background:rgba(59,73,24,0.07)"></div>
 
       <!-- ── Split login card ── -->
@@ -184,13 +184,13 @@
 
           <!-- Mobile logo -->
           <div class="login-mobile-logo flex lg:hidden items-center gap-3 mb-8">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:#1a5c55">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:#3b4918">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
               </svg>
             </div>
             <div>
-              <span class="font-bold text-olive text-lg leading-none block">APGORRS</span>
+              <span class="font-bold text-olive text-base leading-tight block">SCAIMS / APGORRS</span>
               <span class="text-xs text-olive/50">Farmer Portal</span>
             </div>
           </div>
@@ -204,13 +204,13 @@
 
             <!-- Username -->
             <div>
-              <label for="username" class="block text-xs font-bold text-olive/50 uppercase tracking-widest mb-2">Username</label>
+              <label for="username" class="block text-xs font-bold text-olive/50 uppercase tracking-widest mb-2">Username or RSBSA Number</label>
               <div class="relative">
                 <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-olive/30 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                 </svg>
                 <input type="text" id="username" name="username" required
-                  placeholder="Enter your username" class="field-input pl-11">
+                  placeholder="Enter your username or RSBSA number" class="field-input pl-11">
               </div>
             </div>
 
@@ -225,8 +225,8 @@
                   placeholder="Enter your password" class="field-input pl-11 pr-12">
                 <button type="button" id="togglePassword"
                   class="absolute right-4 top-1/2 -translate-y-1/2 text-olive/35 transition-colors"
-                  style="--hover-color:#1a5c55"
-                  onmouseover="this.style.color='#1a5c55'" onmouseout="this.style.color=''"
+                  style="--hover-color:#3b4918"
+                  onmouseover="this.style.color='#3b4918'" onmouseout="this.style.color=''"
                   aria-label="Toggle password visibility">
                   <svg id="eyeIcon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -238,14 +238,14 @@
 
             <!-- Forgot -->
             <div class="flex justify-end -mt-1">
-              <a href="#" class="tap-link text-xs font-semibold transition-colors" style="color:#1a5c55">Forgot password?</a>
+              <a href="../farmerLanding/contact.html" class="tap-link text-xs text-harvest font-semibold hover:text-harvest-dark transition-colors">Forgot password? Contact the office</a>
             </div>
 
-            <!-- Submit — teal button -->
+            <!-- Submit -->
             <button type="submit"
               class="w-full text-white py-4 rounded-xl font-bold text-base transition-all hover:shadow-lg hover:-translate-y-0.5 relative overflow-hidden group"
-              style="background:#1a5c55"
-              onmouseover="this.style.background='#22736b'" onmouseout="this.style.background='#1a5c55'">
+              style="background:#3b4918"
+              onmouseover="this.style.background='#576f1b'" onmouseout="this.style.background='#3b4918'">
               <span class="relative z-10 flex items-center justify-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
@@ -265,7 +265,7 @@
             <!-- Register -->
             <a href="../registration/rsbsa_check.html"
               class="w-full flex items-center justify-center gap-2 border-2 border-olive/20 text-olive py-3.5 rounded-xl font-bold text-sm transition-all group"
-              onmouseover="this.style.background='#1a5c55';this.style.color='white';this.style.borderColor='#1a5c55'"
+              onmouseover="this.style.background='#3b4918';this.style.color='white';this.style.borderColor='#3b4918'"
               onmouseout="this.style.background='';this.style.color='';this.style.borderColor=''">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
@@ -280,10 +280,26 @@
             </p>
 
           </form>
+
+          <button type="button" id="installFarmerAppBtn" hidden
+            class="w-full mt-4 border-2 border-olive/20 text-olive py-3 rounded-xl font-bold text-sm hover:bg-olive hover:text-white hover:border-olive transition-all flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-4-4m4 4l4-4M5 19h14"/></svg>
+            Install Farmer App
+          </button>
+          <script>
+            window.addEventListener('scaims:pwa-installable', function () {
+              var btn = document.getElementById('installFarmerAppBtn');
+              if (!btn) return;
+              btn.hidden = false;
+              btn.addEventListener('click', function () {
+                if (window.scaimsInstallFarmerApp) window.scaimsInstallFarmerApp();
+              });
+            });
+          </script>
         </div>
 
-        <!-- Right panel — teal branding -->
-        <div class="hidden lg:flex lg:w-5/12 teal-panel relative flex-col items-center justify-center p-10 text-white overflow-hidden">
+        <!-- Right panel — branding -->
+        <div class="hidden lg:flex lg:w-5/12 brand-panel relative flex-col items-center justify-center p-10 text-white overflow-hidden">
           <!-- Deco lines -->
           <div class="deco-line w-72 h-px top-[28%] -right-10 rotate-[14deg]"></div>
           <div class="deco-line w-52 h-px bottom-[30%] -left-10 -rotate-[14deg]"></div>
@@ -296,7 +312,7 @@
 
             <!-- Logo box -->
             <div class="w-24 h-24 bg-white/12 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-xl">
-              <img src="../../assets/logo.png" alt="APGORRS Logo"
+              <img src="../../assets/logo.png" alt="SCAIMS / APGORRS Logo"
                 class="w-16 h-16 object-contain"
                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
               <svg style="display:none" class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,11 +321,11 @@
             </div>
 
             <div>
-              <h2 class="text-3xl font-serif font-bold">APGORRS</h2>
+              <h2 class="text-2xl font-serif font-bold">SCAIMS / APGORRS</h2>
               <p class="text-white/55 text-sm mt-1">Agricultural Profile Gateway</p>
             </div>
 
-            <!-- Farmer badge — soft teal outline -->
+            <!-- Farmer badge -->
             <div class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 backdrop-blur-sm">
               <svg class="w-4 h-4 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
@@ -367,7 +383,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
             </svg>
           </div>
-          <span class="text-white/50 font-medium">APGORRS</span>
+          <span class="text-white/50 font-medium">SCAIMS / APGORRS</span>
           <span class="text-white/20">·</span>
           <span class="text-white/35">Lipa City Agricultural Office</span>
         </div>
@@ -376,7 +392,7 @@
           <a href="../farmerLanding/faq.html" class="hover:text-white transition-colors">FAQ</a>
           <a href="../farmerLanding/contact.html" class="hover:text-white transition-colors">Contact</a>
           <span class="text-white/20">·</span>
-          <span>© 2024 APGORRS</span>
+          <span>© <span data-current-year>2026</span> SCAIMS / APGORRS</span>
         </div>
       </div>
     </footer>
@@ -432,5 +448,6 @@
         : `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
     });
   </script>
+  <script>document.querySelectorAll('[data-current-year]').forEach(el => { el.textContent = new Date().getFullYear(); });</script>
 </body>
 </html>

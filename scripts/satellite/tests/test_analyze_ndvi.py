@@ -73,6 +73,27 @@ class RequestConstructionTests(unittest.TestCase):
         self.assertIn("(sample.B08 - sample.B04) / denominator", script)
         self.assertEqual(payload["input"]["data"][0]["type"], "sentinel-2-l2a")
 
+    def test_process_api_request_has_polygon_bounds_timerange_and_raster_evalscript(self):
+        payload = ndvi.build_process_api_request(VALID_POLYGON, date(2026, 9, 29))
+        self.assertEqual(payload["input"]["bounds"]["geometry"], VALID_POLYGON)
+        data_filter = payload["input"]["data"][0]["dataFilter"]
+        self.assertEqual(data_filter["timeRange"]["from"], "2026-09-29T00:00:00Z")
+        self.assertEqual(data_filter["timeRange"]["to"], "2026-09-30T00:00:00Z")
+        self.assertEqual(payload["input"]["data"][0]["type"], "sentinel-2-l2a")
+        script = payload["evalscript"]
+        self.assertIn('"B04"', script)
+        self.assertIn('"B08"', script)
+        self.assertIn("(sample.B08 - sample.B04) / denominator", script)
+        # The Process API returns an image, not aggregated stats: one band, no "stats" output.
+        self.assertEqual(payload["output"]["responses"][0]["format"]["type"], "image/tiff")
+        self.assertNotIn("width", payload["output"])
+        self.assertNotIn("height", payload["output"])
+
+    def test_process_api_request_accepts_optional_width_and_height(self):
+        payload = ndvi.build_process_api_request(VALID_POLYGON, date(2026, 9, 29), width=256, height=256)
+        self.assertEqual(payload["output"]["width"], 256)
+        self.assertEqual(payload["output"]["height"], 256)
+
 
 class MockedWorkflowTests(unittest.TestCase):
     def test_mocked_success_has_machine_readable_result(self):
@@ -137,6 +158,147 @@ class MockedWorkflowTests(unittest.TestCase):
         self.assertEqual(result["parcel_cloud_percentage"], 7.5)
         json.dumps(result)
         self.assertNotIn("mock-secret", json.dumps(result))
+
+
+class ClassifyNdviChangeTests(unittest.TestCase):
+    def test_significant_decline(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.45)
+        self.assertEqual(result["classification"], "significant_decline")
+        self.assertAlmostEqual(result["ndvi_change"], -0.15)
+
+    def test_slight_decline(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.53)
+        self.assertEqual(result["classification"], "slight_decline")
+
+    def test_stable(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.61)
+        self.assertEqual(result["classification"], "stable")
+
+    def test_slight_improvement(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.67)
+        self.assertEqual(result["classification"], "slight_improvement")
+
+    def test_significant_improvement(self):
+        result = ndvi.classify_ndvi_change(0.60, 0.75)
+        self.assertEqual(result["classification"], "significant_improvement")
+
+    def test_boundary_is_exclusive_lower_bound(self):
+        # exactly -0.05 delta should land in "stable", not "slight_decline"
+        result = ndvi.classify_ndvi_change(0.60, 0.55)
+        self.assertEqual(result["classification"], "stable")
+
+
+class CompareTests(unittest.TestCase):
+    def test_compare_success(self):
+        previous = {"ok": True, "observation_date": "2026-09-22", "ndvi_mean": 0.60}
+        current = {"ok": True, "observation_date": "2026-09-29", "ndvi_mean": 0.45}
+        result = ndvi.compare(previous, current)
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["previous_observation_date"], "2026-09-22")
+        self.assertEqual(result["current_observation_date"], "2026-09-29")
+        self.assertEqual(result["classification"], "significant_decline")
+
+    def test_compare_rejects_failed_observation(self):
+        previous = {"ok": False, "reason": "no_imagery"}
+        current = {"ok": True, "observation_date": "2026-09-29", "ndvi_mean": 0.45}
+        result = ndvi.compare(previous, current)
+        self.assertFalse(result["ok"])
+        self.assertEqual(result["reason"], "invalid_input")
+
+    def test_cli_compare_mode(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous_path = Path(tmp) / "previous.json"
+            current_path = Path(tmp) / "current.json"
+            previous_path.write_text(
+                json.dumps({"ok": True, "observation_date": "2026-09-22", "ndvi_mean": 0.60}),
+                encoding="utf-8",
+            )
+            current_path.write_text(
+                json.dumps({"ok": True, "observation_date": "2026-09-29", "ndvi_mean": 0.45}),
+                encoding="utf-8",
+            )
+            with tempfile.TemporaryDirectory() as out_dir:
+                captured = Path(out_dir) / "stdout.txt"
+                original_stdout = sys.stdout
+                try:
+                    with open(captured, "w", encoding="utf-8") as handle:
+                        sys.stdout = handle
+                        exit_code = ndvi.main(["--compare", str(previous_path), str(current_path)])
+                finally:
+                    sys.stdout = original_stdout
+                output = json.loads(captured.read_text(encoding="utf-8"))
+        self.assertEqual(exit_code, 0)
+        self.assertTrue(output["ok"])
+        self.assertEqual(output["classification"], "significant_decline")
+
+
+class ClassifyPixelGridTests(unittest.TestCase):
+    def test_classifies_each_pixel_independently(self):
+        previous = [[0.60, 0.60], [0.60, 0.60]]
+        current = [[0.45, 0.53], [0.61, 0.75]]
+        grid = ndvi.classify_pixel_grid(previous, current)
+        self.assertEqual(
+            grid,
+            [
+                ["significant_decline", "slight_decline"],
+                ["stable", "significant_improvement"],
+            ],
+        )
+
+    def test_none_pixel_in_either_grid_yields_none(self):
+        previous = [[0.60, None]]
+        current = [[0.61, 0.50]]
+        grid = ndvi.classify_pixel_grid(previous, current)
+        self.assertEqual(grid, [["stable", None]])
+
+    def test_rejects_mismatched_row_count(self):
+        with self.assertRaisesRegex(ndvi.ValidationError, "same number of rows"):
+            ndvi.classify_pixel_grid([[0.5]], [[0.5], [0.5]])
+
+    def test_rejects_mismatched_column_count(self):
+        with self.assertRaisesRegex(ndvi.ValidationError, "mismatched column counts"):
+            ndvi.classify_pixel_grid([[0.5, 0.5]], [[0.5]])
+
+
+class ProcessRasterCliTests(unittest.TestCase):
+    def test_cli_process_raster_mode_previews_request_without_sending_it(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "parcel.geojson"
+            path.write_text(json.dumps(VALID_POLYGON), encoding="utf-8")
+            with tempfile.TemporaryDirectory() as out_dir:
+                captured = Path(out_dir) / "stdout.txt"
+                original_stdout = sys.stdout
+                try:
+                    with open(captured, "w", encoding="utf-8") as handle:
+                        sys.stdout = handle
+                        exit_code = ndvi.main(["--process-raster", "2026-09-29", str(path)])
+                finally:
+                    sys.stdout = original_stdout
+                output = json.loads(captured.read_text(encoding="utf-8"))
+        self.assertEqual(exit_code, 0)
+        self.assertTrue(output["ok"])
+        self.assertEqual(output["mode"], "process_raster_request_preview")
+        self.assertEqual(output["observation_date"], "2026-09-29")
+        self.assertIn("request", output)
+        self.assertEqual(output["request"]["input"]["bounds"]["geometry"], VALID_POLYGON)
+
+    def test_cli_process_raster_mode_rejects_bad_date(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "parcel.geojson"
+            path.write_text(json.dumps(VALID_POLYGON), encoding="utf-8")
+            with tempfile.TemporaryDirectory() as out_dir:
+                captured = Path(out_dir) / "stdout.txt"
+                original_stdout = sys.stdout
+                try:
+                    with open(captured, "w", encoding="utf-8") as handle:
+                        sys.stdout = handle
+                        exit_code = ndvi.main(["--process-raster", "not-a-date", str(path)])
+                finally:
+                    sys.stdout = original_stdout
+                output = json.loads(captured.read_text(encoding="utf-8"))
+        self.assertEqual(exit_code, 1)
+        self.assertFalse(output["ok"])
+        self.assertEqual(output["reason"], "invalid_input")
 
 
 if __name__ == "__main__":

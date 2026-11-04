@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APGORRS - Admin Login</title>
+  <script src="../../shared/app-version.js?v=7.0.0"></script>
+  <title>SCAIMS / APGORRS - Admin Login</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -149,7 +150,7 @@
   <!-- ══ NAVBAR ══ -->
   <div
     data-public-navbar
-    data-brand-title="APGORRS"
+    data-brand-title="SCAIMS / APGORRS"
     data-brand-subtitle="Lipa City Agriculture"
   ></div>
 
@@ -186,7 +187,7 @@
 
           <div class="relative z-10 flex flex-col items-center text-center space-y-6">
             <div class="w-24 h-24 bg-white/12 rounded-2xl flex items-center justify-center backdrop-blur-sm border border-white/20 shadow-xl">
-              <img src="../assets/logo.png" alt="APGORRS Logo"
+              <img src="../assets/logo.png" alt="SCAIMS / APGORRS Logo"
                 class="w-16 h-16 object-contain"
                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
               <svg style="display:none" class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -195,7 +196,7 @@
             </div>
 
             <div>
-              <h2 class="text-3xl font-serif font-bold">APGORRS</h2>
+              <h2 class="text-2xl font-serif font-bold">SCAIMS / APGORRS</h2>
               <p class="text-white/55 text-sm mt-1">Agricultural Profile Gateway</p>
             </div>
 
@@ -233,7 +234,7 @@
               </svg>
             </div>
             <div>
-              <span class="font-bold text-olive text-lg leading-none block">APGORRS</span>
+              <span class="font-bold text-olive text-base leading-tight block">SCAIMS / APGORRS</span>
               <span class="text-xs text-olive/50">Admin Portal</span>
             </div>
           </div>
@@ -276,7 +277,7 @@
             </div>
 
             <div class="flex justify-end -mt-1">
-              <a href="#" class="tap-link text-xs text-harvest font-semibold hover:text-harvest-dark transition-colors">Forgot password?</a>
+              <span class="text-xs text-olive/55 font-semibold">Forgot password? Ask a superadmin to reset it.</span>
             </div>
 
             <button type="submit"
@@ -310,7 +311,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
             </svg>
           </div>
-          <span class="text-white/50 font-medium">APGORRS</span>
+          <span class="text-white/50 font-medium">SCAIMS / APGORRS</span>
           <span class="text-white/20">·</span>
           <span class="text-white/35">Lipa City Agricultural Office</span>
         </div>
@@ -319,7 +320,7 @@
           <a href="../../FARMERS%20UI/farmerLanding/faq.html"     class="hover:text-white transition-colors">FAQ</a>
           <a href="../../FARMERS%20UI/farmerLanding/contact.html" class="hover:text-white transition-colors">Contact</a>
           <span class="text-white/20">·</span>
-          <span>© 2024 APGORRS</span>
+          <span>© <span data-current-year>2026</span> SCAIMS / APGORRS</span>
         </div>
       </div>
     </footer>
@@ -375,5 +376,6 @@
         : `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
     });
   </script>
+  <script>document.querySelectorAll('[data-current-year]').forEach(el => { el.textContent = new Date().getFullYear(); });</script>
 </body>
 </html>

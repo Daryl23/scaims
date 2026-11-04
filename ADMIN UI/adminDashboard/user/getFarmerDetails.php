@@ -17,6 +17,7 @@ if (is_numeric($farmerId)) {
                    f.Barangay,
                    f.Address,
                    f.RSBSA_Number,
+                   f.LandTenure,
                    u.UName
             FROM farmer f
             JOIN user u ON f.UserID = u.UserID

@@ -1,0 +1,25 @@
+{
+  "name": "SCAIMS Farmer Portal",
+  "short_name": "SCAIMS",
+  "description": "Register, monitor, and manage your farm with SCAIMS - Lipa City Agricultural Office.",
+  "start_url": "farmerLogin/farmerlogin.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fffcef",
+  "theme_color": "#3b4918",
+  "icons": [
+    {
+      "src": "../assets/pwa-icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "../assets/pwa-icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
