@@ -253,7 +253,7 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Farmers Parcel</title>
-    <script src="../../../shared/pwa-register.js" defer></script>
+    <script src="../../../shared/pwa-register.js?v=7.0.0" defer></script>
     <link rel="stylesheet" href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../shared/dashboard-shell.css">
     <link rel="stylesheet" href="farmerParcel.css">
@@ -683,7 +683,7 @@ error_log('Session UserID: ' . ($_SESSION['UserID'] ?? 'Not set'));
     }
     </script>
     <script src="../../../shared/i18n.js"></script>
-    <script src="../shared/dashboard-language.js"></script>
+    <script src="../shared/dashboard-language.js?v=7.0.0"></script>
     <script src="../../../shared/dashboard-shell.js"></script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/app_version.php';
+
 if (!function_exists('scaims_session_start')) {
     function scaims_session_start(): void
     {
@@ -20,7 +22,26 @@ if (!function_exists('scaims_session_start')) {
                 'samesite' => 'Lax',
             ]);
             session_start();
+            scaims_session_enforce_version();
         }
+    }
+}
+
+if (!function_exists('scaims_session_enforce_version')) {
+    // A session left over from an older release is wiped once and given a new
+    // ID, so returning users sign in fresh instead of carrying old state.
+    function scaims_session_enforce_version(): void
+    {
+        if (($_SESSION['_scaims_version'] ?? null) === SCAIMS_APP_VERSION) {
+            return;
+        }
+
+        $hadOldSession = !empty($_SESSION);
+        $_SESSION = [];
+        if ($hadOldSession) {
+            session_regenerate_id(true);
+        }
+        $_SESSION['_scaims_version'] = SCAIMS_APP_VERSION;
     }
 }
 

@@ -86,7 +86,6 @@ async function loadLandingData() {
   const newsCard = serviceCards[1];
   const suggestionCard = serviceCards[2];
 
-  const snapshotSection = document.querySelectorAll('section.py-24.bg-olive-dark')[0];
 
   try {
     const response = await fetch(resolveAppPath('/landing_data.php'), { cache: 'no-store' });
@@ -98,9 +97,6 @@ async function loadLandingData() {
 
     const stats = payload.stats || {};
     const latestPost = payload.latestPost;
-    const totalReports = (stats.cropReports || 0) + (stats.damageReports || 0);
-    const cropRatio = totalReports > 0 ? (stats.cropReports / totalReports) * 100 : 0;
-    const damageRatio = totalReports > 0 ? (stats.damageReports / totalReports) * 100 : 0;
 
     animateLandingNumber(heroFarmers, stats.registeredFarmers || 0);
     animateLandingNumber(heroHectares, stats.hectaresMonitored || 0, 2);
@@ -154,51 +150,6 @@ async function loadLandingData() {
       }
     }
 
-    if (snapshotSection) {
-      const introLabel = snapshotSection.querySelector('span.text-gold-light');
-      const heading = snapshotSection.querySelector('h2');
-      const intro = snapshotSection.querySelector('p.text-white\\/80');
-      const bullets = snapshotSection.querySelectorAll('ul li span:last-child');
-      const statCards = snapshotSection.querySelectorAll('.grid.grid-cols-2 > div');
-
-      if (introLabel) introLabel.textContent = 'Kasalukuyang Datos';
-      if (heading) heading.innerHTML = 'Datos ng Agrikultura,<br>Diretso Mula sa Sistema';
-      if (intro) {
-        intro.textContent = 'Ang mga bilang dito ay galing mismo sa talaan ng mga magsasaka, parsela, ulat, anunsyo, at mungkahi — totoong aktibidad ng sistema, hindi gawa-gawa.';
-      }
-
-      if (bullets[0]) bullets[0].textContent = `${formatLandingNumber(stats.registeredFarmers)} talaan ng magsasaka ang nasa sistema.`;
-      if (bullets[1]) bullets[1].textContent = `${formatLandingNumber(stats.totalParcels)} parsela ang naka-encode para sa pagbabantay.`;
-      if (bullets[2]) bullets[2].textContent = `${formatLandingNumber(stats.suggestionsReceived)} mungkahi ang naitala na.`;
-
-      if (statCards[0]) {
-        statCards[0].innerHTML = `
-          <div class="text-white/50 text-sm mb-2 uppercase tracking-wider">Ulat ng Pananim</div>
-          <div class="text-3xl font-bold text-gold-light mb-3" id="snapshotCropReports">0</div>
-          <div class="h-2 bg-white/10 rounded-full overflow-hidden">
-            <div id="snapshotCropReportsBar" class="h-full bg-gold-light rounded-full transition-all duration-700" style="width:0%"></div>
-          </div>
-        `;
-      }
-
-      if (statCards[1]) {
-        statCards[1].innerHTML = `
-          <div class="text-white/50 text-sm mb-2 uppercase tracking-wider">Ulat ng Pinsala</div>
-          <div class="text-3xl font-bold text-harvest mb-3" id="snapshotDamageReports">0</div>
-          <div class="h-2 bg-white/10 rounded-full overflow-hidden">
-            <div id="snapshotDamageReportsBar" class="h-full bg-harvest rounded-full transition-all duration-700" style="width:0%"></div>
-          </div>
-        `;
-      }
-
-      animateLandingNumber(document.getElementById('snapshotCropReports'), stats.cropReports || 0);
-      animateLandingNumber(document.getElementById('snapshotDamageReports'), stats.damageReports || 0);
-
-      const cropBar = document.getElementById('snapshotCropReportsBar');
-      const damageBar = document.getElementById('snapshotDamageReportsBar');
-      if (cropBar) cropBar.style.width = `${cropRatio}%`;
-      if (damageBar) damageBar.style.width = `${damageRatio}%`;
-    }
   } catch (error) {
     console.error(error);
   }

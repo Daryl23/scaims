@@ -1,7 +1,7 @@
 // Minimal app-shell cache for the farmer portal. Dashboard pages are
 // server-rendered with live session data, so only static, non-personal
 // assets are cached here — network-first, falling back to cache when offline.
-const CACHE_NAME = 'scaims-farmer-shell-v1';
+const CACHE_NAME = 'scaims-farmer-shell-v2';
 const APP_SHELL = [
   'farmerLogin/farmerlogin.html',
   'manifest.json',

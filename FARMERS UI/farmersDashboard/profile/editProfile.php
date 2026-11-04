@@ -31,7 +31,7 @@ $dashboardCurrentPage = 'profile';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmers Profile</title>
-    <script src="../../../shared/pwa-register.js" defer></script>
+    <script src="../../../shared/pwa-register.js?v=7.0.0" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../shared/dashboard-shell.css">
     <link rel="stylesheet" href="editProfile.css">
@@ -171,8 +171,8 @@ $dashboardCurrentPage = 'profile';
         </div>
     </div>
     <script src="../../../shared/i18n.js"></script>
-    <script src="../shared/dashboard-language.js"></script>
+    <script src="../shared/dashboard-language.js?v=7.0.0"></script>
     <script src="../../../shared/dashboard-shell.js"></script>
-    <script src="editProfile.js"></script>
+    <script src="editProfile.js?v=7.0.0"></script>
 </body>
 </html>

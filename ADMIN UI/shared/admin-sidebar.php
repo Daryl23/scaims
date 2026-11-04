@@ -100,8 +100,20 @@ $navItems = array_merge($navItems, [
         'icon' => 'suggestions.png',
         'href' => $pagePrefix . 'adminDashboard/suggestions/suggestions.php',
     ],
+    [
+        'id' => 'manual',
+        'label' => 'User Manual',
+        'translationKey' => 'nav_manual',
+        'icon' => 'help.png',
+        // Barangay officials open their own sheets; agency staff open theirs.
+        'href' => $pagePrefix . '../manual/index.html#'
+            . (scaims_normalize_admin_role($_SESSION['AdminRole'] ?? '') === 'barangay' ? 'p3' : 'p2'),
+        'newTab' => true,
+    ],
 ]);
 ?>
+
+<script src="<?php echo htmlspecialchars($pagePrefix); ?>../shared/app-version.js?v=<?php echo urlencode(SCAIMS_APP_VERSION); ?>"></script>
 
 <link rel="stylesheet" href="<?php echo htmlspecialchars($sharedPath); ?>admin-mobile.css?v=<?php echo @filemtime(__DIR__ . '/admin-mobile.css') ?: time(); ?>">
 
@@ -155,6 +167,7 @@ $navItems = array_merge($navItems, [
                 <li>
                     <a
                         href="<?php echo htmlspecialchars($item['href']); ?>"
+                        <?php echo !empty($item['newTab']) ? 'target="_blank" rel="noopener"' : ''; ?>
                         class="menu-item<?php echo $isActive ? ' is-active' : ''; ?>"
                         <?php echo $isActive ? 'aria-current="page"' : ''; ?>
                     >
@@ -188,7 +201,7 @@ $navItems = array_merge($navItems, [
     </div>
 
     <footer class="footer">
-        <p data-i18n-html="footer_text">Lipa City Agriculture Office <br> &copy; 2024 All rights reserved</p>
+        <p data-i18n-html="footer_text">Lipa City Agriculture Office <br> &copy; <?php echo date('Y'); ?> All rights reserved</p>
     </footer>
 </aside>
 

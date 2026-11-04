@@ -20,24 +20,26 @@ if (!isset($data['id']) || !isset($data['action'])) {
     exit;
 }
 
-$id = $conn->real_escape_string($data['id']);
-$action = $conn->real_escape_string($data['action']);
+$id = (string) $data['id'];
+$action = (string) $data['action'];
 
-// Perform the requested action
 if ($action === 'mark_read') {
-    $sql = "UPDATE suggestions SET status = 'read' WHERE id = '$id'";
+    $stmt = $conn->prepare("UPDATE suggestions SET status = 'read' WHERE id = ?");
 } elseif ($action === 'delete') {
-    $sql = "DELETE FROM suggestions WHERE id = '$id'";
+    $stmt = $conn->prepare("DELETE FROM suggestions WHERE id = ?");
 } else {
     echo json_encode(['success' => false, 'error' => 'Invalid action']);
     exit;
 }
 
-if ($conn->query($sql)) {
+$stmt->bind_param('s', $id);
+if ($stmt->execute()) {
     echo json_encode(['success' => true]);
 } else {
-    echo json_encode(['success' => false, 'error' => $conn->error]);
+    error_log('SCAIMS update_suggestion failed: ' . $stmt->error);
+    echo json_encode(['success' => false, 'error' => 'Could not update the suggestion. Please try again.']);
 }
+$stmt->close();
 
 $conn->close();
 ?> 

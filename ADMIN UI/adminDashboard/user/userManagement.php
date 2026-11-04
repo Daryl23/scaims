@@ -8,10 +8,10 @@ scaims_require_admin('../../adminLogin/adminLogin.html');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin User Management</title>
-    <link rel="stylesheet" href="user.css">
+    <link rel="stylesheet" href="user.css?v=7.0.0">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="userManagement.js" defer></script>
+    <script src="userManagement.js?v=7.0.0" defer></script>
 </head>
 <body>
 <div class="container">

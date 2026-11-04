@@ -14,7 +14,7 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Farmers Dashboard</title>
-    <script src="../../../shared/pwa-register.js" defer></script>
+    <script src="../../../shared/pwa-register.js?v=7.0.0" defer></script>
     <link rel="stylesheet" href="../shared/dashboard-shell.css">
     <link rel="stylesheet" href="home.css?v=<?php echo $homeCssVersion; ?>">
     <link rel="stylesheet" href="../../../shared/report-image-capture.css?v=<?php echo $sharedImageCssVersion; ?>">
@@ -87,7 +87,7 @@ $sharedImageJsVersion = @filemtime(dirname(__DIR__, 3) . '/shared/report-image-c
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../../../shared/i18n.js"></script>
-    <script src="../shared/dashboard-language.js"></script>
+    <script src="../shared/dashboard-language.js?v=7.0.0"></script>
     <script src="../../../shared/dashboard-shell.js"></script>
     <script src="../../../shared/report-image-capture.js?v=<?php echo $sharedImageJsVersion; ?>"></script>
     

@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCAIMS User Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap">
+<style>
+  doc-page:not(:defined){visibility:hidden}
+  body{margin:0;font-family:Inter,"Helvetica Neue",Arial,sans-serif;color:#20261a}
+  a{color:#157347}
+  a:hover{color:#0f5433}
+</style>
+<script src="doc-page.js?v=7.0.0"></script>
+<script>
+  (function(){
+    var n = 0;
+    var t = setInterval(function(){
+      document.querySelectorAll('doc-page').forEach(function(d){ if (d._measure) d._measure(); });
+      if (++n > 30) clearInterval(t);
+    }, 150);
+  })();
+</script>
+<script>
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){
+    document.querySelectorAll('doc-page').forEach(function(d){ if (typeof d._scheduleMeasure === 'function') d._scheduleMeasure(); });
+  });
+</script>
+</head>
+<body>
+<doc-page size="a4">
+
+<section class="page" id="p1" data-screen-label="01" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:300px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-ricefield.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(105deg,rgba(18,32,9,.94) 0%,rgba(18,32,9,.82) 42%,rgba(18,32,9,.34) 78%,rgba(18,32,9,.14) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:flex-end;gap:16px;padding:0 40px 30px;width:100%">
+      <div style="width:62px;height:62px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 21px Poppins,sans-serif;color:#31501a;flex:none;box-shadow:0 0 0 3px rgba(255,255,255,.55)">SC</div>
+      <div style="flex:1">
+        <p style="margin:0 0 6px;font:600 11px Inter,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#c9dcae">Lipa City Agriculture Office</p>
+        <h1 style="margin:0;font:800 44px/1 Poppins,sans-serif;color:#fff;letter-spacing:-.02em;text-transform:uppercase">SCAIMS User Manual</h1>
+        <p style="margin:8px 0 0;font:500 13px Inter,sans-serif;color:#dfe8d5">Smart City Agriculture Information Management System &mdash; simulation walkthrough for all three portal roles</p>
+      </div>
+      <div style="align-self:flex-end;border:1px solid rgba(255,255,255,.55);border-radius:999px;padding:7px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap">Version 7 &middot; 2026</div>
+    </div>
+  </div>
+
+  <div style="padding:26px 40px 0;display:flex;flex-direction:column;gap:18px;flex:1">
+    <div style="display:grid;grid-template-columns:1fr 250px;gap:20px;align-items:start">
+      <div>
+        <h2 style="margin:0 0 7px;font:700 15px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.03em">How to read this manual</h2>
+        <p style="margin:0 0 10px;font-size:12px;line-height:1.55;color:#4a5442">Each role gets its own set of sheets, two screens per sheet, in the order you use them, drawn as a labelled diagram of the screen &mdash; not a photograph. Every diagram carries <b>numbered action markers</b>; the key underneath tells you what to press, in what order, and what to type. All names, numbers and dates are <b>simulation test data</b>.</p>
+        <div style="display:flex;gap:10px">
+          <div style="flex:1;border:1px solid #e2e8d8;border-radius:10px;padding:9px 11px;background:#f8faf4">
+            <p style="margin:0 0 5px;display:flex;align-items:center;gap:6px;font:700 10px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.05em"><span style="width:16px;height:16px;border-radius:50%;background:#e07b1f;color:#fff;display:flex;align-items:center;justify-content:center;font:700 10px Poppins,sans-serif;box-shadow:0 0 0 2px #fff,0 0 0 3px rgba(224,123,31,.35)">1</span> Action marker</p>
+            <p style="margin:0;font-size:10px;line-height:1.45;color:#5c6654">Orange circles sit on the exact spot to press. They always run in order: 1 first, then 2.</p>
+          </div>
+          <div style="flex:1;border:1px solid #f0cf7a;border-radius:10px;padding:9px 11px;background:#fff8e6">
+            <p style="margin:0 0 5px;font:700 10px Poppins,sans-serif;color:#a97a05;text-transform:uppercase;letter-spacing:.05em">Amber note</p>
+            <p style="margin:0;font-size:10px;line-height:1.45;color:#6c5410">A rule that prevents a rejected record &mdash; read it before you submit.</p>
+          </div>
+          <div style="flex:1;border:1px solid #e2e8d8;border-radius:10px;padding:9px 11px;background:#f8faf4">
+            <p style="margin:0 0 5px;font:700 10px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.05em">Dotted value</p>
+            <p style="margin:0;font-size:10px;line-height:1.45;color:#5c6654">A field you fill in yourself. <span style="border-bottom:1.5px dotted #9fae8c;padding:0 14px 1px"></span></p>
+          </div>
+        </div>
+      </div>
+      <aside style="border:1px solid #f0cf7a;border-radius:12px;background:#fff8e6;padding:12px 14px">
+        <h3 style="margin:0 0 7px;font:700 11px Poppins,sans-serif;color:#a97a05;text-transform:uppercase;letter-spacing:.05em">Before you sign in</h3>
+        <ol style="margin:0;padding-left:16px;display:flex;flex-direction:column;gap:5px">
+          <li style="font-size:10.5px;line-height:1.4;color:#6c5410">Open the portal address given by the Agriculture Office.</li>
+          <li style="font-size:10.5px;line-height:1.4;color:#6c5410">Agency staff and barangay officials press <b>Login as Admin</b>; farmers press <b>Login as Farmer</b>.</li>
+          <li style="font-size:10.5px;line-height:1.4;color:#6c5410">Set <b>Language / Wika</b> in the sidebar &mdash; it can be changed at any time.</li>
+        </ol>
+      </aside>
+    </div>
+
+    <div>
+      <h2 style="margin:0 0 9px;font:700 15px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.03em">The three roles</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+        <div style="border:1px solid #e2e8d8;border-top:4px solid #16794a;border-radius:10px;padding:11px 13px;background:#fff">
+          <p style="margin:0 0 3px;font:700 13px Poppins,sans-serif;color:#16794a">Agency Personnel</p>
+          <p style="margin:0 0 7px;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#8b937f">Sheets 1&ndash;2 &middot; English</p>
+          <p style="margin:0;font-size:10.5px;line-height:1.45;color:#5c6654">City-wide monitoring: dashboard totals, crop and damage reports, the analytics behind a monitoring report.</p>
+        </div>
+        <div style="border:1px solid #e2e8d8;border-top:4px solid #157347;border-radius:10px;padding:11px 13px;background:#fff">
+          <p style="margin:0 0 3px;font:700 13px Poppins,sans-serif;color:#157347">Barangay Officials</p>
+          <p style="margin:0 0 7px;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#8b937f">Sheets 1&ndash;2 &middot; English</p>
+          <p style="margin:0;font-size:10.5px;line-height:1.45;color:#5c6654">The same admin portal, worked one barangay at a time through the barangay filter on every list.</p>
+        </div>
+        <div style="border:1px solid #e6dcc8;border-top:4px solid #576f1b;border-radius:10px;padding:11px 13px;background:#fff">
+          <p style="margin:0 0 3px;font:700 13px Poppins,sans-serif;color:#576f1b">Mga Magsasaka</p>
+          <p style="margin:0 0 7px;font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:#8b937f">Sheets 1&ndash;3 &middot; Tagalog</p>
+          <p style="margin:0;font-size:10.5px;line-height:1.45;color:#5c6654">Paghahain ng sariling ulat: Home, Sakahan, Ulat sa Inaning Pananim, Ulat sa Nasirang Pananim, Pagpaparehistro, at Aking Impormasyon.</p>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 style="margin:0 0 9px;font:700 15px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.03em">This manual belongs to</h2>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:0;border:1.5px solid #4b8b34;border-radius:10px;overflow:hidden;background:#f6faf1">
+        <div style="padding:9px 13px 11px;border-right:1px dashed #bcd0aa">
+          <span style="display:block;font:700 8.5px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#2f6b2a;margin-bottom:11px">Name</span>
+          <span style="display:block;border-bottom:1.5px dotted #9fae8c;height:13px"></span>
+        </div>
+        <div style="padding:9px 13px 11px;border-right:1px dashed #bcd0aa">
+          <span style="display:block;font:700 8.5px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#2f6b2a;margin-bottom:11px">Role</span>
+          <span style="display:block;border-bottom:1.5px dotted #9fae8c;height:13px"></span>
+        </div>
+        <div style="padding:9px 13px 11px;border-right:1px dashed #bcd0aa">
+          <span style="display:block;font:700 8.5px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#2f6b2a;margin-bottom:11px">Barangay</span>
+          <span style="display:block;border-bottom:1.5px dotted #9fae8c;height:13px"></span>
+        </div>
+        <div style="padding:9px 13px 11px">
+          <span style="display:block;font:700 8.5px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#2f6b2a;margin-bottom:11px">Contact number</span>
+          <span style="display:block;border-bottom:1.5px dotted #9fae8c;height:13px"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;border-top:2px solid #eef4e6;background:#f6faf1;padding:12px 40px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex:none">
+    <div style="font-size:9px;line-height:1.55;color:#5c6654">
+      <p style="margin:0 0 2px;font:700 10.5px Poppins,sans-serif;color:#1f3a13">Need help? | Makipag-ugnayan</p>
+      <span style="display:block"><b style="color:#1f3a13">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+      <span style="display:block"><b style="color:#1f3a13">DMMMSU REC Chair:</b> Joel C. Estacio &middot; rec@dmmmsu.edu.ph &mdash; or the Lipa City Agriculture Office &middot; (043) 773 3518</span>
+    </div>
+    <p style="margin:0;font:500 italic 10px Inter,sans-serif;color:#2f6b2a;white-space:nowrap">Better Data. Better Decisions. Better Agriculture.</p>
+  </div>
+</section>
+
+<section class="page" id="p2" data-screen-label="02" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:124px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-carrots.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(20,35,10,.92) 0%,rgba(20,35,10,.76) 40%,rgba(20,35,10,.24) 80%,rgba(20,35,10,.08) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:13px;padding:0 34px 16px;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 15px Poppins,sans-serif;color:#31501a;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.7)">SC</div>
+      <div>
+        <h1 style="margin:0;font:800 22px/1.05 Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em">SCAIMS</h1>
+        <p style="margin:3px 0 0;font:500 10.5px Inter,sans-serif;color:#dfe8d5">Smart City Agriculture Information Management System</p>
+      </div>
+      <div style="margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.03em">Sheet 1 of 2 &middot; Agency Personnel</div>
+    </div>
+  </div>
+
+  <div style="padding:11px 34px 0;display:flex;flex-direction:column;gap:8px;flex:1">
+    <div style="display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start">
+      <p style="margin:0;font-size:11px;line-height:1.5;color:#4a5442">Sign in with <b>Login as Admin</b>. This first sheet covers the two starting screens: city totals, then crop harvest reports. The dark sidebar is identical on every screen, so navigation never changes.</p>
+      <aside style="border:1px solid #f0cf7a;border-radius:9px;background:#fff8e6;padding:8px 11px">
+        <h3 style="margin:0 0 4px;font:700 9.5px Poppins,sans-serif;color:#a97a05;text-transform:uppercase;letter-spacing:.05em">Quick tips</h3>
+        <ul style="margin:0;padding-left:13px;display:flex;flex-direction:column;gap:2px">
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Every report table has the same filter row and <b>Export</b> button.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Filters combine &mdash; barangay <i>and</i> crop <i>and</i> month at once.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Export sends the filtered rows only, never the whole table.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:9px;padding-top:2px">
+      <span style="width:24px;height:24px;border-radius:50%;border:1.5px solid #dfe6d6;background:#f6faf1;display:flex;align-items:center;justify-content:center;font:700 11px Poppins,sans-serif;color:#2f6b2a">2</span>
+      <b style="font:700 14px Poppins,sans-serif;color:#1f3a13;text-transform:uppercase;letter-spacing:.03em">Simulation workflow sequence</b>
+      <span style="margin-left:auto;font:400 italic 9px Inter,sans-serif;color:#8b937f">Screen diagrams &mdash; test data, not live farmer records</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;flex:1;align-content:start">
+
+      <div style="border:1px solid #e2e8d8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #4b8b34;color:#2f6b2a;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">1</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.02em">Dashboard totals</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Home</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #cfd8c2;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:78px;flex:none;background:linear-gradient(180deg,#31501a,#22350e);padding:7px 6px;display:flex;flex-direction:column;gap:4px">
+            <div style="font:700 7px Poppins,sans-serif;color:#fff;letter-spacing:.05em">SCAIMS</div>
+            <div style="font:500 5px Inter,sans-serif;color:#a9bd90;margin-top:-3px;letter-spacing:.08em">ADMIN PORTAL</div>
+            <div style="height:1px;background:rgba(255,255,255,.16);margin:3px 0"></div>
+            <div style="border-radius:5px;background:rgba(255,255,255,.1);padding:3px 5px;border-left:2px solid #e5b53c;font:600 6.5px Inter,sans-serif;color:#fff">Home</div>
+            <div style="padding:3px 5px;font:500 6.5px Inter,sans-serif;color:#c6d4b3">User Management</div>
+            <div style="padding:3px 5px;font:500 6.5px Inter,sans-serif;color:#c6d4b3">Farm Parcel</div>
+            <div style="padding:3px 5px;font:500 6.5px Inter,sans-serif;color:#c6d4b3">Reports</div>
+            <div style="padding:3px 5px;font:500 6.5px Inter,sans-serif;color:#c6d4b3">Post Updates</div>
+            <div style="margin-top:auto;padding:3px 5px;font:500 6.5px Inter,sans-serif;color:#c6d4b3">Logout</div>
+          </div>
+          <div style="flex:1;padding:8px;display:flex;flex-direction:column;gap:6px;background:#f4f7ef">
+            <div style="border-radius:6px;background:#fff;border:1px solid #dfe6d6;padding:7px 9px;display:flex;align-items:center;gap:8px">
+              <div style="flex:1"><p style="margin:0;font:700 8px Poppins,sans-serif;color:#20261a;text-transform:uppercase">Total registrations</p><p style="margin:2px 0 0;font:800 16px Poppins,sans-serif;color:#0f7040;line-height:1">65 <span style="font:500 7px Inter,sans-serif;color:#8b937f">Farmers</span></p></div>
+              <span style="width:20px;height:20px;border-radius:50%;background:#e7f3ea;color:#0f7040;display:flex;align-items:center;justify-content:center;font:700 10px Inter,sans-serif;flex:none">&rarr;</span>
+            </div>
+            <div style="border-radius:6px;background:#fff;border:1px solid #dfe6d6;padding:7px 9px;display:flex;align-items:center;gap:8px">
+              <div style="flex:1"><p style="margin:0;font:700 8px Poppins,sans-serif;color:#20261a;text-transform:uppercase">Total farm parcels</p><p style="margin:2px 0 0;font:800 16px Poppins,sans-serif;color:#0f7040;line-height:1">67 <span style="font:500 7px Inter,sans-serif;color:#8b937f">Parcels</span></p></div>
+              <span style="width:20px;height:20px;border-radius:50%;background:#e7f3ea;color:#0f7040;display:flex;align-items:center;justify-content:center;font:700 10px Inter,sans-serif;flex:none">&rarr;</span>
+            </div>
+            <div style="border-radius:6px;background:#fff;border:1px solid #dfe6d6;padding:7px 9px;display:flex;align-items:center;gap:8px">
+              <div style="flex:1"><p style="margin:0;font:700 8px Poppins,sans-serif;color:#20261a;text-transform:uppercase">Total reports submitted</p><p style="margin:2px 0 0;font:800 16px Poppins,sans-serif;color:#0f7040;line-height:1">111 <span style="font:500 7px Inter,sans-serif;color:#8b937f">Reports</span></p></div>
+              <span style="width:20px;height:20px;border-radius:50%;background:#e7f3ea;color:#0f7040;display:flex;align-items:center;justify-content:center;font:700 10px Inter,sans-serif;flex:none">&rarr;</span>
+            </div>
+          </div>
+          <span style="position:absolute;left:70px;top:44px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;right:76px;top:22px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:8px;top:12px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Landing screen after sign-in. Read the three city-wide counters before opening any list &mdash; they are your control totals for the day.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #dfe6d6;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Sidebar <b>Home</b> &mdash; the highlighted item is the page you are on.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;Counter value &mdash; write it on your monitoring form.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;Arrow &mdash; opens the matching list (65 &rarr; User Management).</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e2e8d8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #4b8b34;color:#2f6b2a;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">2</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.02em">Crop harvest reports</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Reports</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #cfd8c2;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:56px;flex:none;background:linear-gradient(180deg,#31501a,#22350e);padding:7px 5px;display:flex;flex-direction:column;gap:4px">
+            <div style="font:700 6.5px Poppins,sans-serif;color:#fff">SCAIMS</div>
+            <div style="height:1px;background:rgba(255,255,255,.16);margin:2px 0"></div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Home</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">User Mgmt</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Farm Parcel</div>
+            <div style="border-radius:4px;background:rgba(255,255,255,.1);padding:2px 4px;border-left:2px solid #e5b53c;font:600 6px Inter,sans-serif;color:#fff">Reports</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Logout</div>
+          </div>
+          <div style="flex:1;padding:7px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;gap:4px">
+              <div style="flex:1.5;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#8b937f">Search farmer, reporter, or crop</div>
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#8b937f">All Crops</div>
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#8b937f">All Barangays</div>
+              <div style="border-radius:4px;background:#157347;color:#fff;padding:3px 6px;font:600 6px Inter,sans-serif">Export</div>
+              <div style="border-radius:4px;background:#0f7040;color:#fff;padding:3px 6px;font:600 6px Inter,sans-serif">View Graph</div>
+            </div>
+            <p style="margin:0;text-align:right;font:700 italic 6px Inter,sans-serif;color:#20261a">Total Crop Reports: 58 (0 new, 58 previous)</p>
+            <p style="margin:0;font:700 7.5px Poppins,sans-serif;color:#0f7040;border-bottom:1.2px solid #0f7040;padding-bottom:2px">PREVIOUS CROP HARVEST REPORTS</p>
+            <div style="display:grid;grid-template-columns:1.15fr 1fr .8fr .9fr .85fr .5fr;background:#d8ecdd;border-radius:3px;padding:3px 4px;gap:3px">
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Farmer</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Barangay</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Crop</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Status</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Harvest</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Action</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.15fr 1fr .8fr .9fr .85fr .5fr;padding:3px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Juan Dela Cruz</span><span style="font:400 6px Inter,sans-serif">Sabang</span><span style="font:400 6px Inter,sans-serif">Rice</span><span style="font:400 6px Inter,sans-serif">Bearing</span><span style="font:400 6px Inter,sans-serif">2026-04-01</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.15fr 1fr .8fr .9fr .85fr .5fr;padding:3px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea;background:#fafcf7">
+              <span style="font:400 6px Inter,sans-serif">Maria Santos</span><span style="font:400 6px Inter,sans-serif">Sabang</span><span style="font:400 6px Inter,sans-serif">Coffee</span><span style="font:400 6px Inter,sans-serif">Seedling</span><span style="font:400 6px Inter,sans-serif">2026-04-15</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.15fr 1fr .8fr .9fr .85fr .5fr;padding:3px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Jose Ramirez</span><span style="font:400 6px Inter,sans-serif">Anilao</span><span style="font:400 6px Inter,sans-serif">Ampalaya</span><span style="font:400 6px Inter,sans-serif">Bearing</span><span style="font:400 6px Inter,sans-serif">2025-06-11</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View</span>
+            </div>
+            <div style="margin-top:auto;display:flex;align-items:center;justify-content:flex-end;gap:4px">
+              <span style="border-radius:3px;background:#eef0ea;color:#a8b09c;padding:2px 6px;font:600 5.5px Inter,sans-serif">Previous</span>
+              <span style="font:600 6px Inter,sans-serif;color:#20261a">Page 1 of 6</span>
+              <span style="border-radius:3px;background:#157347;color:#fff;padding:2px 6px;font:600 5.5px Inter,sans-serif">Next</span>
+            </div>
+          </div>
+          <span style="position:absolute;left:60px;top:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;right:56px;top:26px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:30px;top:88px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+          <span style="position:absolute;right:6px;bottom:24px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">4</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Open <b>Reports</b>. New reports from the last 7 days sit above the previous list, so you can see what arrived since your last check.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #dfe6d6;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Filter row &mdash; search, crop and barangay narrow the table live.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;<b>Export</b> the filtered rows; <b>View Graph</b> charts them.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;<b>View</b> opens one report with its photo and coordinates.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">4</b> &nbsp;Paging &mdash; 10 rows per page; filters survive paging.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;border-top:2px solid #eef4e6;background:#f6faf1;padding:10px 34px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex:none">
+    <div style="font-size:8.6px;line-height:1.5;color:#5c6654">
+      <p style="margin:0 0 1px;font:700 9.5px Poppins,sans-serif;color:#1f3a13">Need help? | Makipag-ugnayan</p>
+      <span style="display:block"><b style="color:#1f3a13">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+    </div>
+    <p style="margin:0;font:500 italic 9px Inter,sans-serif;color:#2f6b2a;white-space:nowrap">Sheet 1 of 2 &middot; Agency Personnel</p>
+  </div>
+</section>
+
+<section class="page" id="p2b" data-screen-label="03" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:124px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-ricefield.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(20,35,10,.92) 0%,rgba(20,35,10,.76) 40%,rgba(20,35,10,.24) 80%,rgba(20,35,10,.08) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:13px;padding:0 34px 16px;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 15px Poppins,sans-serif;color:#31501a;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.7)">SC</div>
+      <div>
+        <h1 style="margin:0;font:800 22px/1.05 Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em">SCAIMS</h1>
+        <p style="margin:3px 0 0;font:500 10.5px Inter,sans-serif;color:#dfe8d5">Smart City Agriculture Information Management System</p>
+      </div>
+      <div style="margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.03em">Sheet 2 of 2 &middot; Agency Personnel</div>
+    </div>
+  </div>
+
+  <div style="padding:11px 34px 0;display:flex;flex-direction:column;gap:8px;flex:1">
+    <div style="display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start">
+      <p style="margin:0;font-size:11px;line-height:1.5;color:#4a5442">Still signed in as <b>Admin</b>. This second sheet continues the monitoring routine: damage reports, then the analytics you attach to a monitoring report.</p>
+      <aside style="border:1px solid #f0cf7a;border-radius:9px;background:#fff8e6;padding:8px 11px">
+        <h3 style="margin:0 0 4px;font:700 9.5px Poppins,sans-serif;color:#a97a05;text-transform:uppercase;letter-spacing:.05em">Quick tips</h3>
+        <ul style="margin:0;padding-left:13px;display:flex;flex-direction:column;gap:2px">
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Every report table has the same filter row and <b>Export</b> button.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Filters combine &mdash; barangay <i>and</i> crop <i>and</i> month at once.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Export sends the filtered rows only, never the whole table.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:9px;padding-top:2px">
+      <span style="width:24px;height:24px;border-radius:50%;border:1.5px solid #dfe6d6;background:#f6faf1;display:flex;align-items:center;justify-content:center;font:700 11px Poppins,sans-serif;color:#2f6b2a">2</span>
+      <b style="font:700 14px Poppins,sans-serif;color:#1f3a13;text-transform:uppercase;letter-spacing:.03em">Simulation workflow sequence</b>
+      <span style="margin-left:auto;font:400 italic 9px Inter,sans-serif;color:#8b937f">Screen diagrams &mdash; test data, not live farmer records</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;flex:1;align-content:start">
+
+      <div style="border:1px solid #e2e8d8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #4b8b34;color:#2f6b2a;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">1</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.02em">Damage reports</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Reports</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #cfd8c2;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:56px;flex:none;background:linear-gradient(180deg,#31501a,#22350e);padding:7px 5px;display:flex;flex-direction:column;gap:4px">
+            <div style="font:700 6.5px Poppins,sans-serif;color:#fff">SCAIMS</div>
+            <div style="height:1px;background:rgba(255,255,255,.16);margin:2px 0"></div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Home</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">User Mgmt</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Farm Parcel</div>
+            <div style="border-radius:4px;background:rgba(255,255,255,.1);padding:2px 4px;border-left:2px solid #e5b53c;font:600 6px Inter,sans-serif;color:#fff">Reports</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Logout</div>
+          </div>
+          <div style="flex:1;padding:7px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;gap:4px">
+              <div style="flex:1.4;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#8b937f">Search farmer or cause</div>
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#8b937f">All Causes</div>
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#8b937f">All Barangays</div>
+              <div style="border-radius:4px;background:#157347;color:#fff;padding:3px 6px;font:600 6px Inter,sans-serif">Export</div>
+            </div>
+            <p style="margin:0;text-align:right;font:700 italic 6px Inter,sans-serif;color:#20261a">Total Damage Reports: 53 (2 new, 51 previous)</p>
+            <p style="margin:0;font:700 7.5px Poppins,sans-serif;color:#0f7040;border-bottom:1.2px solid #0f7040;padding-bottom:2px">DAMAGE REPORTS</p>
+            <div style="display:grid;grid-template-columns:1.15fr .9fr 1fr .55fr .8fr .5fr;background:#d8ecdd;border-radius:3px;padding:3px 4px;gap:3px">
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Farmer</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Barangay</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Cause</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">% Dmg</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Est. loss</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Action</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.15fr .9fr 1fr .55fr .8fr .5fr;padding:3px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Pedro Reyes</span><span style="font:400 6px Inter,sans-serif">Bagongpook</span><span style="font:400 6px Inter,sans-serif">Typhoon</span><span style="font:400 6px Inter,sans-serif">80</span><span style="font:400 6px Inter,sans-serif">P 48,000</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.15fr .9fr 1fr .55fr .8fr .5fr;padding:3px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea;background:#fafcf7">
+              <span style="font:400 6px Inter,sans-serif">Rosa Fernandez</span><span style="font:400 6px Inter,sans-serif">Duhatan</span><span style="font:400 6px Inter,sans-serif">Pest / insects</span><span style="font:400 6px Inter,sans-serif">45</span><span style="font:400 6px Inter,sans-serif">P 12,500</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.15fr .9fr 1fr .55fr .8fr .5fr;padding:3px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Luz Bautista</span><span style="font:400 6px Inter,sans-serif">Plaridel</span><span style="font:400 6px Inter,sans-serif">Drought</span><span style="font:400 6px Inter,sans-serif">30</span><span style="font:400 6px Inter,sans-serif">P 7,200</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View</span>
+            </div>
+            <div style="margin-top:auto;display:flex;align-items:center;justify-content:flex-end;gap:4px">
+              <span style="border-radius:3px;background:#eef0ea;color:#a8b09c;padding:2px 6px;font:600 5.5px Inter,sans-serif">Previous</span>
+              <span style="font:600 6px Inter,sans-serif;color:#20261a">Page 1 of 6</span>
+              <span style="border-radius:3px;background:#157347;color:#fff;padding:2px 6px;font:600 5.5px Inter,sans-serif">Next</span>
+            </div>
+          </div>
+          <span style="position:absolute;right:120px;top:20px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;right:60px;top:80px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:6px;top:26px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Same <b>Reports</b> menu, damage table. Cause, percentage damaged and estimated loss are what the city aggregates for assistance requests.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #dfe6d6;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Total line &mdash; reconcile it against the dashboard counter.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;<b>% Dmg</b> and <b>Est. loss</b> &mdash; the two figures a monitoring report needs.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;<b>Export</b> after filtering by cause for one calamity.</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e2e8d8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #4b8b34;color:#2f6b2a;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">2</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.02em">Monitoring report</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Reports &rsaquo; Analytics</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #cfd8c2;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:56px;flex:none;background:linear-gradient(180deg,#31501a,#22350e);padding:7px 5px;display:flex;flex-direction:column;gap:4px">
+            <div style="font:700 6.5px Poppins,sans-serif;color:#fff">SCAIMS</div>
+            <div style="height:1px;background:rgba(255,255,255,.16);margin:2px 0"></div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Home</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">User Mgmt</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Farm Parcel</div>
+            <div style="border-radius:4px;background:rgba(255,255,255,.1);padding:2px 4px;border-left:2px solid #e5b53c;font:600 6px Inter,sans-serif;color:#fff">Reports</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Logout</div>
+          </div>
+          <div style="flex:1;padding:7px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;gap:5px">
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:5px;padding:5px 6px;background:#f6faf1">
+                <p style="margin:0;font:700 6.5px Poppins,sans-serif;color:#20261a;text-transform:uppercase">Crop reports</p>
+                <p style="margin:1px 0 0;font:800 13px Poppins,sans-serif;color:#0f7040;line-height:1">58</p>
+              </div>
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:5px;padding:5px 6px;background:#f6faf1">
+                <p style="margin:0;font:700 6.5px Poppins,sans-serif;color:#20261a;text-transform:uppercase">Damage reports</p>
+                <p style="margin:1px 0 0;font:800 13px Poppins,sans-serif;color:#0f7040;line-height:1">53</p>
+              </div>
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:5px;padding:5px 6px;background:#f6faf1">
+                <p style="margin:0;font:700 6.5px Poppins,sans-serif;color:#20261a;text-transform:uppercase">Avg damage</p>
+                <p style="margin:1px 0 0;font:800 13px Poppins,sans-serif;color:#0f7040;line-height:1">62%</p>
+              </div>
+            </div>
+            <p style="margin:0;text-align:center;font:700 7px Poppins,sans-serif;color:#0f7040;text-transform:uppercase">Top 5 barangays with highest damage percentage</p>
+            <div style="flex:1;display:flex;align-items:stretch;gap:5px;padding-bottom:2px">
+              <div style="display:flex;flex-direction:column;justify-content:space-between;font:500 5px Inter,sans-serif;color:#8b937f;padding-bottom:12px"><span>100</span><span>50</span><span>0</span></div>
+              <div style="flex:1;display:flex;align-items:flex-end;gap:6px;border-left:1px solid #dfe6d6;border-bottom:1px solid #dfe6d6;padding:0 4px">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end"><div style="width:100%;height:62px;background:#6cae8b;border:1px solid #3f7d5d;border-radius:2px 2px 0 0"></div><span style="font:500 4.5px Inter,sans-serif;color:#5c6654">Bagongpook</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end"><div style="width:100%;height:56px;background:#6cae8b;border:1px solid #3f7d5d;border-radius:2px 2px 0 0"></div><span style="font:500 4.5px Inter,sans-serif;color:#5c6654">Duhatan</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end"><div style="width:100%;height:48px;background:#6cae8b;border:1px solid #3f7d5d;border-radius:2px 2px 0 0"></div><span style="font:500 4.5px Inter,sans-serif;color:#5c6654">Pinagkawitan</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end"><div style="width:100%;height:41px;background:#6cae8b;border:1px solid #3f7d5d;border-radius:2px 2px 0 0"></div><span style="font:500 4.5px Inter,sans-serif;color:#5c6654">Antipolo N.</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end"><div style="width:100%;height:33px;background:#6cae8b;border:1px solid #3f7d5d;border-radius:2px 2px 0 0"></div><span style="font:500 4.5px Inter,sans-serif;color:#5c6654">Plaridel</span></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end"><span style="border-radius:4px;background:#157347;color:#fff;padding:3px 8px;font:600 6px Inter,sans-serif">Export chart data</span></div>
+          </div>
+          <span style="position:absolute;left:62px;top:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;left:50%;top:76px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:6px;bottom:24px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Scroll past the report tables for the analytics block. This is the monitoring report &mdash; there is no separate screen for it.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #dfe6d6;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Totals row &mdash; copy these three into the monitoring form header.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;Chart of the five worst-hit barangays, by average % damage.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;Export the chart data to attach it to your report.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;border-top:2px solid #eef4e6;background:#f6faf1;padding:10px 34px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex:none">
+    <div style="font-size:8.6px;line-height:1.5;color:#5c6654">
+      <p style="margin:0 0 1px;font:700 9.5px Poppins,sans-serif;color:#1f3a13">Need help? | Makipag-ugnayan</p>
+      <span style="display:block"><b style="color:#1f3a13">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+    </div>
+    <p style="margin:0;font:500 italic 9px Inter,sans-serif;color:#2f6b2a;white-space:nowrap">Sheet 2 of 2 &middot; Agency Personnel</p>
+  </div>
+</section>
+
+<section class="page" id="p3" data-screen-label="04" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:124px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-carrots.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(20,35,10,.92) 0%,rgba(20,35,10,.76) 40%,rgba(20,35,10,.24) 80%,rgba(20,35,10,.08) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:13px;padding:0 34px 16px;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 15px Poppins,sans-serif;color:#31501a;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.7)">SC</div>
+      <div>
+        <h1 style="margin:0;font:800 22px/1.05 Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em">SCAIMS</h1>
+        <p style="margin:3px 0 0;font:500 10.5px Inter,sans-serif;color:#dfe8d5">Smart City Agriculture Information Management System</p>
+      </div>
+      <div style="margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.03em">Sheet 1 of 2 &middot; Barangay Officials</div>
+    </div>
+  </div>
+
+  <div style="padding:11px 34px 0;display:flex;flex-direction:column;gap:8px;flex:1">
+    <div style="display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start">
+      <p style="margin:0;font-size:11px;line-height:1.5;color:#4a5442">Same sign-in and same menu as agency staff &mdash; the difference is that you work one barangay at a time. This first sheet covers farmer records and crop locations; set the <b>barangay filter</b> on each.</p>
+      <aside style="border:1px solid #f0cf7a;border-radius:9px;background:#fff8e6;padding:8px 11px">
+        <h3 style="margin:0 0 4px;font:700 9.5px Poppins,sans-serif;color:#a97a05;text-transform:uppercase;letter-spacing:.05em">Quick tips</h3>
+        <ul style="margin:0;padding-left:13px;display:flex;flex-direction:column;gap:2px">
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Search by farmer name; barangay is a dropdown, not a page.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Leave the password blank when editing a farmer to keep it unchanged.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Barangay summary = the Reports analytics chart, filtered to yours.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:9px;padding-top:2px">
+      <span style="width:24px;height:24px;border-radius:50%;border:1.5px solid #dfe6d6;background:#f6faf1;display:flex;align-items:center;justify-content:center;font:700 11px Poppins,sans-serif;color:#2f6b2a">2</span>
+      <b style="font:700 14px Poppins,sans-serif;color:#1f3a13;text-transform:uppercase;letter-spacing:.03em">Simulation workflow sequence</b>
+      <span style="margin-left:auto;font:400 italic 9px Inter,sans-serif;color:#8b937f">Filter values shown: Barangay Sabang</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;flex:1;align-content:start">
+
+      <div style="border:1px solid #e2e8d8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #4b8b34;color:#2f6b2a;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">1</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.02em">Farmer records</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">User Management</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #cfd8c2;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:56px;flex:none;background:linear-gradient(180deg,#31501a,#22350e);padding:7px 5px;display:flex;flex-direction:column;gap:4px">
+            <div style="font:700 6.5px Poppins,sans-serif;color:#fff">SCAIMS</div>
+            <div style="height:1px;background:rgba(255,255,255,.16);margin:2px 0"></div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Home</div>
+            <div style="border-radius:4px;background:rgba(255,255,255,.1);padding:2px 4px;border-left:2px solid #e5b53c;font:600 6px Inter,sans-serif;color:#fff">User Mgmt</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Farm Parcel</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Reports</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Logout</div>
+          </div>
+          <div style="flex:1;padding:7px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;gap:4px">
+              <div style="flex:1.3;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#8b937f">Search farmer name</div>
+              <div style="flex:.8;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#5c6654">Farmers</div>
+              <div style="flex:1;border:1.5px solid #e07b1f;border-radius:4px;padding:3px 5px;font:600 6px Inter,sans-serif;color:#20261a;background:#fff8ee">Sabang</div>
+              <div style="border-radius:4px;background:#157347;color:#fff;padding:3px 6px;font:600 6px Inter,sans-serif">Export</div>
+            </div>
+            <p style="margin:0;text-align:right;font:700 italic 6px Inter,sans-serif;color:#20261a">Total Users: 12 in Sabang (0 new)</p>
+            <div style="display:grid;grid-template-columns:1.1fr .95fr .85fr .6fr .95fr;background:#d8ecdd;border-radius:3px;padding:3px 4px;gap:3px">
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Name</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Contact</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Registered</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Status</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Action</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr .95fr .85fr .6fr .95fr;padding:3px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Juan Dela Cruz</span><span style="font:400 6px Inter,sans-serif">0917 000 0000</span><span style="font:400 6px Inter,sans-serif">2025-08-20</span><span style="font:400 6px Inter,sans-serif">Active</span>
+              <span style="display:flex;gap:2px"><span style="flex:1;background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">Edit</span><span style="flex:1;background:#dc3f4b;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">Off</span></span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr .95fr .85fr .6fr .95fr;padding:3px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea;background:#fafcf7">
+              <span style="font:400 6px Inter,sans-serif">Maria Santos</span><span style="font:400 6px Inter,sans-serif">0917 000 0000</span><span style="font:400 6px Inter,sans-serif">2025-07-26</span><span style="font:400 6px Inter,sans-serif">Active</span>
+              <span style="display:flex;gap:2px"><span style="flex:1;background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">Edit</span><span style="flex:1;background:#dc3f4b;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">Off</span></span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr .95fr .85fr .6fr .95fr;padding:3px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Miguel Torres</span><span style="font:400 6px Inter,sans-serif">0917 000 0000</span><span style="font:400 6px Inter,sans-serif">2025-05-20</span><span style="font:400 6px Inter,sans-serif">Active</span>
+              <span style="display:flex;gap:2px"><span style="flex:1;background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">Edit</span><span style="flex:1;background:#dc3f4b;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">Off</span></span>
+            </div>
+            <p style="margin:0;font:400 italic 5.5px Inter,sans-serif;color:#8b937f">RSBSA number column scrolls right &mdash; 00-00-00-000-000000 until issued.</p>
+            <div style="margin-top:auto;display:flex;align-items:center;justify-content:flex-end;gap:4px">
+              <span style="border-radius:3px;background:#eef0ea;color:#a8b09c;padding:2px 6px;font:600 5.5px Inter,sans-serif">Previous</span>
+              <span style="font:600 6px Inter,sans-serif;color:#20261a">Page 1 of 2</span>
+              <span style="border-radius:3px;background:#157347;color:#fff;padding:2px 6px;font:600 5.5px Inter,sans-serif">Next</span>
+            </div>
+          </div>
+          <span style="position:absolute;right:70px;top:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;left:62px;top:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:8px;top:70px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Open <b>User Management</b> and set the barangay dropdown to yours. The list then only shows your farmers, and the total line counts them.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #dfe6d6;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Barangay dropdown &mdash; set this <i>first</i>, before searching.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;Name search &mdash; partial names work ("dela").</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;<b>Edit</b> corrects details; <b>Deactivate</b> hides a farmer without deleting records.</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e2e8d8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #4b8b34;color:#2f6b2a;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">2</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.02em">Crop locations</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Farm Parcel</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #cfd8c2;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:56px;flex:none;background:linear-gradient(180deg,#31501a,#22350e);padding:7px 5px;display:flex;flex-direction:column;gap:4px">
+            <div style="font:700 6.5px Poppins,sans-serif;color:#fff">SCAIMS</div>
+            <div style="height:1px;background:rgba(255,255,255,.16);margin:2px 0"></div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Home</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">User Mgmt</div>
+            <div style="border-radius:4px;background:rgba(255,255,255,.1);padding:2px 4px;border-left:2px solid #e5b53c;font:600 6px Inter,sans-serif;color:#fff">Farm Parcel</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Reports</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Logout</div>
+          </div>
+          <div style="flex:1;padding:7px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;gap:4px">
+              <div style="flex:1.3;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#8b937f">Search by farmer name</div>
+              <div style="flex:1;border:1.5px solid #e07b1f;border-radius:4px;padding:3px 5px;font:600 6px Inter,sans-serif;color:#20261a;background:#fff8ee">Sabang</div>
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;color:#8b937f">Crop Type</div>
+              <div style="border-radius:4px;background:#157347;color:#fff;padding:3px 6px;font:600 6px Inter,sans-serif">Export</div>
+            </div>
+            <p style="margin:0;text-align:right;font:700 italic 6px Inter,sans-serif;color:#20261a">Showing 1 to 4 of 12 Total Parcels</p>
+            <div style="display:grid;grid-template-columns:1.1fr 1fr .7fr 1.1fr;background:#d8ecdd;border-radius:3px;padding:3px 4px;gap:3px">
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Name</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Farmer location</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Parcels</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Actions</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr 1fr .7fr 1.1fr;padding:3.5px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Juan Dela Cruz</span><span style="font:400 6px Inter,sans-serif">Sabang</span><span style="font:400 6px Inter,sans-serif">1</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View Parcel Details</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr 1fr .7fr 1.1fr;padding:3.5px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea;background:#fafcf7">
+              <span style="font:400 6px Inter,sans-serif">Miguel Torres</span><span style="font:400 6px Inter,sans-serif">Sabang</span><span style="font:400 6px Inter,sans-serif">1</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View Parcel Details</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr 1fr .7fr 1.1fr;padding:3.5px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Elena Cruz</span><span style="font:400 6px Inter,sans-serif">Sabang</span><span style="font:400 6px Inter,sans-serif">3</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View Parcel Details</span>
+            </div>
+            <div style="border:1px dashed #cfd8c2;border-radius:4px;background:#f8faf4;padding:4px 5px;display:flex;gap:5px">
+              <span style="font:500 5.5px Inter,sans-serif;color:#5c6654">Parcel 1 &mdash; 1.5 ha</span>
+              <span style="font:500 5.5px Inter,sans-serif;color:#5c6654">Irrigated</span>
+              <span style="font:500 5.5px Inter,sans-serif;color:#5c6654">Rice &middot; NSIC Rc 216</span>
+              <span style="font:500 5.5px Inter,sans-serif;color:#5c6654">Owner</span>
+            </div>
+            <div style="margin-top:auto;display:flex;align-items:center;justify-content:flex-end;gap:4px">
+              <span style="border-radius:3px;background:#eef0ea;color:#a8b09c;padding:2px 6px;font:600 5.5px Inter,sans-serif">Previous</span>
+              <span style="font:600 6px Inter,sans-serif;color:#20261a">Page 1</span>
+              <span style="border-radius:3px;background:#157347;color:#fff;padding:2px 6px;font:600 5.5px Inter,sans-serif">Next</span>
+            </div>
+          </div>
+          <span style="position:absolute;right:112px;top:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;right:8px;top:76px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;left:64px;bottom:26px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Open <b>Farm Parcel</b> for registered parcels. One row per farmer; the parcel count tells you how many plots to expect inside.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #dfe6d6;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Barangay filter again &mdash; each page keeps its own filter.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;<b>View Parcel Details</b> &mdash; area, irrigation, crop, tenure.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;Detail strip &mdash; check area against the crop report before certifying.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;border-top:2px solid #eef4e6;background:#f6faf1;padding:10px 34px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex:none">
+    <div style="font-size:8.6px;line-height:1.5;color:#5c6654">
+      <p style="margin:0 0 1px;font:700 9.5px Poppins,sans-serif;color:#1f3a13">Need help? | Makipag-ugnayan</p>
+      <span style="display:block"><b style="color:#1f3a13">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+    </div>
+    <p style="margin:0;font:500 italic 9px Inter,sans-serif;color:#2f6b2a;white-space:nowrap">Sheet 1 of 2 &middot; Barangay Officials</p>
+  </div>
+</section>
+
+<section class="page" id="p3b" data-screen-label="05" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:124px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-ricefield.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(20,35,10,.92) 0%,rgba(20,35,10,.76) 40%,rgba(20,35,10,.24) 80%,rgba(20,35,10,.08) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:13px;padding:0 34px 16px;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 15px Poppins,sans-serif;color:#31501a;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.7)">SC</div>
+      <div>
+        <h1 style="margin:0;font:800 22px/1.05 Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em">SCAIMS</h1>
+        <p style="margin:3px 0 0;font:500 10.5px Inter,sans-serif;color:#dfe8d5">Smart City Agriculture Information Management System</p>
+      </div>
+      <div style="margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.03em">Sheet 2 of 2 &middot; Barangay Officials</div>
+    </div>
+  </div>
+
+  <div style="padding:11px 34px 0;display:flex;flex-direction:column;gap:8px;flex:1">
+    <div style="display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start">
+      <p style="margin:0;font-size:11px;line-height:1.5;color:#4a5442">Still working as a barangay official. This second sheet covers submitted reports and the barangay summary &mdash; both filtered to your barangay only.</p>
+      <aside style="border:1px solid #f0cf7a;border-radius:9px;background:#fff8e6;padding:8px 11px">
+        <h3 style="margin:0 0 4px;font:700 9.5px Poppins,sans-serif;color:#a97a05;text-transform:uppercase;letter-spacing:.05em">Quick tips</h3>
+        <ul style="margin:0;padding-left:13px;display:flex;flex-direction:column;gap:2px">
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Search by farmer name; barangay is a dropdown, not a page.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Leave the password blank when editing a farmer to keep it unchanged.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Barangay summary = the Reports analytics chart, filtered to yours.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:9px;padding-top:2px">
+      <span style="width:24px;height:24px;border-radius:50%;border:1.5px solid #dfe6d6;background:#f6faf1;display:flex;align-items:center;justify-content:center;font:700 11px Poppins,sans-serif;color:#2f6b2a">2</span>
+      <b style="font:700 14px Poppins,sans-serif;color:#1f3a13;text-transform:uppercase;letter-spacing:.03em">Simulation workflow sequence</b>
+      <span style="margin-left:auto;font:400 italic 9px Inter,sans-serif;color:#8b937f">Filter values shown: Barangay Sabang</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;flex:1;align-content:start">
+
+      <div style="border:1px solid #e2e8d8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #4b8b34;color:#2f6b2a;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">1</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.02em">Submitted reports</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Reports</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #cfd8c2;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:56px;flex:none;background:linear-gradient(180deg,#31501a,#22350e);padding:7px 5px;display:flex;flex-direction:column;gap:4px">
+            <div style="font:700 6.5px Poppins,sans-serif;color:#fff">SCAIMS</div>
+            <div style="height:1px;background:rgba(255,255,255,.16);margin:2px 0"></div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Home</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">User Mgmt</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Farm Parcel</div>
+            <div style="border-radius:4px;background:rgba(255,255,255,.1);padding:2px 4px;border-left:2px solid #e5b53c;font:600 6px Inter,sans-serif;color:#fff">Reports</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Logout</div>
+          </div>
+          <div style="flex:1;padding:7px;display:flex;flex-direction:column;gap:5px">
+            <div style="display:flex;gap:3px;align-items:center">
+              <span style="border-radius:4px 4px 0 0;background:#d8ecdd;color:#0f7040;padding:3px 7px;font:700 6px Inter,sans-serif">Crop Harvest</span>
+              <span style="border-radius:4px 4px 0 0;background:#f4f7ef;color:#8b937f;padding:3px 7px;font:600 6px Inter,sans-serif">Damage</span>
+              <div style="flex:1"></div>
+              <div style="border:1.5px solid #e07b1f;border-radius:4px;padding:3px 6px;font:600 6px Inter,sans-serif;color:#20261a;background:#fff8ee">Sabang</div>
+              <div style="border-radius:4px;background:#157347;color:#fff;padding:3px 6px;font:600 6px Inter,sans-serif">Export</div>
+            </div>
+            <p style="margin:0;font:700 7.5px Poppins,sans-serif;color:#0f7040;border-bottom:1.2px solid #0f7040;padding-bottom:2px">NEW CROP HARVEST REPORTS (last 7 days)</p>
+            <div style="display:grid;grid-template-columns:1.1fr .8fr .7fr .85fr .55fr;background:#d8ecdd;border-radius:3px;padding:3px 4px;gap:3px">
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Farmer</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Crop</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Status</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Reported</span>
+              <span style="font:700 5.5px Inter,sans-serif;color:#0f7040">Action</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr .8fr .7fr .85fr .55fr;padding:3.5px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Juan Dela Cruz</span><span style="font:400 6px Inter,sans-serif">Rice</span><span style="font:400 6px Inter,sans-serif">Bearing</span><span style="font:400 6px Inter,sans-serif">2026-04-02</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1.1fr .8fr .7fr .85fr .55fr;padding:3.5px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea;background:#fafcf7">
+              <span style="font:400 6px Inter,sans-serif">Maria Santos</span><span style="font:400 6px Inter,sans-serif">Coffee</span><span style="font:400 6px Inter,sans-serif">Seedling</span><span style="font:400 6px Inter,sans-serif">2026-04-02</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View</span>
+            </div>
+            <p style="margin:2px 0 0;font:700 7.5px Poppins,sans-serif;color:#0f7040;border-bottom:1.2px solid #0f7040;padding-bottom:2px">PREVIOUS CROP HARVEST REPORTS</p>
+            <div style="display:grid;grid-template-columns:1.1fr .8fr .7fr .85fr .55fr;padding:3.5px 4px;gap:3px;align-items:center;border-bottom:1px solid #f0f3ea">
+              <span style="font:400 6px Inter,sans-serif">Miguel Torres</span><span style="font:400 6px Inter,sans-serif">Banana</span><span style="font:400 6px Inter,sans-serif">Non-bear.</span><span style="font:400 6px Inter,sans-serif">2025-05-20</span>
+              <span style="background:#157347;color:#fff;border-radius:3px;padding:2px 0;text-align:center;font:600 5.5px Inter,sans-serif">View</span>
+            </div>
+          </div>
+          <span style="position:absolute;left:62px;top:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;right:52px;top:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;left:64px;top:44px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Open <b>Reports</b>, pick the crop or damage tab, then set the barangay filter. New arrivals are listed separately from older reports.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #dfe6d6;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Tabs &mdash; Crop Harvest and Damage are two lists on one page.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;Barangay filter, then <b>Export</b> for your barangay file.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;<b>New (last 7 days)</b> &mdash; the reports still needing your check.</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e2e8d8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #4b8b34;color:#2f6b2a;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">2</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#16794a;text-transform:uppercase;letter-spacing:.02em">Barangay summary</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Reports &rsaquo; Analytics</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #cfd8c2;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:56px;flex:none;background:linear-gradient(180deg,#31501a,#22350e);padding:7px 5px;display:flex;flex-direction:column;gap:4px">
+            <div style="font:700 6.5px Poppins,sans-serif;color:#fff">SCAIMS</div>
+            <div style="height:1px;background:rgba(255,255,255,.16);margin:2px 0"></div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Home</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">User Mgmt</div>
+            <div style="padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Farm Parcel</div>
+            <div style="border-radius:4px;background:rgba(255,255,255,.1);padding:2px 4px;border-left:2px solid #e5b53c;font:600 6px Inter,sans-serif;color:#fff">Reports</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 6px Inter,sans-serif;color:#c6d4b3">Logout</div>
+          </div>
+          <div style="flex:1;padding:7px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;gap:4px;align-items:center">
+              <div style="border:1.5px solid #e07b1f;border-radius:4px;padding:3px 6px;font:600 6px Inter,sans-serif;color:#20261a;background:#fff8ee">Sabang</div>
+              <div style="border:1px solid #dfe6d6;border-radius:4px;padding:3px 6px;font:400 6px Inter,sans-serif;color:#5c6654">Apr 2026</div>
+              <div style="flex:1"></div>
+              <div style="border-radius:4px;background:#157347;color:#fff;padding:3px 6px;font:600 6px Inter,sans-serif">Export</div>
+            </div>
+            <div style="display:flex;gap:5px">
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:5px;padding:5px 6px;background:#f6faf1"><p style="margin:0;font:700 6.5px Poppins,sans-serif;text-transform:uppercase">Crop reports</p><p style="margin:1px 0 0;font:800 13px Poppins,sans-serif;color:#0f7040;line-height:1">14</p></div>
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:5px;padding:5px 6px;background:#f6faf1"><p style="margin:0;font:700 6.5px Poppins,sans-serif;text-transform:uppercase">Damage reports</p><p style="margin:1px 0 0;font:800 13px Poppins,sans-serif;color:#0f7040;line-height:1">6</p></div>
+              <div style="flex:1;border:1px solid #dfe6d6;border-radius:5px;padding:5px 6px;background:#f6faf1"><p style="margin:0;font:700 6.5px Poppins,sans-serif;text-transform:uppercase">Avg damage</p><p style="margin:1px 0 0;font:800 13px Poppins,sans-serif;color:#0f7040;line-height:1">48%</p></div>
+            </div>
+            <p style="margin:0;text-align:center;font:700 7px Poppins,sans-serif;color:#0f7040;text-transform:uppercase">Damage percentage by cause &mdash; Sabang</p>
+            <div style="flex:1;display:flex;align-items:stretch;gap:5px;padding-bottom:2px">
+              <div style="display:flex;flex-direction:column;justify-content:space-between;font:500 5px Inter,sans-serif;color:#8b937f;padding-bottom:12px"><span>100</span><span>50</span><span>0</span></div>
+              <div style="flex:1;display:flex;align-items:flex-end;gap:8px;border-left:1px solid #dfe6d6;border-bottom:1px solid #dfe6d6;padding:0 6px">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end"><div style="width:100%;height:56px;background:#6cae8b;border:1px solid #3f7d5d;border-radius:2px 2px 0 0"></div><span style="font:500 4.5px Inter,sans-serif;color:#5c6654">Typhoon</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end"><div style="width:100%;height:38px;background:#6cae8b;border:1px solid #3f7d5d;border-radius:2px 2px 0 0"></div><span style="font:500 4.5px Inter,sans-serif;color:#5c6654">Pest</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end"><div style="width:100%;height:28px;background:#6cae8b;border:1px solid #3f7d5d;border-radius:2px 2px 0 0"></div><span style="font:500 4.5px Inter,sans-serif;color:#5c6654">Drought</span></div>
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end"><div style="width:100%;height:18px;background:#6cae8b;border:1px solid #3f7d5d;border-radius:2px 2px 0 0"></div><span style="font:500 4.5px Inter,sans-serif;color:#5c6654">Flood</span></div>
+              </div>
+            </div>
+          </div>
+          <span style="position:absolute;left:62px;top:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;left:50%;top:34px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:8px;top:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">There is no separate summary screen. Keep the barangay filter set and scroll to the analytics block &mdash; that <i>is</i> your barangay summary.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #dfe6d6;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Filter stays on your barangay while you read the chart.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;Three totals &mdash; the figures to read out at the barangay meeting.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;<b>Export</b> &mdash; the file carries the filter in its filename.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;border-top:2px solid #eef4e6;background:#f6faf1;padding:10px 34px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex:none">
+    <div style="font-size:8.6px;line-height:1.5;color:#5c6654">
+      <p style="margin:0 0 1px;font:700 9.5px Poppins,sans-serif;color:#1f3a13">Need help? | Makipag-ugnayan</p>
+      <span style="display:block"><b style="color:#1f3a13">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+    </div>
+    <p style="margin:0;font:500 italic 9px Inter,sans-serif;color:#2f6b2a;white-space:nowrap">Sheet 2 of 2 &middot; Barangay Officials</p>
+  </div>
+</section>
+
+<section class="page" id="p4" data-screen-label="06" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:124px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-carrots.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(20,35,10,.92) 0%,rgba(20,35,10,.76) 40%,rgba(20,35,10,.24) 80%,rgba(20,35,10,.08) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:13px;padding:0 34px 16px;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 15px Poppins,sans-serif;color:#3f5313;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.7)">SC</div>
+      <div>
+        <h1 style="margin:0;font:800 22px/1.05 Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em">SCAIMS</h1>
+        <p style="margin:3px 0 0;font:500 10.5px Inter,sans-serif;color:#f0f4e8">Smart City Agriculture Information Management System</p>
+      </div>
+      <div style="margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.03em">Sheet 1 of 3 &middot; Para sa mga Magsasaka</div>
+    </div>
+  </div>
+
+  <div style="padding:11px 34px 0;display:flex;flex-direction:column;gap:8px;flex:1">
+    <div style="display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start">
+      <p style="margin:0;font-size:11px;line-height:1.5;color:#4a5442">Mag-sign in bilang <b>Farmer</b>. Sisimulan ng unang sheet na ito ang Home, saka ang Sakahan (rehistro ng bukid). Ang mga bilog na numero ay ang pindutan &mdash; sundin ang 1, 2, 3.</p>
+      <aside style="border:1px solid #f0cf7a;border-radius:9px;background:#fff8e6;padding:8px 11px">
+        <h3 style="margin:0 0 4px;font:700 9.5px Poppins,sans-serif;color:#a97a05;text-transform:uppercase;letter-spacing:.05em">Mabilis na tip</h3>
+        <ul style="margin:0;padding-left:13px;display:flex;flex-direction:column;gap:2px">
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Ang <b>Wika / Language</b> ay mapipili anumang oras sa sidebar.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Kung "wala" ang sagot, ilagay ang <b>N/A</b> &mdash; huwag iwang blangko.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Sample lamang ang mga pangalan at numero sa manwal na ito.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:9px;padding-top:2px">
+      <span style="width:24px;height:24px;border-radius:50%;border:1.5px solid #d9c7ad;background:#f0f4e8;display:flex;align-items:center;justify-content:center;font:700 11px Poppins,sans-serif;color:#576f1b">2</span>
+      <b style="font:700 14px Poppins,sans-serif;color:#576f1b;text-transform:uppercase;letter-spacing:.03em">Sunud-sunod na gagawin</b>
+      <span style="margin-left:auto;font:400 italic 9px Inter,sans-serif;color:#8b937f">Larawan ng screen &mdash; sample na datos</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;flex:1;align-content:start">
+
+      <div style="border:1px solid #e6dcc8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #576f1b;color:#576f1b;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">1</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#576f1b;text-transform:uppercase;letter-spacing:.02em">Home</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Pagkatapos mag-sign in</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #d9c7ad;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:66px;flex:none;background:#19813f;padding:8px 6px;display:flex;flex-direction:column;gap:4px;align-items:stretch">
+            <div style="width:22px;height:22px;border-radius:50%;background:#f4f8f4;margin:0 auto"></div>
+            <p style="margin:0;text-align:center;font:700 6px Poppins,sans-serif;color:#fff">Juan Dela Cruz</p>
+            <div style="border-radius:5px;background:#f7f2e8;padding:3px;display:flex;gap:2px;justify-content:center">
+              <span style="border-radius:999px;background:#fff;color:#674636;padding:1px 4px;font:600 5px Inter,sans-serif">English</span>
+              <span style="border-radius:999px;background:#576f1b;color:#fff;padding:1px 4px;font:600 5px Inter,sans-serif">Tagalog</span>
+            </div>
+            <div style="border-radius:5px;background:#f4f8f4;padding:3px 5px;font:700 6px Inter,sans-serif;color:#576f1b">Home</div>
+            <div style="padding:3px 5px;font:500 6px Inter,sans-serif;color:#e8f2e8">Sakahan</div>
+            <div style="padding:3px 5px;font:500 6px Inter,sans-serif;color:#e8f2e8">Mga Ulat</div>
+            <div style="padding:3px 5px;font:500 6px Inter,sans-serif;color:#e8f2e8">Aking Impormasyon</div>
+            <div style="margin-top:auto;padding:3px 5px;font:500 6px Inter,sans-serif;color:#e8f2e8">Mag-logout</div>
+          </div>
+          <div style="flex:1;padding:8px;display:flex;flex-direction:column;gap:6px">
+            <p style="margin:0;font:700 9px Poppins,sans-serif;color:#19813f">Ano ang nais ninyong gawin?</p>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">
+              <div style="border:1px solid #e6dcc8;border-radius:6px;background:#f7f2e8;padding:8px 3px;text-align:center"><div style="width:12px;height:12px;border-radius:3px;background:#ef8b2c;margin:0 auto 4px"></div><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Mga Ulat</p></div>
+              <div style="border:1px solid #e6dcc8;border-radius:6px;background:#f7f2e8;padding:8px 3px;text-align:center"><div style="width:12px;height:12px;border-radius:3px;background:#8aa832;margin:0 auto 4px"></div><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Sakahan</p></div>
+              <div style="border:1px solid #e6dcc8;border-radius:6px;background:#f7f2e8;padding:8px 3px;text-align:center"><div style="width:12px;height:12px;border-radius:3px;background:#19813f;margin:0 auto 4px"></div><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Mapa ng Pananim</p></div>
+              <div style="border:1px solid #e6dcc8;border-radius:6px;background:#f7f2e8;padding:8px 3px;text-align:center"><div style="width:12px;height:12px;border-radius:3px;background:#ef8b2c;margin:0 auto 4px"></div><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Aking Impormasyon</p></div>
+            </div>
+            <div style="border:1px solid #dcead8;border-radius:6px;background:#f6faf1;padding:7px 8px">
+              <p style="margin:0 0 4px;font:700 8px Poppins,sans-serif;color:#19813f">Capture / Upload Crop Image</p>
+              <div style="display:flex;gap:4px;align-items:center">
+                <span style="border-radius:5px;background:#19813f;color:#fff;padding:3px 8px;font:700 6px Inter,sans-serif">Kumuha ng larawan</span>
+                <span style="border-radius:5px;border:1px solid #19813f;color:#19813f;padding:3px 8px;font:700 6px Inter,sans-serif">Pumili mula sa gallery</span>
+              </div>
+            </div>
+            <div style="border-left:3px solid #576f1b;background:#f7f2e8;border-radius:0 5px 5px 0;padding:5px 7px">
+              <p style="margin:0;font:700 6.5px Poppins,sans-serif;color:#674636">MGA BAGONG UPDATE</p>
+              <p style="margin:2px 0 0;font:400 6px Inter,sans-serif;color:#674636">Tingnan muna rito ang mga bagong anunsyo bago pumunta sa ibang menu.</p>
+            </div>
+          </div>
+          <span style="position:absolute;left:8px;top:32px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;left:96px;top:18px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:8px;bottom:38px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Makikita ang <b>4 na pangunahing pindutan</b> at ang kahon para sa larawan ng pananim. Basahin muna ang mga bagong update.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #e6dcc8;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;<b>Wika / Language</b> &mdash; English o Tagalog, kahit kailan.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;Apat na pindutan &mdash; pareho sa sidebar, mas malaki lang.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;Mga bagong update mula sa Agriculture Office.</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e6dcc8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #576f1b;color:#576f1b;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">2</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#576f1b;text-transform:uppercase;letter-spacing:.02em">Sakahan</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Rehistro ng bukid</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #d9c7ad;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:52px;flex:none;background:#19813f;padding:7px 5px;display:flex;flex-direction:column;gap:3px">
+            <div style="width:18px;height:18px;border-radius:50%;background:#f4f8f4;margin:0 auto"></div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Home</div>
+            <div style="border-radius:4px;background:#f4f8f4;padding:2px 4px;font:700 5.5px Inter,sans-serif;color:#576f1b">Sakahan</div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Mga Ulat</div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Aking Imp.</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Mag-logout</div>
+          </div>
+          <div style="flex:1;padding:8px;display:flex;flex-direction:column;gap:6px">
+            <p style="margin:0;font:800 11px Poppins,sans-serif;color:#19813f;text-transform:uppercase">Sakahan</p>
+            <div style="display:flex;gap:4px;align-items:center">
+              <span style="border-radius:5px;background:#f5a939;color:#fff;padding:3px 8px;font:700 6px Inter,sans-serif">Parcel 1 (Sabang)</span>
+              <span style="border-radius:5px;background:#19813f;color:#fff;padding:3px 8px;font:700 6px Inter,sans-serif">+ Magdagdag ng Parcel</span>
+              <span style="border-radius:5px;background:#8aa832;color:#fff;padding:3px 8px;font:700 6px Inter,sans-serif">I-edit</span>
+            </div>
+            <div style="border-left:3px solid #576f1b;background:#f7f2e8;border-radius:0 5px 5px 0;padding:5px 7px">
+              <p style="margin:0;font:400 6px Inter,sans-serif;color:#674636">Pumili ng parcel para makita ang detalye ng bukid at impormasyon ng pananim.</p>
+            </div>
+            <div style="background:#e8f4e8;border-radius:6px;padding:6px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px">
+              <div style="background:#fff;border-radius:5px;padding:5px"><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Lokasyon</p><p style="margin:2px 0 0;font:400 6px Inter,sans-serif;color:#5c6654">Sabang</p></div>
+              <div style="background:#fff;border-radius:5px;padding:5px"><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Lawak ng Bukid</p><p style="margin:2px 0 0;font:400 6px Inter,sans-serif;color:#5c6654">1.5 hectares</p></div>
+              <div style="background:#fff;border-radius:5px;padding:5px"><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Patubig</p><p style="margin:2px 0 0;font:400 6px Inter,sans-serif;color:#5c6654">Irrigated</p></div>
+              <div style="background:#fff;border-radius:5px;padding:5px"><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Organic</p><p style="margin:2px 0 0;font:400 6px Inter,sans-serif;color:#5c6654">No</p></div>
+              <div style="background:#fff;border-radius:5px;padding:5px"><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Lawak ng Parcel</p><p style="margin:2px 0 0;font:400 6px Inter,sans-serif;color:#5c6654">1.5 hectares</p></div>
+              <div style="background:#fff;border-radius:5px;padding:5px"><p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636">Pagmamay-ari</p><p style="margin:2px 0 0;font:400 6px Inter,sans-serif;color:#5c6654">Registered Owner</p></div>
+            </div>
+            <div style="background:#f8f8f4;border-radius:6px;padding:5px 6px;display:flex;gap:6px;align-items:baseline">
+              <p style="margin:0;font:800 7px Poppins,sans-serif;color:#20261a">Impormasyon ng Pananim</p>
+              <p style="margin:0;font:400 6px Inter,sans-serif;color:#5c6654">Grains &middot; Rice &middot; NSIC Rc 216</p>
+            </div>
+          </div>
+          <span style="position:absolute;left:56px;top:24px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;left:140px;top:24px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:8px;top:78px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Irehistro ang bukid: barangay, laki ng lupa, uri ng pananim, at kung <b>irrigated</b> o <b>rainfed</b>. Kailangan ito bago makapag-ulat.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #e6dcc8;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Pindutin ang parcel (kahel) para lumitaw ang detalye.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;<b>Magdagdag ng Parcel</b> kung mahigit isa ang bukid.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;Suriin ang lawak at pagmamay-ari bago mag-<b>I-edit</b>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;border-top:2px solid #f0f4e8;background:#f0f4e8;padding:10px 34px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex:none">
+    <div style="font-size:8.6px;line-height:1.5;color:#5c6654">
+      <p style="margin:0 0 1px;font:700 9.5px Poppins,sans-serif;color:#674636">Kailangan ng tulong? | Need help?</p>
+      <span style="display:block"><b style="color:#674636">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+      <span style="display:block"><b style="color:#674636">Tanggapan ng Agrikultura ng Lipa City</b> &middot; (043) 773 3518 &mdash; para sa tulong sa app at pag-uulat</span>
+    </div>
+    <p style="margin:0;font:500 italic 9px Inter,sans-serif;color:#576f1b;white-space:nowrap">Sheet 1 of 3 &middot; Mga Magsasaka</p>
+  </div>
+</section>
+
+<section class="page" id="p4b" data-screen-label="07" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:124px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-ricefield.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(20,35,10,.92) 0%,rgba(20,35,10,.76) 40%,rgba(20,35,10,.24) 80%,rgba(20,35,10,.08) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:13px;padding:0 34px 16px;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 15px Poppins,sans-serif;color:#3f5313;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.7)">SC</div>
+      <div>
+        <h1 style="margin:0;font:800 22px/1.05 Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em">SCAIMS</h1>
+        <p style="margin:3px 0 0;font:500 10.5px Inter,sans-serif;color:#f0f4e8">Smart City Agriculture Information Management System</p>
+      </div>
+      <div style="margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.03em">Sheet 2 of 3 &middot; Para sa mga Magsasaka</div>
+    </div>
+  </div>
+
+  <div style="padding:11px 34px 0;display:flex;flex-direction:column;gap:8px;flex:1">
+    <div style="display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start">
+      <p style="margin:0;font-size:11px;line-height:1.5;color:#4a5442">Ipagpapatuloy pa rin bilang <b>Farmer</b>. Sakop ng pangalawang sheet na ito ang Ulat sa Inaning Pananim at ang Ulat sa Nasirang Pananim.</p>
+      <aside style="border:1px solid #f0cf7a;border-radius:9px;background:#fff8e6;padding:8px 11px">
+        <h3 style="margin:0 0 4px;font:700 9.5px Poppins,sans-serif;color:#a97a05;text-transform:uppercase;letter-spacing:.05em">Mabilis na tip</h3>
+        <ul style="margin:0;padding-left:13px;display:flex;flex-direction:column;gap:2px">
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Ang <b>Wika / Language</b> ay mapipili anumang oras sa sidebar.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Kung "wala" ang sagot, ilagay ang <b>N/A</b> &mdash; huwag iwang blangko.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Sample lamang ang mga pangalan at numero sa manwal na ito.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:9px;padding-top:2px">
+      <span style="width:24px;height:24px;border-radius:50%;border:1.5px solid #d9c7ad;background:#f0f4e8;display:flex;align-items:center;justify-content:center;font:700 11px Poppins,sans-serif;color:#576f1b">2</span>
+      <b style="font:700 14px Poppins,sans-serif;color:#576f1b;text-transform:uppercase;letter-spacing:.03em">Sunud-sunod na gagawin</b>
+      <span style="margin-left:auto;font:400 italic 9px Inter,sans-serif;color:#8b937f">Larawan ng screen &mdash; sample na datos</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;flex:1;align-content:start">
+
+      <div style="border:1px solid #e6dcc8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #576f1b;color:#576f1b;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">1</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#576f1b;text-transform:uppercase;letter-spacing:.02em">Ulat sa Inaning Pananim</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Mga Ulat</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #d9c7ad;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:52px;flex:none;background:#19813f;padding:7px 5px;display:flex;flex-direction:column;gap:3px">
+            <div style="width:18px;height:18px;border-radius:50%;background:#f4f8f4;margin:0 auto"></div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Home</div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Sakahan</div>
+            <div style="border-radius:4px;background:#f4f8f4;padding:2px 4px;font:700 5.5px Inter,sans-serif;color:#576f1b">Mga Ulat</div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Aking Imp.</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Mag-logout</div>
+          </div>
+          <div style="flex:1;padding:8px;display:flex;flex-direction:column;gap:5px">
+            <p style="margin:0;font:800 10px Poppins,sans-serif;color:#19813f;text-transform:uppercase">Pagpapasa ng Ulat</p>
+            <div style="display:flex;gap:4px">
+              <div style="flex:1;border:1.5px solid #576f1b;border-radius:5px;background:#f0f4e8;padding:5px;text-align:center;font:700 6.5px Poppins,sans-serif;color:#576f1b">Ulat sa Inaning Pananim</div>
+              <div style="flex:1;border:1px solid #e6dcc8;border-radius:5px;padding:5px;text-align:center;font:600 6.5px Poppins,sans-serif;color:#8b937f">Ulat sa Nasirang Pananim</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Lokasyon:</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">Sabang</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Uri ng Pananim:</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">Grains</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Klase ng Pananim:</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">Rice &middot; NSIC Rc 216</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Petsa ng Pag-ani:</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">2026-07-20</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Tinatayang Ani (kg):</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">3200</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Presyo sa Farm Gate (P/kg):</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">22.50</div></div>
+            </div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <p style="margin:0;font:600 5.5px Inter,sans-serif;color:#674636">Kalagayan:</p>
+              <span style="border:1.5px solid #576f1b;border-radius:4px;background:#f0f4e8;padding:2px 6px;font:700 5.5px Inter,sans-serif;color:#576f1b">Namumunga</span>
+              <span style="border:1px solid #d9c7ad;border-radius:4px;background:#f7f2e8;padding:2px 6px;font:500 5.5px Inter,sans-serif;color:#674636">Punla</span>
+            </div>
+            <div style="margin-top:auto;display:flex;justify-content:center"><span style="border-radius:6px;background:#8aa832;color:#fff;padding:4px 16px;font:700 7px Poppins,sans-serif">Ipadala ang Ulat</span></div>
+          </div>
+          <span style="position:absolute;left:58px;top:20px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;left:53%;top:56px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;left:38%;bottom:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Sa <b>Mga Ulat</b>, piliin ang unang tab. Sagutan ang bawat bahagi nang paisa-isa, pagkatapos ay <b>Ipadala ang Ulat</b>.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #e6dcc8;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Piliin muna ang <b>uri ng ulat</b> &mdash; may tsek ang napili.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;Petsa: <b>YYYY-MM-DD</b>. Ani sa kilo, presyo kada kilo.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;Isang pindot lang &mdash; hintayin ang mensaheng "Naipasa".</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e6dcc8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #576f1b;color:#576f1b;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">2</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#576f1b;text-transform:uppercase;letter-spacing:.02em">Ulat sa Nasirang Pananim</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Opsyonal</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #d9c7ad;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:52px;flex:none;background:#19813f;padding:7px 5px;display:flex;flex-direction:column;gap:3px">
+            <div style="width:18px;height:18px;border-radius:50%;background:#f4f8f4;margin:0 auto"></div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Home</div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Sakahan</div>
+            <div style="border-radius:4px;background:#f4f8f4;padding:2px 4px;font:700 5.5px Inter,sans-serif;color:#576f1b">Mga Ulat</div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Aking Imp.</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Mag-logout</div>
+          </div>
+          <div style="flex:1;padding:8px;display:flex;flex-direction:column;gap:5px">
+            <p style="margin:0;font:800 10px Poppins,sans-serif;color:#19813f;text-transform:uppercase">Pagpapasa ng Ulat</p>
+            <div style="display:flex;gap:4px">
+              <div style="flex:1;border:1px solid #e6dcc8;border-radius:5px;padding:5px;text-align:center;font:600 6.5px Poppins,sans-serif;color:#8b937f">Ulat sa Inaning Pananim</div>
+              <div style="flex:1;border:1.5px solid #576f1b;border-radius:5px;background:#f0f4e8;padding:5px;text-align:center;font:700 6.5px Poppins,sans-serif;color:#576f1b">Ulat sa Nasirang Pananim</div>
+            </div>
+            <div style="border:1px solid #e6dcc8;border-radius:5px;padding:5px 6px;background:#fafcf7;display:flex;gap:6px;align-items:center">
+              <span style="font:700 6px Poppins,sans-serif;color:#674636">Larawan ng pinsala</span>
+              <span style="border-radius:4px;background:#19813f;color:#fff;padding:2px 6px;font:600 5.5px Inter,sans-serif">Kumuha ng larawan</span>
+              <span style="border-radius:4px;border:1px solid #19813f;color:#19813f;padding:2px 6px;font:600 5.5px Inter,sans-serif">Gallery</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Sanhi ng Pinsala:</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">Bagyo / Typhoon</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Petsa ng Pinsala:</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">2026-05-18</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Porsyento ng Pinsala (%):</p><div style="border:1.5px solid #e07b1f;border-radius:4px;padding:3px 5px;font:600 6px Inter,sans-serif;background:#fff8ee">80</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Tinatayang Nawala (P):</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">48,000</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Lawak na Napinsala (ha):</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">1.2</div></div>
+              <div><p style="margin:0 0 2px;font:600 5.5px Inter,sans-serif;color:#674636">Koordinado:</p><div style="border:1px solid #e6dcc8;border-radius:4px;padding:3px 5px;font:400 6px Inter,sans-serif;background:#fafcf7">Gamitin ang GPS</div></div>
+            </div>
+            <div style="margin-top:auto;display:flex;justify-content:center"><span style="border-radius:6px;background:#8aa832;color:#fff;padding:4px 16px;font:700 7px Poppins,sans-serif">Ipadala ang Ulat</span></div>
+          </div>
+          <span style="position:absolute;left:53%;top:26px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;left:56px;top:42px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;left:56px;top:72px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Sa parehong <b>Mga Ulat</b>, piliin ang ikalawang tab: sanhi, porsyento at tinatayang nawala. Opsyonal &mdash; kung may pinsala lamang.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #e6dcc8;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Ikalawang tab &mdash; <b>Ulat sa Nasirang Pananim</b>.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;Kumuha ng larawan ng pinsala bago sagutan ang form.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;Porsyento 0&ndash;100; ang halaga ay piso, walang tuldok-tuldok.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;border-top:2px solid #f0f4e8;background:#f0f4e8;padding:10px 34px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex:none">
+    <div style="font-size:8.6px;line-height:1.5;color:#5c6654">
+      <p style="margin:0 0 1px;font:700 9.5px Poppins,sans-serif;color:#674636">Kailangan ng tulong? | Need help?</p>
+      <span style="display:block"><b style="color:#674636">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+      <span style="display:block"><b style="color:#674636">Tanggapan ng Agrikultura ng Lipa City</b> &middot; (043) 773 3518 &mdash; para sa tulong sa app at pag-uulat</span>
+    </div>
+    <p style="margin:0;font:500 italic 9px Inter,sans-serif;color:#576f1b;white-space:nowrap">Sheet 2 of 3 &middot; Mga Magsasaka</p>
+  </div>
+</section>
+
+<section class="page" id="p4c" data-screen-label="08" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:124px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-carrots.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(20,35,10,.92) 0%,rgba(20,35,10,.76) 40%,rgba(20,35,10,.24) 80%,rgba(20,35,10,.08) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:13px;padding:0 34px 16px;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 15px Poppins,sans-serif;color:#3f5313;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.7)">SC</div>
+      <div>
+        <h1 style="margin:0;font:800 22px/1.05 Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em">SCAIMS</h1>
+        <p style="margin:3px 0 0;font:500 10.5px Inter,sans-serif;color:#f0f4e8">Smart City Agriculture Information Management System</p>
+      </div>
+      <div style="margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.03em">Sheet 3 of 3 &middot; Para sa mga Magsasaka</div>
+    </div>
+  </div>
+
+  <div style="padding:11px 34px 0;display:flex;flex-direction:column;gap:8px;flex:1">
+    <div style="display:grid;grid-template-columns:1fr 232px;gap:16px;align-items:start">
+      <p style="margin:0;font-size:11px;line-height:1.5;color:#4a5442">Panghuling sheet: paano magparehistro bilang bagong magsasaka sa <b>publikong pahina</b>, at paano i-edit ang sariling impormasyon sa <b>Aking Impormasyon</b> kapag naka-sign in na.</p>
+      <aside style="border:1px solid #f0cf7a;border-radius:9px;background:#fff8e6;padding:8px 11px">
+        <h3 style="margin:0 0 4px;font:700 9.5px Poppins,sans-serif;color:#a97a05;text-transform:uppercase;letter-spacing:.05em">Mabilis na tip</h3>
+        <ul style="margin:0;padding-left:13px;display:flex;flex-direction:column;gap:2px">
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Ang <b>Wika / Language</b> ay mapipili anumang oras sa sidebar.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Kung "wala" ang sagot, ilagay ang <b>N/A</b> &mdash; huwag iwang blangko.</li>
+          <li style="font-size:9.5px;line-height:1.4;color:#6c5410">Sample lamang ang mga pangalan at numero sa manwal na ito.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:9px;padding-top:2px">
+      <span style="width:24px;height:24px;border-radius:50%;border:1.5px solid #d9c7ad;background:#f0f4e8;display:flex;align-items:center;justify-content:center;font:700 11px Poppins,sans-serif;color:#576f1b">2</span>
+      <b style="font:700 14px Poppins,sans-serif;color:#576f1b;text-transform:uppercase;letter-spacing:.03em">Sunud-sunod na gagawin</b>
+      <span style="margin-left:auto;font:400 italic 9px Inter,sans-serif;color:#8b937f">Larawan ng screen &mdash; sample na datos</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;flex:1;align-content:start">
+
+      <div style="border:1px solid #e6dcc8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #576f1b;color:#576f1b;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">1</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#576f1b;text-transform:uppercase;letter-spacing:.02em">Pagpaparehistro</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">Walang sign in</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #d9c7ad;border-radius:9px;overflow:hidden;display:flex;flex-direction:column;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="flex:none;background:#fdf8ec;border-bottom:1px solid #ecdfb8;padding:5px 8px;display:flex;align-items:center;gap:6px">
+            <div style="width:14px;height:14px;border-radius:4px;background:#3f5313"></div>
+            <span style="font:800 7px Poppins,sans-serif;color:#3f5313">SCAIMS</span>
+            <span style="font:500 5.5px Inter,sans-serif;color:#8a7a52;margin-left:6px">About&nbsp;Us</span>
+            <span style="font:500 5.5px Inter,sans-serif;color:#8a7a52;margin-left:5px">FAQ</span>
+            <span style="font:500 5.5px Inter,sans-serif;color:#8a7a52;margin-left:5px">Contact</span>
+            <div style="margin-left:auto;display:flex;background:#eee8d4;border-radius:8px;padding:1px">
+              <span style="border-radius:7px;padding:1px 5px;font:600 5px Inter,sans-serif;color:#8a7a52">EN</span>
+              <span style="border-radius:7px;background:#576f1b;padding:1px 5px;font:700 5px Inter,sans-serif;color:#fff">TL</span>
+            </div>
+          </div>
+          <div style="flex:1;padding:7px 8px;display:flex;flex-direction:column;gap:5px;background:#f4f4f0">
+            <p style="margin:0;font:800 8px Poppins,sans-serif;color:#576f1b;text-align:center">Porma ng Pagpaparehistro</p>
+            <p style="margin:0;font:700 6px Poppins,sans-serif;color:#674636;border-bottom:1px solid #e6dcc8;padding-bottom:3px">Bahagi 1: Personal na Impormasyon</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div><p style="margin:0 0 1px;font:600 5.5px Inter,sans-serif;color:#674636">Apelyido</p><div style="border:1px solid #d9c7ad;border-radius:3px;background:#fff;padding:3px 4px;font:400 6px Inter,sans-serif;color:#20261a">Dela Cruz</div></div>
+              <div><p style="margin:0 0 1px;font:600 5.5px Inter,sans-serif;color:#674636">Pangalan</p><div style="border:1px solid #d9c7ad;border-radius:3px;background:#fff;padding:3px 4px;font:400 6px Inter,sans-serif;color:#20261a">Juan</div></div>
+              <div><p style="margin:0 0 1px;font:600 5.5px Inter,sans-serif;color:#674636">Petsa ng Kapanganakan</p><div style="border:1px solid #d9c7ad;border-radius:3px;background:#fff;padding:3px 4px;font:400 6px Inter,sans-serif;color:#20261a">1985-05-15</div></div>
+              <div><p style="margin:0 0 1px;font:600 5.5px Inter,sans-serif;color:#674636">Numero ng Cellphone</p><div style="border:1px solid #d9c7ad;border-radius:3px;background:#fff;padding:3px 4px;font:400 6px Inter,sans-serif;color:#20261a">0917 000 0000</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:1px">
+              <p style="margin:0;font:600 5.5px Inter,sans-serif;color:#674636">Kasarian</p>
+              <span style="border:1.5px solid #576f1b;background:#f0f4e8;border-radius:5px;padding:2px 7px;font:700 5.5px Inter,sans-serif;color:#576f1b">&#9794; Lalaki</span>
+              <span style="border:1px solid #e6dcc8;border-radius:5px;padding:2px 7px;font:500 5.5px Inter,sans-serif;color:#8b937f">&#9792; Babae</span>
+              <span style="margin-left:auto;background:#576f1b;color:#fff;border-radius:5px;padding:3px 9px;font:700 6px Inter,sans-serif">Magpatuloy</span>
+            </div>
+          </div>
+          <span style="position:absolute;right:70px;top:6px;width:15px;height:15px;border-radius:50%;background:#e07b1f;color:#fff;font:700 9px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;left:97px;bottom:30px;width:15px;height:15px;border-radius:50%;background:#e07b1f;color:#fff;font:700 9px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:8px;bottom:10px;width:15px;height:15px;border-radius:50%;background:#e07b1f;color:#fff;font:700 9px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">Bago maka-access ng system, kumpletuhin muna ang <b>Porma ng Pagpaparehistro</b> sa publikong pahina &mdash; hindi kailangan ng sign in dito.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #e6dcc8;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Piliin ang <b>Wika / Language</b> bago simulan ang porma.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;Piliin ang <b>Kasarian</b> &mdash; kailangan bago magpatuloy.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;Pindutin ang <b>Magpatuloy</b> papunta sa susunod na bahagi.</p>
+        </div>
+      </div>
+      <div style="border:1px solid #e6dcc8;border-radius:12px;background:#fff;padding:10px 11px 11px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:22px;height:22px;border-radius:50%;border:2px solid #576f1b;color:#576f1b;font:700 12px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;flex:none">2</span>
+          <h3 style="margin:0;font:700 12.5px Poppins,sans-serif;color:#576f1b;text-transform:uppercase;letter-spacing:.02em">Aking Impormasyon</h3>
+          <span style="margin-left:auto;font:600 8px Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#8b937f">I-edit ang profile</span>
+        </div>
+        <div style="position:relative;height:194px;border:1px solid #d9c7ad;border-radius:9px;overflow:hidden;display:flex;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.07)">
+          <div style="width:52px;flex:none;background:#19813f;padding:7px 5px;display:flex;flex-direction:column;gap:3px">
+            <div style="width:18px;height:18px;border-radius:50%;background:#f4f8f4;margin:0 auto"></div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Home</div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Sakahan</div>
+            <div style="padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Mga Ulat</div>
+            <div style="border-radius:4px;background:#f4f8f4;padding:2px 4px;font:700 5.5px Inter,sans-serif;color:#576f1b">Aking Imp.</div>
+            <div style="margin-top:auto;padding:2px 4px;font:500 5.5px Inter,sans-serif;color:#e8f2e8">Mag-logout</div>
+          </div>
+          <div style="flex:1;padding:7px 8px;display:flex;flex-direction:column;gap:5px">
+            <p style="margin:0;font:800 8px Poppins,sans-serif;color:#19813f;text-transform:uppercase">I-edit ang Profile</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <div><p style="margin:0 0 1px;font:600 5.5px Inter,sans-serif;color:#19813f">Apelyido</p><div style="border:1px solid #cfe0cf;border-radius:3px;background:#fff;padding:3px 4px;font:400 6px Inter,sans-serif;color:#20261a">Dela Cruz</div></div>
+              <div><p style="margin:0 0 1px;font:600 5.5px Inter,sans-serif;color:#19813f">Pangalan</p><div style="border:1px solid #cfe0cf;border-radius:3px;background:#fff;padding:3px 4px;font:400 6px Inter,sans-serif;color:#20261a">Juan</div></div>
+              <div><p style="margin:0 0 1px;font:600 5.5px Inter,sans-serif;color:#19813f">Tirahan</p><div style="border:1px solid #cfe0cf;border-radius:3px;background:#fff;padding:3px 4px;font:400 6px Inter,sans-serif;color:#20261a">Purok 2, Sabang</div></div>
+              <div><p style="margin:0 0 1px;font:600 5.5px Inter,sans-serif;color:#19813f">Barangay</p><div style="border:1px solid #cfe0cf;border-radius:3px;background:#fff;padding:3px 4px;font:400 6px Inter,sans-serif;color:#20261a">Sabang</div></div>
+            </div>
+            <div>
+              <p style="margin:0 0 1px;font:600 5.5px Inter,sans-serif;color:#19813f">RSBSA Number (kung mayroon)</p>
+              <div style="border:1px solid #cfe0cf;border-radius:3px;background:#fff;padding:3px 4px;font:400 6px Inter,sans-serif;color:#20261a">00-00-00-000-000000</div>
+            </div>
+            <div style="margin-top:auto;display:flex;gap:5px;justify-content:flex-end;border-top:1px solid #eef4e6;padding-top:5px">
+              <span style="background:#8aa832;color:#fff;border-radius:4px;padding:3px 8px;font:700 6px Inter,sans-serif">I-save ang Pagbabago</span>
+              <span style="background:#f5a939;color:#fff;border-radius:4px;padding:3px 8px;font:700 6px Inter,sans-serif">Kanselahin</span>
+            </div>
+          </div>
+          <span style="position:absolute;left:17px;top:70px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">1</span>
+          <span style="position:absolute;left:150px;top:88px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">2</span>
+          <span style="position:absolute;right:8px;bottom:8px;width:17px;height:17px;border-radius:50%;background:#e07b1f;color:#fff;font:700 10px Poppins,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff">3</span>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.45;color:#4a5442">I-update ang sariling impormasyon gaya ng tirahan o barangay. Ang <b>RSBSA Number</b> ay opsyonal kung wala pa nito.</p>
+        <div style="display:flex;flex-direction:column;gap:3px;border-top:1px dashed #e6dcc8;padding-top:6px">
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">1</b> &nbsp;Pindutin ang <b>Aking Impormasyon</b> sa sidebar.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">2</b> &nbsp;I-update ang <b>RSBSA Number</b> kung mayroon na.</p>
+          <p style="margin:0;font-size:9.5px;line-height:1.4;color:#5c6654"><b style="color:#e07b1f">3</b> &nbsp;Pindutin ang <b>I-save ang Pagbabago</b> para ma-apply.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto;border-top:2px solid #f0f4e8;background:#f0f4e8;padding:10px 34px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex:none">
+    <div style="font-size:8.6px;line-height:1.5;color:#5c6654">
+      <p style="margin:0 0 1px;font:700 9.5px Poppins,sans-serif;color:#674636">Kailangan ng tulong? | Need help?</p>
+      <span style="display:block"><b style="color:#674636">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+      <span style="display:block"><b style="color:#674636">Tanggapan ng Agrikultura ng Lipa City</b> &middot; (043) 773 3518 &mdash; para sa tulong sa app at pag-uulat</span>
+    </div>
+    <p style="margin:0;font:500 italic 9px Inter,sans-serif;color:#576f1b;white-space:nowrap">Sheet 3 of 3 &middot; Mga Magsasaka</p>
+  </div>
+</section>
+
+
+
+<section class="page" id="p5" data-screen-label="09" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:124px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-ricefield.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(20,35,10,.92) 0%,rgba(20,35,10,.76) 40%,rgba(20,35,10,.24) 80%,rgba(20,35,10,.08) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:13px;padding:0 34px 16px;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 15px Poppins,sans-serif;color:#3f5313;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.7)">SC</div>
+      <div>
+        <h1 style="margin:0;font:800 22px/1.05 Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em">SCAIMS</h1>
+        <p style="margin:3px 0 0;font:500 10.5px Inter,sans-serif;color:#f0f4e8">Smart City Agriculture Information Management System</p>
+      </div>
+      <div style="margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.03em">What&rsquo;s new &middot; Version 7</div>
+    </div>
+  </div>
+  <div style="padding:14px 34px 0;display:flex;flex-direction:column;gap:12px;flex:1">
+    <p style="margin:0;font-size:11px;line-height:1.5;color:#4a5442">Version 7 adds farmer validation, land tenure, RSBSA sign-in and stronger account security. The sheets before this one still apply; these are the extra steps for each role. <i>Ang bersyon 7 ay may bagong hakbang para sa bawat tungkulin.</i></p>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px"><div style="border:1px solid #e6dcc8;border-radius:12px;background:#fffdf8;padding:12px 14px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2 style="margin:0;font:700 13px Poppins,sans-serif;color:#3f5313;text-transform:uppercase;letter-spacing:.02em">Agency Personnel</h2><span style="font:700 8.5px Poppins,sans-serif;color:#fff;background:#576f1b;border-radius:999px;padding:3px 9px;white-space:nowrap">English</span></div><ol style="margin:0;padding:0;list-style:none"><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">1</b>&nbsp; <b>Validate farmers</b> in User Management &rsaquo; Farmers: press <b>Validate</b> after the in-person check. Only agency accounts can validate.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">2</b>&nbsp; Set <b>Farmer Status</b> to Active, Inactive or Deceased from the row dropdown. Deceased farmers can no longer sign in.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">3</b>&nbsp; When staff leave, <b>Deactivate</b> their account under User Management &rsaquo; Admins. Access ends immediately, even mid-session. You cannot deactivate yourself.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">4</b>&nbsp; Every <b>90 days</b> you will be asked for a new password: 8+ characters with upper, lower, number and symbol, and different from the current one.</li></ol></div><div style="border:1px solid #e6dcc8;border-radius:12px;background:#fffdf8;padding:12px 14px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2 style="margin:0;font:700 13px Poppins,sans-serif;color:#3f5313;text-transform:uppercase;letter-spacing:.02em">Barangay Officials</h2><span style="font:700 8.5px Poppins,sans-serif;color:#fff;background:#674636;border-radius:999px;padding:3px 9px;white-space:nowrap">English</span></div><ol style="margin:0;padding:0;list-style:none"><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">1</b>&nbsp; <b>Search first.</b> If a farmer is not in User Management, guide them through <b>Register</b> on the public page.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">2</b>&nbsp; You see <b>Validated / Not validated</b> badges but cannot change them &mdash; the agency validates after the in-person check.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">3</b>&nbsp; New <b>Land Tenure</b> column: Landowner, Tenant or Farm Worker. Correct it with <b>Edit</b> if needed.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">4</b>&nbsp; RSBSA numbers accept the old format (12-34-56-789-012345) and the new one (04-010-14-0123-289AbYQ). One number belongs to one farmer only.</li></ol></div><div style="border:1px solid #e6dcc8;border-radius:12px;background:#fffdf8;padding:12px 14px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2 style="margin:0;font:700 13px Poppins,sans-serif;color:#3f5313;text-transform:uppercase;letter-spacing:.02em">Mga Magsasaka</h2><span style="font:700 8.5px Poppins,sans-serif;color:#fff;background:#e07b1f;border-radius:999px;padding:3px 9px;white-space:nowrap">Tagalog</span></div><ol style="margin:0;padding:0;list-style:none"><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">1</b>&nbsp; Mag-login gamit ang <b>Username o RSBSA Number</b>.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">2</b>&nbsp; Hindi tanda ang RSBSA number? Pindutin ang <b>Hanapin dito</b> sa landing page (RSBSA Finder ng DA).</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">3</b>&nbsp; Sa Pagpaparehistro, piliin ang <b>Land Tenure</b>: Landowner, Tenant o Farm Worker &mdash; kasama na ang mga walang sariling lupa.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">4</b>&nbsp; Sa cellphone, buksan ang Farmer Login at pindutin ang <b>Install Farmer App</b>.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">5</b>&nbsp; Bagong bersyon ito: kung dati na kayong naka-login, mag-login lamang muli nang <b>isang beses</b>.</li></ol></div></div>
+  </div>
+  <div style="margin-top:auto;border-top:2px solid #f0f4e8;background:#f0f4e8;padding:10px 34px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex:none">
+    <div style="font-size:8.6px;line-height:1.5;color:#5c6654">
+      <p style="margin:0 0 1px;font:700 9.5px Poppins,sans-serif;color:#674636">Need help? | Makipag-ugnayan</p>
+      <span style="display:block"><b style="color:#674636">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+      <span style="display:block"><b style="color:#674636">Lipa City Agriculture Office</b> &middot; (043) 773 3518</span>
+    </div>
+    <p style="margin:0;font:500 italic 9px Inter,sans-serif;color:#576f1b;white-space:nowrap">What&rsquo;s new &middot; All roles</p>
+  </div>
+</section>
+
+
+<section class="page" id="p6" data-screen-label="10" style="padding:0;display:flex;flex-direction:column;font-family:Inter,sans-serif;color:#20261a">
+  <div style="position:relative;height:124px;overflow:hidden;flex:none;display:flex;align-items:flex-end">
+    <img src="../assets/backgrounds/bg-carrots.jpg" alt="" style="position:absolute;top:-7%;left:-7%;width:114%;height:114%;object-fit:cover">
+    <div style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(20,35,10,.92) 0%,rgba(20,35,10,.76) 40%,rgba(20,35,10,.24) 80%,rgba(20,35,10,.08) 100%)"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:13px;padding:0 34px 16px;width:100%">
+      <div style="width:44px;height:44px;border-radius:50%;background:#f7f2e8;display:flex;align-items:center;justify-content:center;font:800 15px Poppins,sans-serif;color:#3f5313;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.7)">SC</div>
+      <div>
+        <h1 style="margin:0;font:800 22px/1.05 Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:-.01em">SCAIMS</h1>
+        <p style="margin:3px 0 0;font:500 10.5px Inter,sans-serif;color:#f0f4e8">Smart City Agriculture Information Management System</p>
+      </div>
+      <div style="margin-left:auto;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:6px 15px;font:700 11px Poppins,sans-serif;color:#fff;text-transform:uppercase;letter-spacing:.03em">More screens &middot; All roles</div>
+    </div>
+  </div>
+  <div style="padding:14px 34px 0;display:flex;flex-direction:column;gap:12px;flex:1">
+    <p style="margin:0;font-size:11px;line-height:1.5;color:#4a5442">The remaining menu items and public pages, so every screen in SCAIMS is covered. <i>Ang iba pang pahina ng sistema.</i></p>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px"><div style="border:1px solid #e6dcc8;border-radius:12px;background:#fffdf8;padding:12px 14px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2 style="margin:0;font:700 13px Poppins,sans-serif;color:#3f5313;text-transform:uppercase;letter-spacing:.02em">Agency &amp; Barangay &mdash; other menu items</h2><span style="font:700 8.5px Poppins,sans-serif;color:#fff;background:#576f1b;border-radius:999px;padding:3px 9px;white-space:nowrap">English</span></div><ol style="margin:0;padding:0;list-style:none"><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">1</b>&nbsp; <b>Post Updates</b> &mdash; type the announcement, attach photos, press <b>Post Update</b>. It appears on every farmer&rsquo;s Home and on the public page. <b>Delete</b> removes it.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">2</b>&nbsp; <b>Suggestions</b> &mdash; feedback sent from the public page. New ones are listed first; mark them read once handled, and <b>Export Suggestion</b> for meetings.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">3</b>&nbsp; <b>Crop Management</b> (agency only) &mdash; the crop catalog behind every report dropdown. <b>Add Crop</b> with its commodity and display order, then <b>Save Crop</b>.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">4</b>&nbsp; <b>Satellite Monitoring</b> &mdash; choose a parcel to see crop-health (NDVI) history. It stays empty until satellite access is configured; this is a preview feature.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">5</b>&nbsp; <b>Logout</b> when you leave a shared computer. If your account is deactivated, you are signed out on your next click.</li></ol></div><div style="border:1px solid #e6dcc8;border-radius:12px;background:#fffdf8;padding:12px 14px;display:flex;flex-direction:column;gap:8px"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><h2 style="margin:0;font:700 13px Poppins,sans-serif;color:#3f5313;text-transform:uppercase;letter-spacing:.02em">Publikong pahina &mdash; walang sign in</h2><span style="font:700 8.5px Poppins,sans-serif;color:#fff;background:#e07b1f;border-radius:999px;padding:3px 9px;white-space:nowrap">Tagalog</span></div><ol style="margin:0;padding:0;list-style:none"><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">1</b>&nbsp; Bago magparehistro, sasagutin ang <b>RSBSA Verification</b>: <b>Oo, ako ay nakarehistro</b> para magpatuloy, o <b>Hindi pa</b> para makita ang tagubilin sa pagpaparehistro sa RSBSA.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">2</b>&nbsp; <b>Tingnan ang Mapa</b> &mdash; mapa ng pananim sa Lipa ayon sa uri, barangay at presyo. Hindi ipinapakita ang pangalan ng magsasaka.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">3</b>&nbsp; <b>Magpadala ng Mungkahi</b> &mdash; opsyonal ang pangalan; diretso ito sa Suggestions ng Agriculture Office.</li><li style="font-size:10px;line-height:1.45;color:#4a5442;margin:0 0 6px"><b style="color:#e07b1f">4</b>&nbsp; <b>Buksan ang Buong Manwal</b> &mdash; ang manwal na ito ay makikita rin sa landing page at sa menu ng bawat account.</li></ol></div></div>
+  </div>
+  <div style="margin-top:auto;border-top:2px solid #f0f4e8;background:#f0f4e8;padding:10px 34px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex:none">
+    <div style="font-size:8.6px;line-height:1.5;color:#5c6654">
+      <p style="margin:0 0 1px;font:700 9.5px Poppins,sans-serif;color:#674636">Need help? | Makipag-ugnayan</p>
+      <span style="display:block"><b style="color:#674636">Mr. Dioneces O. Alimoren</b> &middot; dioneces.alimoren@g.batstate-u.edu.ph &middot; 0917 169 7421</span>
+      <span style="display:block"><b style="color:#674636">Lipa City Agriculture Office</b> &middot; (043) 773 3518</span>
+    </div>
+    <p style="margin:0;font:500 italic 9px Inter,sans-serif;color:#576f1b;white-space:nowrap">More screens &middot; All roles</p>
+  </div>
+</section>
+
+</doc-page>
+</body>
+</html>

@@ -31,7 +31,9 @@ $dashboardNavItems = [
         'label' => 'Account Settings',
     ],
 ];
+require_once dirname(__DIR__, 3) . '/shared/app_version.php';
 ?>
+<script src="../../../shared/app-version.js?v=<?php echo urlencode(SCAIMS_APP_VERSION); ?>"></script>
 <button class="menu-toggle" type="button" aria-label="Toggle navigation">
     <span></span>
     <span></span>
@@ -75,6 +77,12 @@ $dashboardNavItems = [
                 </li>
             <?php endforeach; ?>
             <li>
+                <a href="../../../manual/index.html#p4" target="_blank" rel="noopener" class="menu-item">
+                    <img src="<?php echo htmlspecialchars($dashboardIconBase . '/manual.png'); ?>" class="icon" alt="">
+                    <span data-i18n="nav_manual">User Manual</span>
+                </a>
+            </li>
+            <li>
                 <a href="../shared/logout.php" class="menu-item">
                     <img src="<?php echo htmlspecialchars($dashboardIconBase . '/logout.png'); ?>" class="icon" alt="">
                     <span data-i18n="nav_logout">Logout</span>
@@ -86,6 +94,6 @@ $dashboardNavItems = [
         <p data-i18n="sidebar_tip">Tap a menu item to continue.</p>
     </div>
     <footer class="footer">
-        <p data-i18n-html="footer_text">Lipa City Agriculture Office <br> &copy; 2024 All rights reserved</p>
+        <p data-i18n-html="footer_text">Lipa City Agriculture Office <br> &copy; <?php echo date('Y'); ?> All rights reserved</p>
     </footer>
 </aside>

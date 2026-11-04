@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="shared/app-version.js?v=7.0.0"></script>
   <title>SCAIMS - Smart City Agriculture Information Management System</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +12,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="shared/app-path.js"></script>
   <script src="shared/public-nav-config.js"></script>
-  <script src="landing.js"></script>
+  <script src="landing.js?v=7.0.0"></script>
   <script src="shared/public-nav.js?v=20260908-2" defer></script>
   <script>
     tailwind.config = {
@@ -183,6 +184,61 @@
 
     .team-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .team-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(59,73,24,0.12); }
+
+    /* ─── Natural photo backgrounds (same field photos as the user manual) ─── */
+    .photo-section { background-size: cover; background-position: center; }
+    .photo-section--ricefield {
+      background-image:
+        linear-gradient(105deg, rgba(18,32,9,.94) 0%, rgba(18,32,9,.84) 45%, rgba(18,32,9,.6) 100%),
+        url('assets/backgrounds/bg-ricefield.jpg');
+    }
+    .photo-section--carrots-light {
+      background-image:
+        linear-gradient(180deg, rgba(255,252,239,.93) 0%, rgba(255,255,255,.95) 100%),
+        url('assets/backgrounds/bg-carrots.jpg');
+    }
+    .photo-section--ricefield-light {
+      background-image:
+        linear-gradient(180deg, rgba(255,252,239,.95) 0%, rgba(255,252,239,.9) 100%),
+        url('assets/backgrounds/bg-ricefield.jpg');
+    }
+    .hero-photo {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(90deg, rgba(255,252,239,.98) 0%, rgba(255,252,239,.93) 42%, rgba(255,252,239,.6) 72%, rgba(255,252,239,.38) 100%),
+        url('assets/backgrounds/bg-ricefield.jpg');
+      background-size: cover; background-position: center right;
+    }
+    @media (max-width: 1023px) {
+      .hero-photo {
+        background-image:
+          linear-gradient(180deg, rgba(255,252,239,.95) 0%, rgba(255,252,239,.9) 100%),
+          url('assets/backgrounds/bg-ricefield.jpg');
+      }
+    }
+
+    /* ─── Live user-manual preview ─── */
+    .manual-preview {
+      background: #fffcef; border-radius: 22px; overflow: hidden;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,.55), 0 0 0 1px rgba(200,189,68,.3);
+    }
+    .manual-preview__bar {
+      display: flex; align-items: center; gap: 6px; padding: 10px 16px;
+      background: #f5f5f0; border-bottom: 1px solid rgba(59,73,24,.1);
+    }
+    .manual-preview__viewport { position: relative; height: 520px; overflow: hidden; background: #fff; }
+    .manual-preview__viewport iframe {
+      position: absolute; top: 0; left: 0; border: 0;
+      width: 860px; transform-origin: top left;
+    }
+    .manual-role-btn {
+      padding: 9px 16px; border-radius: 999px; font-weight: 600; font-size: 14px;
+      color: #fffcef; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.35);
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .manual-role-btn:hover { background: rgba(255,255,255,.2); }
+    .manual-role-btn.is-active { background: #fffcef; color: #3b4918; border-color: #fffcef; }
+    .manual-role-btn:focus-visible { outline: 3px solid #f7931e; outline-offset: 2px; }
   </style>
   <link rel="stylesheet" href="shared/tap-targets.css?v=20260907">
 </head>
@@ -258,15 +314,7 @@
 
   <!-- ══ HERO ══ -->
   <section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-cream via-white to-harvest/10"></div>
-    <div class="absolute inset-0 opacity-20">
-      <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#c8bd44" stroke-width="0.5"/>
-        </pattern>
-        <rect width="100" height="100" fill="url(#grid)"/>
-      </svg>
-    </div>
+    <div class="hero-photo" aria-hidden="true"></div>
 
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid lg:grid-cols-2 gap-12 items-center">
 
@@ -376,7 +424,7 @@
   </section>
 
   <!-- Services -->
-  <section id="services" class="py-24 bg-white">
+  <section id="services" class="py-24 photo-section photo-section--carrots-light">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 reveal">
         <span class="text-harvest font-bold tracking-wider uppercase text-sm">Ang Aming Plataporma</span>
@@ -417,43 +465,34 @@
     </div>
   </section>
 
-  <!-- Dashboard Preview -->
-  <section class="py-24 bg-olive-dark text-white relative overflow-hidden">
-    <div class="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+  <!-- User Manual (live preview of the real manual) -->
+  <section id="manual" class="py-24 text-white relative overflow-hidden photo-section photo-section--ricefield">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-      <div class="grid lg:grid-cols-2 gap-16 items-center">
-        <div class="reveal">
-          <span class="text-gold-light font-bold tracking-wider uppercase text-sm">Kasalukuyang Datos</span>
-          <h2 class="text-4xl lg:text-5xl font-serif font-bold mt-4 mb-6">Datos ng Agrikultura,<br>Diretso Mula sa Sistema</h2>
-          <p class="text-white/80 text-lg mb-8 leading-relaxed">Ang mga bilang dito ay galing mismo sa talaan ng mga magsasaka, parsela, ulat, anunsyo, at mungkahi — totoong aktibidad ng sistema, hindi gawa-gawa.</p>
-          <ul class="space-y-4">
-            <li class="flex items-center gap-4 group"><div class="w-10 h-10 bg-harvest/20 rounded-full flex items-center justify-center text-harvest group-hover:bg-harvest group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div><span class="text-lg">Talaan ng mga rehistradong magsasaka</span></li>
-            <li class="flex items-center gap-4 group"><div class="w-10 h-10 bg-harvest/20 rounded-full flex items-center justify-center text-harvest group-hover:bg-harvest group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div><span class="text-lg">Mga parselang binabantayan</span></li>
-            <li class="flex items-center gap-4 group"><div class="w-10 h-10 bg-harvest/20 rounded-full flex items-center justify-center text-harvest group-hover:bg-harvest group-hover:text-white transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div><span class="text-lg">Mga mungkahi mula sa komunidad</span></li>
-          </ul>
+      <div class="grid lg:grid-cols-5 gap-12 items-center">
+        <div class="lg:col-span-2 reveal">
+          <span class="text-gold-light font-bold tracking-wider uppercase text-sm">Gabay sa Paggamit</span>
+          <h2 class="text-4xl lg:text-5xl font-serif font-bold mt-4 mb-6">Tingnan Kung Paano<br>Gumagana ang SCAIMS</h2>
+          <p class="text-white/85 text-lg mb-8 leading-relaxed">Ito ang mismong manwal ng sistema — hakbang-hakbang na gabay para sa bawat tungkulin. Piliin ang inyong tungkulin para makita ang tamang pahina.</p>
+          <div class="flex flex-wrap gap-3 mb-8" role="tablist" aria-label="Piliin ang tungkulin">
+            <button type="button" class="manual-role-btn is-active" data-manual-target="p4" role="tab" aria-selected="true">Magsasaka</button>
+            <button type="button" class="manual-role-btn" data-manual-target="p3" role="tab" aria-selected="false">Barangay</button>
+            <button type="button" class="manual-role-btn" data-manual-target="p2" role="tab" aria-selected="false">Agency</button>
+            <button type="button" class="manual-role-btn" data-manual-target="p5" role="tab" aria-selected="false">Bago sa Bersyon 7</button>
+          </div>
+          <a href="manual/index.html" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-harvest text-white px-6 py-3 rounded-lg font-semibold hover:bg-harvest-dark transition-all hover:-translate-y-0.5">
+            Buksan ang Buong Manwal <span aria-hidden="true">↗</span>
+          </a>
         </div>
-        <div class="relative reveal">
-          <div class="absolute inset-0 bg-gradient-to-r from-gold/20 to-harvest/20 rounded-3xl transform rotate-3"></div>
-          <div class="relative bg-white/10 backdrop-blur-xl rounded-3xl p-6 border border-white/20 shadow-2xl">
-            <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-              <div class="flex items-center gap-3">
-                <div class="w-3 h-3 bg-red-400 rounded-full"></div>
-                <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-              </div>
-              <span class="text-sm text-white/50 font-medium">Silip sa Dashboard</span>
+        <div class="lg:col-span-3 reveal" style="transition-delay:0.15s">
+          <div class="manual-preview">
+            <div class="manual-preview__bar">
+              <span class="w-3 h-3 bg-red-400 rounded-full"></span>
+              <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
+              <span class="w-3 h-3 bg-green-400 rounded-full"></span>
+              <span class="ml-3 text-xs text-olive/60 font-medium">SCAIMS User Manual · Bersyon 7</span>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div class="bg-white/5 rounded-xl p-5 border border-white/10 hover:bg-white/10 transition-colors">
-                <div class="text-white/50 text-sm mb-2 uppercase tracking-wider">Ulat ng Pananim</div>
-                <div class="text-3xl font-bold text-gold-light mb-3">—</div>
-                <div class="h-2 bg-white/10 rounded-full overflow-hidden"></div>
-              </div>
-              <div class="bg-white/5 rounded-xl p-5 border border-white/10 hover:bg-white/10 transition-colors">
-                <div class="text-white/50 text-sm mb-2 uppercase tracking-wider">Ulat ng Pinsala</div>
-                <div class="text-3xl font-bold text-harvest mb-3">—</div>
-                <div class="h-2 bg-white/10 rounded-full overflow-hidden"></div>
-              </div>
+            <div class="manual-preview__viewport" id="manualViewport">
+              <iframe id="manualFrame" src="manual/index.html" title="SCAIMS User Manual" loading="lazy"></iframe>
             </div>
           </div>
         </div>
@@ -489,7 +528,7 @@
   </section>
 
   <!-- Meet the Team -->
-  <section class="py-24 bg-white relative overflow-hidden">
+  <section class="py-24 relative overflow-hidden photo-section photo-section--ricefield-light">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-harvest/5 rounded-full blur-3xl pointer-events-none"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
       <div class="text-center mb-16 reveal">
@@ -570,7 +609,7 @@
           <ul class="space-y-3 text-white/60">
             <li class="flex items-start gap-2"><span>📍</span><span>Lungsod ng Lipa</span></li>
             <li class="flex items-start gap-2"><span>✉️</span><span class="min-w-0 break-all">agriculture@lipa.gov.ph</span></li>
-            <li class="flex items-center gap-2"><span>📞</span><span>+63 (043) 123-4567</span></li>
+            <li class="flex items-center gap-2"><span>📞</span><span><a href="tel:+63437733518" class="hover:text-white transition-colors">(043) 773 3518</a></span></li>
           </ul>
         </div>
       </div>
@@ -642,6 +681,45 @@
       setTimeout(() => { document.getElementById(mId).classList.add('hidden'); document.body.style.overflow = ''; }, 300);
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ── Live user-manual preview ── */
+    (function () {
+      const viewport = document.getElementById('manualViewport');
+      const frame = document.getElementById('manualFrame');
+      if (!viewport || !frame) return;
+      const MANUAL_WIDTH = 860;
+      let pendingSheet = 'p4';
+
+      function fit() {
+        const scale = Math.min(1, viewport.clientWidth / MANUAL_WIDTH);
+        frame.style.transform = `scale(${scale})`;
+        frame.style.height = `${viewport.clientHeight / scale}px`;
+      }
+
+      // Scroll only inside the preview, never the landing page itself.
+      function showSheet(id) {
+        pendingSheet = id;
+        try {
+          const win = frame.contentWindow;
+          const sheet = win && win.document.getElementById(id);
+          if (sheet) win.scrollTo({ top: sheet.getBoundingClientRect().top + win.scrollY, behavior: 'smooth' });
+        } catch (e) { /* preview not loaded yet; applied on load */ }
+      }
+
+      document.querySelectorAll('.manual-role-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.manual-role-btn').forEach(b => {
+            b.classList.toggle('is-active', b === btn);
+            b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+          });
+          showSheet(btn.dataset.manualTarget);
+        });
+      });
+
+      frame.addEventListener('load', () => setTimeout(() => showSheet(pendingSheet), 600));
+      window.addEventListener('resize', fit);
+      fit();
+    })();
     document.querySelectorAll('[data-current-year]').forEach(el => { el.textContent = new Date().getFullYear(); });
 
     /* ════════════════════════════════════
